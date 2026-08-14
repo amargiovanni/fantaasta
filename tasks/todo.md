@@ -12,7 +12,9 @@
 - [x] README e UPDATE.md aggiornati
 
 ## Prossimi (in ordine, ognuno col suo mini-design)
-- [ ] Simulatore d'asta (bot a FVM±rumore per la prova generale)
+- [x] Simulatore d'asta ✅ (modalità 🤖: stato separato, chiamate con bot a
+      FVM×scala±25%, ×10 auto, reset; 57/57 test PASS; fix harness: il test ora
+      pulisce anche il cookie di backup)
 - [ ] Pipeline ricerca a un click (runbook UPDATE.md automatizzato + diff novità)
 - [ ] UX contorno: vista secondo schermo, report post-asta
 - [ ] Il giorno dell'asta: rilanciare ricerca (probabili vere 19-21/8) — dossier:

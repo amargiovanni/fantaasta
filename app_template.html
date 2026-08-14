@@ -95,6 +95,14 @@ header{
 .scpill.hi{color:var(--volt);border-color:rgba(198,241,77,.4)}
 .scpill.mid{color:var(--gold);border-color:rgba(236,198,92,.4)}
 
+/* ---------- simulation mode ---------- */
+#simbar{margin:10px 0 0;padding:8px 12px;border:1px dashed rgba(245,165,36,.6);border-radius:8px;font-size:13px;color:var(--warn);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+#simbar button{padding:3px 10px;font-size:12.5px}
+body.sim header{border-bottom-color:rgba(245,165,36,.7)}
+body.sim #btnSim{border-color:var(--warn);color:var(--warn)}
+.simline{margin-top:8px;font-size:13.5px;color:var(--warn)}
+.simline b{font-family:var(--num)}
+
 /* ---------- layout ---------- */
 main{max-width:1560px;margin:18px auto;padding:0 22px;display:grid;grid-template-columns:minmax(400px,4.4fr) 7fr;gap:20px;align-items:start}
 @media(max-width:1080px){main{grid-template-columns:1fr}}
@@ -271,6 +279,7 @@ dialog h2{margin-bottom:14px;color:var(--ink)}
   </div>
   <div class="hactions">
     <button id="btnUndo" title="Annulla ultima operazione (Ctrl+Z)">↩ Undo</button>
+    <button id="btnSim" title="Modalità simulazione: prova generale con bot, senza toccare l'asta vera">🤖</button>
     <button id="btnSet" title="Budget e impostazioni">⚙</button>
     <button id="btnExp" title="Scarica backup JSON">⬇</button>
     <button id="btnImp" title="Ripristina da backup">⬆</button>
@@ -289,6 +298,13 @@ dialog h2{margin-bottom:14px;color:var(--ink)}
       <div id="results"></div>
     </div>
     <div class="hint"><kbd>↑↓</kbd> scegli · <kbd>Invio</kbd> l'ho comprato · <kbd>Shift+Invio</kbd> preso da altri (poi prezzo + tasto <kbd>1-9</kbd> per chi) · <kbd>Esc</kbd> pulisci · <kbd>Ctrl+Z</kbd> undo</div>
+
+    <div id="simbar" hidden>🤖 <b>SIMULAZIONE</b> — l'asta vera non viene toccata
+      <button id="simNextBtn" class="primary">Prossima chiamata ▶</button>
+      <button id="simAutoBtn" title="10 chiamate risolte dai bot senza di te">×10 auto</button>
+      <button id="simResetBtn" class="danger" title="Azzera solo la simulazione">reset sim</button>
+      <button id="simExitBtn">Esci</button>
+    </div>
 
     <div id="buycard" class="panel" hidden></div>
 
@@ -386,6 +402,10 @@ for (const a of (DATA.alerts || [])) {
 
 /* ============================== state ============================== */
 const LS_KEY = 'fantaasta_2627_v1';
+const LS_SIM = 'fantaasta_2627_sim';
+let simMode = false;
+try { simMode = localStorage.getItem('fantaasta_sim_on') === '1'; } catch (e) {}
+const lsKey = () => simMode ? LS_SIM : LS_KEY;
 let state = loadState();
 function defaultState() {
   return { budget: DATA.budget, roleBudget: {...DATA.roleBudget}, actions: [],
@@ -393,9 +413,10 @@ function defaultState() {
 }
 function loadState() {
   try {
-    const raw = localStorage.getItem(LS_KEY);
+    const raw = localStorage.getItem(lsKey());
     if (raw) return {...defaultState(), ...JSON.parse(raw)};
   } catch (e) {}
+  if (simMode) return defaultState();   // la sim parte pulita, niente cookie
   try {
     const m = document.cookie.match(/(?:^|;\s*)fantaasta_bk=([^;]+)/);
     if (m) {
@@ -408,7 +429,8 @@ function loadState() {
 }
 function save() {
   const raw = JSON.stringify(state);
-  try { localStorage.setItem(LS_KEY, raw); } catch (e) {}
+  try { localStorage.setItem(lsKey(), raw); } catch (e) {}
+  if (simMode) return;                  // il cookie di backup resta dell'asta vera
   // cookie backup (4KB limit): full state, else buys only
   let ck = raw;
   if (encodeURIComponent(ck).length > 3800) {
@@ -625,6 +647,60 @@ function walkAway(p, slotId, d) {
   return {v, alts, topRival, overtakers: rivals.filter(o => o.maxBid >= v)};
 }
 
+/* ============================== simulation ============================== */
+/* prezzo atteso: FVM riscalato sui crediti totali del tavolo (10 squadre), ±25% */
+const SIMSCALE = (() => {
+  const top = DATA.players.map(p => p.fvm || 0).sort((a,b) => b - a).slice(0, 250);
+  const sum = top.reduce((s,v) => s + v, 0);
+  return sum > 0 ? (DATA.budget * 10) / sum : 1;
+})();
+let simPending = null;   // {p, price, bot} — chiamata sul banco
+function simPickBot(p, price, d) {
+  const elig = d.opps.filter(o => o.canBuyRole[p.r] && o.slotsLeft > 0);
+  if (!elig.length) return null;
+  const can = elig.filter(o => o.maxBid >= price);
+  const pool = can.length ? can : elig;
+  const bot = pool[Math.floor(Math.random() * pool.length)];
+  return {bot, price: Math.max(1, Math.min(price, bot.maxBid))};
+}
+function simStep(interactive) {
+  const d = derive();
+  if (d.slotsLeft <= 0 && !interactive) return false;
+  const pool = DATA.players
+    .filter(p => !d.minePid.has(p.id) && !d.gonePid.has(p.id) && (p.fvm || 0) > 1)
+    .sort((a,b) => (b.fvm || 0) - (a.fvm || 0));
+  if (!pool.length) { toast('Listone esaurito: simulazione finita', 'warn'); return false; }
+  const p = pool[Math.floor(Math.random() * Math.min(12, pool.length))];
+  const price = Math.max(1, Math.round((p.fvm || 1) * SIMSCALE * (0.75 + Math.random() * 0.5)));
+  const pick = simPickBot(p, price, d);
+  if (!interactive) {
+    if (pick) doGone(p, pick.price, pick.bot.name);
+    else doGone(p, null, '');
+    return true;
+  }
+  simPending = pick ? {p, price: pick.price, bot: pick.bot.name} : {p, price, bot: ''};
+  openBuy(p);
+  $('#buycard .bctop')?.insertAdjacentHTML('afterend',
+    `<div class="simline">🤖 I bot arrivano a <b>${simPending.price}</b>${simPending.bot ? ` (${esc(simPending.bot)})` : ''} — compra a ≥${simPending.price + 1} o <kbd>Esc</kbd> per lasciarglielo.</div>`);
+  return true;
+}
+function simNext() { return simStep(true); }
+function simResolvePending() {
+  if (!simPending) return;
+  const s = simPending; simPending = null;
+  if (s.bot) doGone(s.p, s.price, s.bot);
+  else doGone(s.p, null, '');
+}
+function toggleSim(on) {
+  simMode = on ?? !simMode;
+  simPending = null;
+  try { localStorage.setItem('fantaasta_sim_on', simMode ? '1' : '0'); } catch (e) {}
+  state = loadState();
+  closeBuy(); renderAll();
+  toast(simMode ? '🤖 Simulazione attiva: prova generale, l\'asta vera non viene toccata'
+                : 'Simulazione chiusa: sei tornato all\'asta vera');
+}
+
 /* ============================== buy card ============================== */
 let buyTarget = null;
 function openBuy(p) {
@@ -737,6 +813,7 @@ function confirmBuy() {
   if (price > d.maxBid) { err.textContent = `Impossibile: puoi offrire al massimo ${d.maxBid} (devi tenere 1 credito per ogni altro slot vuoto).`; return; }
   if (!slotId) { err.textContent = 'Nessuno slot libero per questo ruolo.'; return; }
   const p = buyTarget;
+  if (simPending && simPending.p.id === p.id) simPending = null;   // battuto il bot
   closeBuy();
   doBuy(p, price, slotId);
 }
@@ -745,6 +822,7 @@ function closeBuy() {
   $('#buycard').hidden = true;
   $('#buycard').innerHTML = '';
   const q = $('#q'); q.value = ''; curResults = []; $('#results').classList.remove('open'); q.focus();
+  simResolvePending();   // in sim: se la chiamata era sul banco, il bot se lo porta via
 }
 
 /* ============================== header/meters ============================== */
@@ -1018,6 +1096,13 @@ document.addEventListener('click', e => {
 });
 
 $('#btnUndo').addEventListener('click', undo);
+$('#btnSim').addEventListener('click', () => toggleSim());
+$('#simExitBtn').addEventListener('click', () => toggleSim(false));
+$('#simNextBtn').addEventListener('click', () => simNext());
+$('#simAutoBtn').addEventListener('click', () => { for (let i = 0; i < 10; i++) if (!simStep(false)) break; });
+$('#simResetBtn').addEventListener('click', () => {
+  if (confirm('Azzerare la simulazione?')) { state = defaultState(); save(); renderAll(); toast('Simulazione azzerata'); }
+});
 $('#btnReset').addEventListener('click', () => {
   if (confirm('Azzerare TUTTA l\'asta? (acquisti, giocatori andati, budget)') && confirm('Sicuro sicuro? Non si torna indietro (hai fatto un export?)')) {
     state = defaultState(); save(); renderAll(); toast('Asta azzerata');
@@ -1074,7 +1159,11 @@ $('#setSave').addEventListener('click', () => {
 });
 
 /* ============================== boot ============================== */
-function renderAll() { renderHeader(); renderOpps(); renderAdvice(); renderTab(); }
+function renderAll() {
+  document.body.classList.toggle('sim', simMode);
+  $('#simbar').hidden = !simMode;
+  renderHeader(); renderOpps(); renderAdvice(); renderTab();
+}
 window.DATA = DATA;
 Object.defineProperty(window, 'state', {get: () => state, configurable: true});
 $('#footNote').textContent = `Listone ufficiale ${DATA.season}: ${DATA.players.length} giocatori · Rosa 3P+8D+8C+6A · I dati restano solo in questo browser (localStorage + cookie di backup). Fai un export ⬇ a fine asta.`;

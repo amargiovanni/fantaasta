@@ -14,6 +14,7 @@ window.addEventListener('load', async () => {
     const W = document.getElementById('f').contentWindow;
     const D = W.document;
     W.localStorage.clear();
+    W.document.cookie = 'fantaasta_bk=;max-age=0;path=/';
     W.location.reload();
     await sleep(700);
     const W2 = document.getElementById('f').contentWindow, D2 = W2.document;
@@ -170,6 +171,30 @@ window.addEventListener('load', async () => {
     await sleep(700);
     const D3 = document.getElementById('f').contentWindow.document;
     ok('reload: crediti ancora 938', D3.querySelector('#stCred').textContent === '938', D3.querySelector('#stCred').textContent);
+
+    // simulation mode
+    const W3 = document.getElementById('f').contentWindow, D5 = W3.document;
+    D5.querySelector('#btnSim').click();
+    await sleep(150);
+    ok('sim: banner e body.sim', !D5.querySelector('#simbar').hidden && D5.body.classList.contains('sim'));
+    ok('sim: stato pulito a 1000', D5.querySelector('#stCred').textContent === '1000', D5.querySelector('#stCred').textContent);
+    W3.simNext();
+    await sleep(120);
+    ok('sim: chiamata aperta con quota bot', !!D5.querySelector('#buycard .simline'), D5.querySelector('#buycard')?.hidden ? 'hidden' : 'no simline');
+    kbd(D5.body, 'Escape');
+    await sleep(120);
+    const simSt = JSON.parse(W3.localStorage.getItem('fantaasta_2627_sim') || '{}');
+    const lastSim = (simSt.actions || [])[(simSt.actions || []).length - 1] || {};
+    ok('sim: il bot ha comprato', lastSim.t === 'gone' && (lastSim.price ?? 0) >= 1, JSON.stringify({t:lastSim.t, p:lastSim.price, b:lastSim.buyer}));
+    D5.querySelector('#simAutoBtn').click();
+    await sleep(250);
+    ok('sim: auto x10', W3.state.actions.length >= 11, String(W3.state.actions.length));
+    const realSt = JSON.parse(W3.localStorage.getItem('fantaasta_2627_v1') || '{}');
+    ok('sim: asta vera intatta', (realSt.actions || []).length === 1, String((realSt.actions||[]).length));
+    ok('sim: cookie backup non toccato dalla sim', W3.document.cookie.includes('fantaasta_bk='));
+    D5.querySelector('#simExitBtn').click();
+    await sleep(150);
+    ok('sim: uscita ripristina asta vera', D5.querySelector('#stCred').textContent === '938', D5.querySelector('#stCred').textContent);
   } catch (e) {
     results.push('EXCEPTION ' + (e.stack || e));
   }

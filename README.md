@@ -53,6 +53,17 @@ Il cap assoluto impedisce offerte che non ti lascerebbero 1 credito per ogni slo
   titolarità + rigori/piazzati − infortuni − cartellini (fairplay) − rischio mercato.
   Colonna ordinabile nel Listone, badge `S` nella ricerca e nella scheda.
 
+## Simulatore (prova generale)
+
+Bottone **🤖** in testata: entra in modalità SIMULAZIONE — stato separato
+(`localStorage` dedicato, il cookie di backup resta dell'asta vera), banner
+arancione, si esce quando vuoi ritrovando l'asta reale intatta.
+**Prossima chiamata ▶** mette sul banco un giocatore tra i migliori rimasti: i bot
+(le tue 9 avversarie) arrivano a un prezzo ~FVM riscalato sui 10.000 crediti del
+tavolo ±25%; compri col flusso vero (prezzo + Invio) o **Esc** e se lo porta via il
+bot (registrato con prezzo e compratore: alleni anche la strip avversari).
+**×10 auto** fa scorrere dieci chiamate senza di te; **reset sim** azzera solo la prova.
+
 ## Aiuti alla decisione (in asta)
 
 - **Vs piano** in testata: quanto sei sopra/sotto il pianificato (residuo reale −
@@ -77,8 +88,8 @@ Estrae slot e wishlist da `asta.xlsx`, il listone da `listone.xlsx`, applica
 `research.json` e si rilancia il build — i dati di stato nel browser non vengono toccati.
 
 `test.html` è lo smoke test: servito via http accanto a `index.html`, esercita ricerca,
-acquisto, cap, undo, tab, persistenza, tracking avversari, walk-away e FantaScore
-(49 assert; risultati in pagina e via `fetch /__RESULTS__` nel log del server).
+acquisto, cap, undo, tab, persistenza, tracking avversari, walk-away, FantaScore e
+simulatore (57 assert; risultati in pagina e via `fetch /__RESULTS__` nel log del server).
 
 ## Fonti della ricerca (14/08/2026)
 
