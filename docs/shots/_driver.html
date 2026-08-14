@@ -35,7 +35,50 @@ f.addEventListener('load', () => {
   gone('Vlasic','Torino',41,'Bayern Leverdisagio'); gone('Ostigard','Genoa',24,'Atletico Ma Non Troppo');
   // scenario
   const q = D.querySelector('#q');
-  if (S === 'main') {
+  // --- helper per le scene "rec-*" (demo auto-recitate da registrare) ---
+  const after = (ms, fn) => setTimeout(fn, ms);
+  const kbd = (el, key, opts={}) => el.dispatchEvent(new KeyboardEvent('keydown', {key, bubbles:true, cancelable:true, ...opts}));
+  const typeIn = (el, text, step=230) => {
+    let i = 0;
+    const t = setInterval(() => {
+      el.value += text[i++];
+      el.dispatchEvent(new Event('input', {bubbles:true}));
+      if (i >= text.length) clearInterval(t);
+    }, step);
+  };
+  if (S === 'rec-main') {              // 8s: hero + ricerca che si apre da sola
+    after(1500, () => typeIn(q, 'sca'));
+  } else if (S === 'rec-buy') {        // 12s: cerca → scheda → prezzo → comprato
+    after(1000, () => typeIn(q, 'sca'));
+    after(2600, () => kbd(q, 'ArrowDown'));
+    after(3400, () => kbd(q, 'Enter'));
+    after(6500, () => typeIn(D.querySelector('#price'), '95', 260));
+    after(8200, () => kbd(D.querySelector('#price'), 'Enter'));
+  } else if (S === 'rec-gone') {       // 10s: Shift+Invio → prezzo → chi (tasto 4)
+    after(1000, () => typeIn(q, 'leao'));
+    after(2800, () => kbd(q, 'Enter', {shiftKey:true}));
+    after(4000, () => typeIn(D.querySelector('#gonePrice'), '98', 260));
+    after(5400, () => kbd(D.querySelector('#gonePrice'), 'Enter'));
+    after(6400, () => kbd(D.querySelector('#goneWho'), '4'));
+  } else if (S === 'rec-walk') {       // 8s: scheda Colombo ferma (zoom in post)
+    after(1000, () => W.openBuy(W.findPlayer('Colombo','Genoa')));
+    after(1500, () => { D.activeElement?.blur(); W.scrollTo(0, 0); });
+  } else if (S === 'rec-sim') {        // 12s: sim, 3 chiamate bot, poi una tua
+    W.toggleSim(true);
+    W.state.oppNames = ['Aston Birra','Real Divano','Longobarda','AC Picchia','Bayern Leverdisagio',
+                        'Inter Nos','Sportiva Sciarpa','Atletico Ma Non Troppo','Fanta Cugino'];
+    after(1500, () => W.simStep(false));
+    after(3200, () => W.simStep(false));
+    after(4900, () => W.simStep(false));
+    after(6600, () => W.simNext());
+    after(7100, () => { D.activeElement?.blur(); W.scrollTo(0, 0); });
+  } else if (S === 'rec-report') {     // 12s: tab report + scroll lento
+    D.querySelector('#tabs button[data-tab="report"]').click();
+    after(2500, () => {
+      const iv = setInterval(() => W.scrollBy(0, 3), 16);
+      after(7000, () => clearInterval(iv));
+    });
+  } else if (S === 'main') {
     q.value = 'sca';
     q.dispatchEvent(new Event('input', {bubbles:true}));
   } else if (S === 'buy') {
