@@ -15,7 +15,9 @@
 - [x] Simulatore d'asta ✅ (modalità 🤖: stato separato, chiamate con bot a
       FVM×scala±25%, ×10 auto, reset; 57/57 test PASS; fix harness: il test ora
       pulisce anche il cookie di backup)
-- [ ] Pipeline ricerca a un click (runbook UPDATE.md automatizzato + diff novità)
+- [x] Pipeline ricerca a un click ✅ (`/aggiorna-ricerca` + `update.py`:
+      snapshot/diff novità/build gate su `!!`/smoke test integrato — collaudati
+      diff simulato e --test 57/57)
 - [ ] UX contorno: vista secondo schermo, report post-asta
 - [ ] Il giorno dell'asta: rilanciare ricerca (probabili vere 19-21/8) — dossier:
       Vicario-Juve, Leao, Pinamonti/Bowie, Badiashile, Lucumì, rigori Cagliari,

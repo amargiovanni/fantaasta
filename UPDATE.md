@@ -24,7 +24,12 @@ Le quotazioni ufficiali cambiano fino all'ultimo (nuovi acquisti, ceduti, cambi 
 
 ## 2 · Ricerca fresca (15-20 min, la fa Claude)
 
-Apri Claude Code nella cartella e incolla questo prompt:
+Apri Claude Code nella cartella e digita **`/aggiorna-ricerca`** — fa tutto da solo:
+snapshot, 7 agenti paralleli, sintesi in `research.json`, build con **diff delle
+novità** e smoke test (`update.py`). Argomenti opzionali per restringere, es.
+`/aggiorna-ricerca solo infortuni e porte`.
+
+In alternativa (manuale), incolla questo prompt:
 
 > Rifai la ricerca pre-asta di UPDATE.md: lancia agenti paralleli su fantacalcio.it,
 > SOS Fanta, FantaMaster, Goal, Calciodangolo, Sky e TMW con le notizie di OGGI e
@@ -48,26 +53,27 @@ Apri Claude Code nella cartella e incolla questo prompt:
       `{"op":"update","role":"A","slot":"A3","name":"Simeone","maxprice":70}`
       (op: `update` / `add` / `remove`). Oppure chiedi a Claude in italiano.
 
-## 4 · Build (1 min)
+## 4 · Build + diff (1 min)
 
 ```bash
-cd ~/dev/fantaasta && python3 build.py
+cd ~/dev/fantaasta && python3 update.py
 ```
 
-- [ ] Output atteso: `index.html written: … KB, ~500 players, N alerts, N sleepers`.
-- [ ] **Zero righe `!!`** (op saltate / nomi non trovati). Se compaiono, il nome nella
-      op non matcha il listone nuovo: correggilo e rilancia.
+- [ ] Output atteso: `index.html written: …` + sezione `=== NOVITÀ ===` col diff
+      rispetto allo snapshot (alert nuovi/cambiati/rimossi, rigoristi, sleeper).
+- [ ] **Zero righe `!!`** (lo script esce con errore se ce ne sono: il nome nella op
+      non matcha il listone — correggilo e rilancia).
+- [ ] (`python3 build.py` resta il build "nudo" senza diff.)
 
-## 5 · Smoke test (3 min)
+## 5 · Smoke test (1 min)
 
 ```bash
-python3 -m http.server 8642
+python3 update.py --test
 ```
 
-- [ ] Apri `http://localhost:8642/test.html`: in fondo alla pagina devono esserci
-      **57 PASS e nessun FAIL** (⚠ il test azzera lo stato salvato nel browser in cui
-      lo apri: usa una finestra in incognito, oppure fallo PRIMA del punto 6).
-- [ ] Chiudi il server (Ctrl+C).
+- [ ] Apre `test.html` nel browser e attende i risultati: **57 PASS e nessun FAIL**
+      (⚠ il test azzera lo stato salvato nel browser in cui gira: usa una finestra
+      in incognito, oppure fallo PRIMA del punto 6).
 
 ## 6 · Preparazione del browser dell'asta (5 min)
 
