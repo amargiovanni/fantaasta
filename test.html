@@ -1,0 +1,130 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>fantaasta smoke test</title>
+<iframe id="f" src="index.html" style="width:1400px;height:900px"></iframe>
+<pre id="out">PENDING</pre>
+<script>
+const results = [];
+const ok = (name, cond, extra='') => results.push(`${cond ? 'PASS' : 'FAIL'} ${name}${extra ? ' — ' + extra : ''}`);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const kbd = (el, key, opts={}) => el.dispatchEvent(new KeyboardEvent('keydown', {key, bubbles:true, cancelable:true, ...opts}));
+
+window.addEventListener('load', async () => {
+  try {
+    const W = document.getElementById('f').contentWindow;
+    const D = W.document;
+    W.localStorage.clear();
+    W.location.reload();
+    await sleep(700);
+    const W2 = document.getElementById('f').contentWindow, D2 = W2.document;
+    const $ = s => D2.querySelector(s);
+
+    ok('boot: crediti 1000', $('#stCred').textContent === '1000', $('#stCred').textContent);
+    ok('boot: slot 25', $('#stSlots').textContent === '25');
+    ok('boot: meters 4', D2.querySelectorAll('.meter').length === 4);
+    ok('boot: rosa tab con 25 righe slot', D2.querySelectorAll('#tabbody tbody tr').length === 25);
+    ok('boot: advice presente', D2.querySelectorAll('#advice .chip').length >= 10, String(D2.querySelectorAll('#advice .chip').length));
+
+    // search
+    const q = $('#q');
+    q.value = 'svil'; q.dispatchEvent(new Event('input', {bubbles:true}));
+    await sleep(100);
+    ok('search: risultati aperti', $('#results').classList.contains('open'));
+    ok('search: Svilar primo', $('#results .res .nm')?.textContent === 'Svilar', $('#results .res .nm')?.textContent);
+    ok('search: badge wishlist con max', /P1 #1.*max 65/.test($('#results .res .wish')?.textContent || ''), $('#results .res .wish')?.textContent);
+
+    // buy flow: Enter -> price -> Enter
+    kbd(q, 'Enter');
+    await sleep(100);
+    ok('buy: card aperta', !$('#buycard').hidden);
+    ok('buy: prezzo autofocus', D2.activeElement === $('#price'), D2.activeElement?.id);
+    ok('buy: cap assoluto 976', $('#buycard').textContent.includes('976'));
+    $('#price').value = '62';
+    kbd($('#price'), 'Enter');
+    await sleep(150);
+    ok('buy: crediti 938', $('#stCred').textContent === '938', $('#stCred').textContent);
+    ok('buy: card chiusa e focus su search', $('#buycard').hidden && D2.activeElement === q);
+    ok('buy: rosa 1/25', $('#cntRosa').textContent === '1/25', $('#cntRosa').textContent);
+
+    // dynamic budget + plan delta
+    const dv = W2.derive();
+    ok('plan: indicatore vs piano', /^[+\-−]?\d+$/.test($('#stPlan').textContent.trim()), $('#stPlan').textContent);
+    ok('plan: factor = residuo/pianificato', Math.abs(dv.factor - dv.left / dv.emptyPlanSum) < 1e-9, String(dv.factor));
+    ok('plan: delta = residuo - pianificato', dv.planDelta === dv.left - dv.emptyPlanSum, String(dv.planDelta));
+
+    // scarcity helper excludes bought players
+    ok('scarsità: P1 esclude Svilar', !W2.slotAvailable('P1', dv).some(x => x.p.name === 'Svilar'));
+
+    // csv export
+    const csv = W2.buildCsv();
+    ok('csv: header', csv.split('\r\n')[0] === 'slot;ruolo;nome;squadra;prezzo', csv.split('\r\n')[0]);
+    ok('csv: 26 righe (header + 25 slot)', csv.split('\r\n').length === 26, String(csv.split('\r\n').length));
+    ok('csv: Svilar a 62', /;Svilar;[^;]*;62/.test(csv));
+
+    // buy card: "Se lo perdi" + tetto slot (open first advice chip)
+    D2.querySelector('#advice .chip').click();
+    await sleep(120);
+    const altsTxt = $('#bcalts')?.textContent || '';
+    ok('alts: sezione presente', /Se lo perdi|Ultimo della lista/.test(altsTxt), altsTxt.slice(0, 50));
+    ok('alts: tetto slot valorizzato', /\d/.test($('#capSlot')?.textContent || ''), $('#capSlot')?.textContent);
+    kbd(D2.body, 'Escape');
+    await sleep(80);
+
+    // buy same player again should show "già tuo"
+    q.value = 'svilar'; q.dispatchEvent(new Event('input', {bubbles:true}));
+    await sleep(80);
+    ok('search: tag mio su Svilar', /mio · 62/.test($('#results')?.textContent || ''));
+
+    // gone flow: Shift+Enter
+    q.value = 'butez'; q.dispatchEvent(new Event('input', {bubbles:true}));
+    await sleep(80);
+    kbd(q, 'Enter', {shiftKey:true});
+    await sleep(120);
+    q.value = 'butez'; q.dispatchEvent(new Event('input', {bubbles:true}));
+    await sleep(80);
+    ok('gone: tag andato su Butez', /andato/.test($('#results')?.textContent || ''));
+
+    // price cap enforcement: try to buy Martinez L. for 999
+    q.value = 'martinez l'; q.dispatchEvent(new Event('input', {bubbles:true}));
+    await sleep(80);
+    kbd(q, 'Enter');
+    await sleep(80);
+    $('#price').value = '999';
+    kbd($('#price'), 'Enter');
+    await sleep(80);
+    ok('cap: acquisto oltre cap bloccato', $('#buyerr').textContent.includes('al massimo'), $('#buyerr').textContent.slice(0,60));
+    kbd($('#price'), 'Escape');
+    await sleep(80);
+
+    // persistence
+    const st = JSON.parse(W2.localStorage.getItem('fantaasta_2627_v1') || '{}');
+    ok('persist: 2 azioni in localStorage', (st.actions || []).length === 2, String((st.actions||[]).length));
+    ok('persist: cookie backup scritto', W2.document.cookie.includes('fantaasta_bk='));
+
+    // undo
+    kbd(D2.body, 'z', {ctrlKey:true});
+    await sleep(100);
+    const st2 = JSON.parse(W2.localStorage.getItem('fantaasta_2627_v1') || '{}');
+    ok('undo: 1 azione dopo ctrl+z', (st2.actions || []).length === 1, String((st2.actions||[]).length));
+
+    // tabs
+    for (const [tab, probe] of [['liste', '.wl-slot'], ['listone', '#lrows tr'], ['log', '.logrow'], ['news', '.alert-item']]) {
+      D2.querySelector(`#tabs button[data-tab="${tab}"]`).click();
+      await sleep(120);
+      ok(`tab ${tab}: contenuto`, D2.querySelectorAll(`#tabbody ${probe}`).length > 0, String(D2.querySelectorAll(`#tabbody ${probe}`).length));
+    }
+    // news: rigoristi table has 20 teams
+    ok('news: rigoristi 20 squadre', D2.querySelectorAll('#tabbody .newsblock table tbody tr').length === 20, String(D2.querySelectorAll('#tabbody .newsblock table tbody tr').length));
+
+    // reload persistence
+    W2.location.reload();
+    await sleep(700);
+    const D3 = document.getElementById('f').contentWindow.document;
+    ok('reload: crediti ancora 938', D3.querySelector('#stCred').textContent === '938', D3.querySelector('#stCred').textContent);
+  } catch (e) {
+    results.push('EXCEPTION ' + (e.stack || e));
+  }
+  document.getElementById('out').textContent = 'TESTRESULTS\n' + results.join('\n') + '\nDONE';
+  try { await fetch('/__RESULTS__?' + encodeURIComponent(results.join('|'))); } catch (e) {}
+});
+</script>

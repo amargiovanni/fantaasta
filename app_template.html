@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FantaAsta 2026-27 · Sala d'asta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=Spline+Sans+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c1210; --panel:#131c18; --panel2:#0f1613; --raise:#182420;
+  --line:#233129; --line2:#2e4136;
+  --ink:#eaf1ec; --mut:#8fa39a; --faint:#5d6f66;
+  --volt:#c6f14d; --volt-ink:#16200a; --gold:#ecc65c;
+  --warn:#f5a524; --bad:#ff5d5d; --ok:#43cf8e;
+  --rP:#f2a33c; --rD:#43cf8e; --rC:#5aabff; --rA:#ff6363;
+  --radius:10px;
+  --num:'Spline Sans Mono',ui-monospace,'SF Mono',monospace;
+  --cond:'Barlow Condensed','Arial Narrow',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scrollbar-color:#2e4136 #0c1210}
+body{
+  background:
+    radial-gradient(1200px 500px at 50% -180px, rgba(198,241,77,.07), transparent 60%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.011) 0 90px, transparent 90px 180px),
+    var(--bg);
+  color:var(--ink);
+  font:15px/1.45 Barlow,system-ui,sans-serif;
+  min-height:100vh;
+}
+b,strong{font-weight:600}
+button{font:inherit;cursor:pointer;border:1px solid var(--line2);background:var(--raise);color:var(--ink);border-radius:8px;padding:6px 12px;transition:.15s}
+button:hover{border-color:var(--volt);color:var(--volt)}
+button.primary{background:var(--volt);border-color:var(--volt);color:var(--volt-ink);font-weight:700}
+button.primary:hover{filter:brightness(1.1);color:var(--volt-ink)}
+button.ghost{background:transparent}
+button.danger:hover{border-color:var(--bad);color:var(--bad)}
+input,select{font:inherit;background:var(--panel2);border:1px solid var(--line2);color:var(--ink);border-radius:8px;padding:7px 10px;outline:none}
+input:focus,select:focus{border-color:var(--volt)}
+::placeholder{color:var(--faint)}
+h2{font-family:var(--cond);text-transform:uppercase;letter-spacing:.08em;font-size:15px;font-weight:600;color:var(--mut)}
+
+/* ---------- header scoreboard ---------- */
+header{
+  position:sticky;top:0;z-index:50;
+  background:linear-gradient(180deg,#0e1512 0%,rgba(14,21,18,.94) 100%);
+  border-bottom:1px solid var(--line);
+  backdrop-filter:blur(8px);
+  padding:10px 22px;
+  display:flex;align-items:center;gap:26px;flex-wrap:wrap;
+}
+.brand{font-family:var(--cond);font-weight:700;font-size:26px;letter-spacing:.04em;text-transform:uppercase}
+.brand em{font-style:normal;color:var(--volt)}
+.brand small{display:block;font-size:11px;letter-spacing:.28em;color:var(--mut);font-weight:500}
+.score{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.stat{min-width:64px}
+.stat label{display:block;font-family:var(--cond);text-transform:uppercase;letter-spacing:.14em;font-size:10.5px;color:var(--mut)}
+.stat b{font-family:var(--num);font-size:22px;font-weight:700;letter-spacing:-.02em}
+.stat.hero b{font-size:34px;color:var(--gold);text-shadow:0 0 24px rgba(236,198,92,.35)}
+.stat b.flash{animation:flash .6s}
+@keyframes flash{0%{color:var(--volt)}100%{}}
+.meters{display:grid;grid-template-columns:repeat(4,minmax(90px,120px));gap:6px 14px;margin-left:8px}
+.meter{font-size:11px}
+.meter .mrow{display:flex;justify-content:space-between;color:var(--mut);font-family:var(--num);font-size:10.5px}
+.meter .mrow b:first-child{color:var(--ink)}
+.meter .bar{height:5px;border-radius:3px;background:var(--line);margin-top:3px;overflow:hidden}
+.meter .bar i{display:block;height:100%;border-radius:3px;transition:width .3s}
+.meter.over .bar i{background:var(--warn)!important}
+.meter.over .mrow{color:var(--warn)}
+.hactions{margin-left:auto;display:flex;gap:8px;align-items:center}
+.hactions button{padding:5px 10px;font-size:13px}
+
+/* ---------- layout ---------- */
+main{max-width:1560px;margin:18px auto;padding:0 22px;display:grid;grid-template-columns:minmax(400px,4.4fr) 7fr;gap:20px;align-items:start}
+@media(max-width:1080px){main{grid-template-columns:1fr}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius)}
+
+/* ---------- search ---------- */
+.searchbox{position:relative}
+#q{
+  width:100%;padding:15px 18px;font-size:19px;border-radius:12px;
+  background:var(--panel);border:1px solid var(--line2);
+  box-shadow:0 8px 30px rgba(0,0,0,.35);
+}
+#q:focus{border-color:var(--volt);box-shadow:0 0 0 3px rgba(198,241,77,.14),0 8px 30px rgba(0,0,0,.35)}
+.hint{margin:7px 4px 0;font-size:12px;color:var(--faint)}
+.hint kbd{background:var(--raise);border:1px solid var(--line2);border-radius:4px;padding:0 5px;font-family:var(--num);font-size:11px;color:var(--mut)}
+#results{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:40;background:var(--panel);border:1px solid var(--line2);border-radius:12px;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.55);display:none}
+#results.open{display:block}
+.res{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--line);cursor:pointer}
+.res:last-child{border-bottom:0}
+.res.sel{background:rgba(198,241,77,.09)}
+.res .nm{font-weight:600;font-size:15.5px;white-space:nowrap}
+.res .tm{color:var(--mut);font-size:13px}
+.res .fig{margin-left:auto;font-family:var(--num);font-size:12px;color:var(--mut);white-space:nowrap}
+.res.dead .nm,.res.dead .tm{text-decoration:line-through;color:var(--faint)}
+.res .why{font-size:11.5px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
+.rb{font-family:var(--cond);font-weight:700;font-size:12px;width:22px;height:22px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;flex:none;color:#10150d}
+.rb.P{background:var(--rP)}.rb.D{background:var(--rD)}.rb.C{background:var(--rC)}.rb.A{background:var(--rA)}
+.wish{font-family:var(--num);font-size:11px;background:rgba(198,241,77,.13);color:var(--volt);border:1px solid rgba(198,241,77,.3);border-radius:5px;padding:1px 6px;white-space:nowrap}
+.sleep{font-family:var(--num);font-size:11px;background:rgba(90,171,255,.12);color:var(--rC);border:1px solid rgba(90,171,255,.3);border-radius:5px;padding:1px 6px;white-space:nowrap}
+.tag{font-family:var(--cond);text-transform:uppercase;font-size:10.5px;letter-spacing:.08em;border-radius:5px;padding:1px 7px}
+.tag.mine{background:rgba(67,207,142,.15);color:var(--ok);border:1px solid rgba(67,207,142,.4)}
+.tag.gone{background:rgba(255,93,93,.12);color:var(--bad);border:1px solid rgba(255,93,93,.35)}
+.adot{width:8px;height:8px;border-radius:50%;background:var(--warn);flex:none;box-shadow:0 0 8px var(--warn)}
+
+/* ---------- buy card ---------- */
+#buycard{margin-top:14px;padding:16px 18px;border-color:var(--line2);box-shadow:0 14px 40px rgba(0,0,0,.4);animation:pop .18s}
+@keyframes pop{from{transform:translateY(-6px);opacity:0}}
+#buycard .bctop{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+#buycard .bcname{font-family:var(--cond);font-size:30px;font-weight:700;letter-spacing:.01em}
+#buycard .bcteam{color:var(--mut)}
+#buycard .figs{margin-left:auto;font-family:var(--num);font-size:13px;color:var(--mut)}
+.bcwish{margin:10px 0 4px;display:flex;flex-direction:column;gap:5px}
+.bcwish .wrow{font-size:13.5px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.bcwish .wrow .pos{font-family:var(--num);color:var(--volt);font-size:12.5px;white-space:nowrap}
+.bcwish .wrow .nt{color:var(--mut);font-size:12.5px}
+.bcalert{margin-top:8px;font-size:13px;color:var(--warn);display:flex;gap:8px;align-items:baseline}
+.bcrig{margin-top:8px;font-size:12.5px;color:var(--mut)}
+.caps{display:flex;gap:10px;margin:12px 0;flex-wrap:wrap}
+.cap{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 12px;min-width:96px}
+.cap label{display:block;font-family:var(--cond);text-transform:uppercase;font-size:10px;letter-spacing:.12em;color:var(--faint)}
+.cap b{font-family:var(--num);font-size:19px}
+.cap.main b{color:var(--volt)}
+.bcalts{margin:2px 0 10px}
+.bcalts .altshead{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;font-size:11px;color:var(--faint);margin-bottom:3px}
+.bcalts .altrow{display:flex;gap:8px;align-items:baseline;font-size:13px;padding:2px 0}
+.bcalts .pr{font-family:var(--num);color:var(--faint);font-size:11px}
+.bcalts .tm{color:var(--mut);font-size:12.5px}
+.bcalts .mx{font-family:var(--num);color:var(--gold);font-size:12px}
+.buyrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:6px}
+#price{width:130px;font-family:var(--num);font-size:24px;font-weight:700;padding:8px 12px;text-align:center}
+#slotSel{max-width:230px}
+.buyerr{color:var(--bad);font-size:13px;margin-top:8px;min-height:18px}
+
+/* ---------- advice ---------- */
+.advice{margin-top:16px;padding:14px 16px}
+.advice h2{margin-bottom:10px}
+.adv-role{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:7px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:4px 10px;cursor:pointer;font-size:13.5px}
+.chip:hover{border-color:var(--volt)}
+.chip .px{font-family:var(--num);color:var(--gold);font-size:12px}
+.chip .sl{font-family:var(--num);color:var(--faint);font-size:11px}
+.chip .sc{font-family:var(--num);font-size:10.5px;color:var(--warn)}
+.chip.scarce{border-color:rgba(245,165,36,.55)}
+.chip.last{border-color:rgba(255,93,93,.6)}
+.chip.last .sc{color:var(--bad)}
+.scbadge{font-family:var(--num);font-size:10.5px;color:var(--warn);border:1px solid rgba(245,165,36,.4);border-radius:4px;padding:0 5px;margin-left:6px;white-space:nowrap}
+.scbadge.last{color:var(--bad);border-color:rgba(255,93,93,.45)}
+.adjup{color:var(--ok);font-weight:600}
+.adjdown{color:var(--warn);font-weight:600}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;gap:4px;padding:8px 10px;border-bottom:1px solid var(--line);position:sticky;top:74px;background:var(--panel);z-index:30;border-radius:var(--radius) var(--radius) 0 0;flex-wrap:wrap}
+.tabs button{border:0;background:transparent;color:var(--mut);font-family:var(--cond);text-transform:uppercase;letter-spacing:.08em;font-size:14.5px;font-weight:600;padding:7px 14px;border-radius:7px}
+.tabs button.on{background:var(--raise);color:var(--volt)}
+.tabs .cnt{font-family:var(--num);font-size:11px;opacity:.8}
+.tabbody{padding:14px 16px;min-height:300px}
+
+/* rosa */
+.rgroup{margin-bottom:18px}
+.rghead{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+.rghead h3{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;font-size:16px}
+.rghead .rgfig{font-family:var(--num);font-size:12px;color:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{font-family:var(--cond);text-transform:uppercase;letter-spacing:.09em;font-size:11px;color:var(--faint);text-align:left;padding:4px 8px;border-bottom:1px solid var(--line)}
+td{padding:6px 8px;border-bottom:1px solid var(--line)}
+tr:hover td{background:rgba(255,255,255,.02)}
+td.num,th.num{text-align:right;font-family:var(--num);font-size:13px}
+.slotid{font-family:var(--num);color:var(--faint);font-size:12px}
+.owned{color:var(--ok);font-weight:600}
+.emptyslot{color:var(--faint)}
+.nexthint{color:var(--mut);font-size:12.5px}
+.nexthint b{color:var(--ink);font-weight:500}
+.xbtn{border:0;background:none;color:var(--faint);padding:2px 6px;font-size:14px}
+.xbtn:hover{color:var(--bad)}
+
+/* liste */
+.wl-slot{margin-bottom:16px}
+.wl-slot>header{position:static;display:flex;gap:10px;align-items:baseline;background:none;border:0;padding:4px 0;backdrop-filter:none}
+.wl-slot h3{font-family:var(--cond);font-size:16px;text-transform:uppercase;letter-spacing:.06em}
+.wl-slot .wsb{font-family:var(--num);color:var(--gold);font-size:12px}
+.wl-list{list-style:none}
+.wl-list li{display:flex;gap:9px;align-items:baseline;padding:5px 6px;border-bottom:1px dashed var(--line);cursor:pointer;flex-wrap:wrap}
+.wl-list li:hover{background:rgba(255,255,255,.025)}
+.wl-list .pr{font-family:var(--num);color:var(--faint);font-size:12px;width:18px;flex:none}
+.wl-list .nm{font-weight:600}
+.wl-list .tm,.wl-list .ti{color:var(--mut);font-size:12.5px}
+.wl-list .mx{margin-left:auto;font-family:var(--num);color:var(--gold);font-size:12.5px;white-space:nowrap}
+.wl-list li.dead .nm,.wl-list li.dead .tm{text-decoration:line-through;color:var(--faint)}
+.wl-list li.mine .nm{color:var(--ok)}
+.wl-list .note{flex-basis:100%;font-size:12px;color:var(--faint);padding-left:27px}
+.rig-yes{color:var(--gold);font-size:12px}
+.filters{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.fchip{border-radius:20px;padding:4px 14px;font-family:var(--cond);text-transform:uppercase;letter-spacing:.06em;font-size:13px}
+.fchip.on{background:var(--volt);color:var(--volt-ink);border-color:var(--volt);font-weight:700}
+
+/* log */
+.logrow{display:flex;gap:10px;align-items:center;padding:7px 4px;border-bottom:1px solid var(--line);font-size:14px;flex-wrap:wrap}
+.logrow .lt{font-family:var(--num);color:var(--faint);font-size:11px;width:44px}
+.logrow input{padding:3px 8px;font-family:var(--num);font-size:13px}
+.logrow input.pz{width:70px}
+.logrow input.by{width:130px}
+
+/* news */
+.newsblock{margin-bottom:20px}
+.alert-item{display:flex;gap:9px;padding:7px 4px;border-bottom:1px dashed var(--line);font-size:13.5px;align-items:baseline}
+.alert-item .at{font-family:var(--cond);text-transform:uppercase;font-size:10.5px;letter-spacing:.08em;border-radius:4px;padding:1px 7px;flex:none}
+.at.infortunio{background:rgba(255,93,93,.14);color:var(--bad)}
+.at.mercato{background:rgba(90,171,255,.14);color:var(--rC)}
+.at.ballottaggio{background:rgba(245,165,36,.14);color:var(--warn)}
+.at.ok{background:rgba(67,207,142,.14);color:var(--ok)}
+.at.squalifica{background:rgba(255,93,93,.14);color:var(--bad)}
+.srcs{font-size:12px;color:var(--faint);line-height:1.8}
+
+/* toast */
+#toasts{position:fixed;left:20px;bottom:20px;z-index:100;display:flex;flex-direction:column;gap:8px}
+.toast{background:var(--raise);border:1px solid var(--line2);border-left:3px solid var(--volt);border-radius:8px;padding:10px 16px;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.5);animation:pop .2s}
+.toast.err{border-left-color:var(--bad)}
+.toast.warn{border-left-color:var(--warn)}
+
+/* dialog */
+dialog{background:var(--panel);color:var(--ink);border:1px solid var(--line2);border-radius:12px;padding:20px 22px;min-width:320px}
+dialog::backdrop{background:rgba(5,8,7,.7)}
+dialog h2{margin-bottom:14px;color:var(--ink)}
+.setrow{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.setrow label{width:150px;color:var(--mut);font-size:14px}
+.setrow input{width:90px;font-family:var(--num)}
+.dlgbtns{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
+.footer-note{max-width:1560px;margin:8px auto 30px;padding:0 22px;color:var(--faint);font-size:12px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">Fanta<em>·</em>Asta <small>Serie A 2026–27 · Classic</small></div>
+  <div class="score">
+    <div class="stat hero"><label>Crediti rimasti</label><b id="stCred">–</b></div>
+    <div class="stat"><label>Speso</label><b id="stSpent">–</b></div>
+    <div class="stat"><label>Slot liberi</label><b id="stSlots">–</b></div>
+    <div class="stat"><label>Media / slot</label><b id="stAvg">–</b></div>
+    <div class="stat"><label>Max singolo</label><b id="stCap">–</b></div>
+    <div class="stat" title="Residuo reale meno somma dei budget pianificati degli slot vuoti"><label>Vs piano</label><b id="stPlan">–</b></div>
+    <div class="meters" id="meters"></div>
+  </div>
+  <div class="hactions">
+    <button id="btnUndo" title="Annulla ultima operazione (Ctrl+Z)">↩ Undo</button>
+    <button id="btnSet" title="Budget e impostazioni">⚙</button>
+    <button id="btnExp" title="Scarica backup JSON">⬇</button>
+    <button id="btnImp" title="Ripristina da backup">⬆</button>
+    <button id="btnCsv" title="Scarica la rosa in CSV (Excel)">CSV</button>
+    <button id="btnReset" class="danger" title="Azzera l'asta">✕</button>
+    <input type="file" id="impFile" accept=".json" hidden>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="searchbox">
+      <input id="q" placeholder="Digita un nome o una squadra…" autocomplete="off" spellcheck="false" autofocus>
+      <div id="results"></div>
+    </div>
+    <div class="hint"><kbd>↑↓</kbd> scegli · <kbd>Invio</kbd> l'ho comprato · <kbd>Shift+Invio</kbd> preso da altri · <kbd>Esc</kbd> pulisci · <kbd>Ctrl+Z</kbd> undo</div>
+
+    <div id="buycard" class="panel" hidden></div>
+
+    <div class="advice panel">
+      <h2>Prossimi obiettivi <span style="font-weight:400;text-transform:none;letter-spacing:0">(primo nome libero per ogni slot vuoto)</span></h2>
+      <div id="advice"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <nav class="tabs" id="tabs">
+      <button data-tab="rosa" class="on">Rosa <span class="cnt" id="cntRosa"></span></button>
+      <button data-tab="liste">Liste</button>
+      <button data-tab="listone">Listone</button>
+      <button data-tab="log">Log <span class="cnt" id="cntLog"></span></button>
+      <button data-tab="news">News &amp; Rigoristi</button>
+    </nav>
+    <div class="tabbody" id="tabbody"></div>
+  </section>
+</main>
+
+<p class="footer-note" id="footNote"></p>
+
+<div id="toasts"></div>
+
+<dialog id="dlgSet">
+  <h2>Impostazioni budget</h2>
+  <div class="setrow"><label>Budget totale</label><input type="number" id="setBudget" min="1"></div>
+  <div class="setrow"><label>Budget Portieri</label><input type="number" id="setP" min="0"></div>
+  <div class="setrow"><label>Budget Difensori</label><input type="number" id="setD" min="0"></div>
+  <div class="setrow"><label>Budget Centrocampisti</label><input type="number" id="setC" min="0"></div>
+  <div class="setrow"><label>Budget Attaccanti</label><input type="number" id="setA" min="0"></div>
+  <div class="dlgbtns"><button id="setCancel">Annulla</button><button id="setSave" class="primary">Salva</button></div>
+</dialog>
+
+<script>
+'use strict';
+const DATA = /*__DATA__*/null;
+
+/* ============================== utils ============================== */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const norm = s => (s ?? '').toString().normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
+const ROLES = ['P','D','C','A'];
+const ROLENAME = {P:'Portieri', D:'Difensori', C:'Centrocampisti', A:'Attaccanti'};
+
+/* ============================== indexes ============================== */
+const byId = new Map(DATA.players.map(p => [p.id, p]));
+const byNorm = new Map();           // norm name -> [player]
+for (const p of DATA.players) {
+  p._n = norm(p.name); p._t = norm(p.team);
+  if (!byNorm.has(p._n)) byNorm.set(p._n, []);
+  byNorm.get(p._n).push(p);
+}
+function findPlayer(name, team) {
+  const cands = byNorm.get(norm(name)) || [];
+  if (cands.length === 1) return cands[0];
+  if (team) { const hit = cands.find(p => p._t === norm(team)); if (hit) return hit; }
+  return cands[0] || null;
+}
+const slotById = new Map(DATA.slots.map(s => [s.id, s]));
+// wishlist index: pid -> [{role, slot, prio, maxprice, ...}]  ·  slot id -> group
+const wishByPid = new Map();
+const wishBySlot = new Map();
+for (const role of ROLES) {
+  for (const grp of (DATA.wishlist[role] || [])) {
+    wishBySlot.set(grp.slot, {role, ...grp});
+    grp.players.forEach(w => {
+      const p = findPlayer(w.name, w.team);
+      if (!p) return;
+      if (!wishByPid.has(p.id)) wishByPid.set(p.id, []);
+      wishByPid.get(p.id).push({role, slot: grp.slot, profile: grp.profile, slotBudget: grp.budget, ...w});
+    });
+  }
+}
+// sleepers index
+const sleepByPid = new Map();
+for (const role of Object.keys(DATA.sleepers || {})) {
+  for (const s of DATA.sleepers[role]) {
+    const p = findPlayer(s.name, s.team);
+    if (!p) continue;
+    if (!sleepByPid.has(p.id)) sleepByPid.set(p.id, []);
+    sleepByPid.get(p.id).push(s);
+  }
+}
+// alerts index
+const alertByPid = new Map();
+for (const a of (DATA.alerts || [])) {
+  const p = findPlayer(a.name, a.team);
+  if (!p) continue;
+  if (!alertByPid.has(p.id)) alertByPid.set(p.id, []);
+  alertByPid.get(p.id).push(a);
+}
+
+/* ============================== state ============================== */
+const LS_KEY = 'fantaasta_2627_v1';
+let state = loadState();
+function defaultState() {
+  return { budget: DATA.budget, roleBudget: {...DATA.roleBudget}, actions: [] };
+}
+function loadState() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (raw) return {...defaultState(), ...JSON.parse(raw)};
+  } catch (e) {}
+  try {
+    const m = document.cookie.match(/(?:^|;\s*)fantaasta_bk=([^;]+)/);
+    if (m) {
+      const st = {...defaultState(), ...JSON.parse(decodeURIComponent(m[1]))};
+      toast('Stato ripristinato dal cookie di backup', 'warn');
+      return st;
+    }
+  } catch (e) {}
+  return defaultState();
+}
+function save() {
+  const raw = JSON.stringify(state);
+  try { localStorage.setItem(LS_KEY, raw); } catch (e) {}
+  // cookie backup (4KB limit): full state, else buys only
+  let ck = raw;
+  if (encodeURIComponent(ck).length > 3800) {
+    ck = JSON.stringify({...state, actions: state.actions.filter(a => a.t === 'buy')});
+  }
+  if (encodeURIComponent(ck).length <= 3900) {
+    document.cookie = 'fantaasta_bk=' + encodeURIComponent(ck) + ';max-age=7776000;path=/;SameSite=Lax';
+  }
+}
+
+/* derived view of state */
+function derive() {
+  const mine = state.actions.filter(a => a.t === 'buy');
+  const gone = state.actions.filter(a => a.t === 'gone');
+  const minePid = new Map(mine.map(a => [a.pid, a]));
+  const gonePid = new Map(gone.map(a => [a.pid, a]));
+  const spent = mine.reduce((s,a) => s + a.price, 0);
+  const spentRole = {P:0,D:0,C:0,A:0};
+  const cntRole = {P:0,D:0,C:0,A:0};
+  const slotFill = new Map();
+  for (const a of mine) { spentRole[a.role] += a.price; cntRole[a.role]++; if (a.slot) slotFill.set(a.slot, a); }
+  const totSlots = ROLES.reduce((s,r) => s + DATA.roleSlots[r], 0);
+  const left = state.budget - spent;
+  const slotsLeft = totSlots - mine.length;
+  // dynamic budget: spread surplus/deficit over empty slots, proportional to their planned budget
+  const emptyPlanSum = DATA.slots.reduce((s,x) => s + (slotFill.has(x.id) ? 0 : x.budget), 0);
+  const factor = emptyPlanSum > 0 ? left / emptyPlanSum : 0;
+  return {mine, gone, minePid, gonePid, spent, spentRole, cntRole, slotFill, left, slotsLeft,
+          emptyPlanSum, factor, planDelta: left - emptyPlanSum,
+          adjBudget: id => { const s = slotById.get(id); return s ? Math.round(s.budget * factor) : 0; },
+          maxBid: Math.max(0, left - Math.max(0, slotsLeft - 1)),
+          avg: slotsLeft ? Math.floor(left / slotsLeft) : 0};
+}
+function freeSlots(role) {
+  const d = derive();
+  return DATA.slots.filter(s => s.role === role && !d.slotFill.has(s.id));
+}
+// wishlist entries of a slot still on the board (not mine, not gone) as {w, p}
+function slotAvailable(slotId, d) {
+  const grp = wishBySlot.get(slotId);
+  if (!grp) return [];
+  return grp.players.map(w => ({w, p: findPlayer(w.name, w.team)}))
+    .filter(x => x.p && !d.minePid.has(x.p.id) && !d.gonePid.has(x.p.id));
+}
+
+/* ============================== actions ============================== */
+function doBuy(p, price, slotId) {
+  state.actions.push({t:'buy', pid:p.id, name:p.name, role:p.r, team:p.team, slot:slotId, price, ts:Date.now()});
+  save(); renderAll();
+  const d = derive();
+  toast(`✅ <b>${esc(p.name)}</b> → ${slotId} a <b>${price}</b> · restano ${d.left} crediti`);
+  $('#stCred').classList.add('flash'); setTimeout(()=>$('#stCred').classList.remove('flash'), 600);
+}
+function doGone(p, price=null, buyer='') {
+  state.actions.push({t:'gone', pid:p.id, name:p.name, role:p.r, team:p.team, price, buyer, ts:Date.now()});
+  save(); renderAll();
+  toast(`⛔ <b>${esc(p.name)}</b> segnato come preso da altri`, 'warn');
+}
+function undo() {
+  const a = state.actions.pop();
+  if (!a) { toast('Niente da annullare', 'warn'); return; }
+  save(); renderAll();
+  toast(`↩ Annullato: ${a.t === 'buy' ? 'acquisto di' : 'segnalazione su'} <b>${esc(a.name)}</b>`);
+}
+function removeAction(idx) {
+  const a = state.actions.splice(idx, 1)[0];
+  save(); renderAll();
+  if (a) toast(`🗑 Rimosso ${esc(a.name)} dal log`);
+}
+
+/* ============================== toast ============================== */
+function toast(html, kind='') {
+  const el = document.createElement('div');
+  el.className = 'toast ' + kind;
+  el.innerHTML = html;
+  $('#toasts').appendChild(el);
+  setTimeout(() => { el.style.transition = 'opacity .4s'; el.style.opacity = 0; setTimeout(() => el.remove(), 400); }, 3400);
+}
+
+/* ============================== search ============================== */
+let selIdx = 0, curResults = [];
+function doSearch(q) {
+  const nq = norm(q);
+  const box = $('#results');
+  if (nq.length < 2) { box.classList.remove('open'); curResults = []; return; }
+  const d = derive();
+  const scored = [];
+  for (const p of DATA.players) {
+    if (d.cntRole[p.r] >= DATA.roleSlots[p.r] && !d.minePid.has(p.id)) continue;
+    let s = 0;
+    if (p._n.startsWith(nq)) s = 100;
+    else if (p._n.split(' ').some(w => w.startsWith(nq))) s = 85;
+    else if (p._n.includes(nq)) s = 62;
+    else if (p._t.startsWith(nq)) s = 32;
+    else continue;
+    const w = wishByPid.get(p.id);
+    if (w) s += 26 - Math.min(w[0].prio, 10);
+    if (sleepByPid.has(p.id)) s += 8;
+    if (d.minePid.has(p.id) || d.gonePid.has(p.id)) s -= 45;
+    scored.push([s + (p.fvm || 0) / 2000, p]);
+  }
+  scored.sort((a,b) => b[0] - a[0]);
+  curResults = scored.slice(0, 9).map(x => x[1]);
+  selIdx = 0;
+  renderResults();
+}
+function renderResults() {
+  const d = derive();
+  const box = $('#results');
+  if (!curResults.length) { box.classList.remove('open'); return; }
+  box.innerHTML = curResults.map((p, i) => {
+    const w = wishByPid.get(p.id);
+    const sl = sleepByPid.get(p.id);
+    const al = alertByPid.get(p.id);
+    const mine = d.minePid.get(p.id), gone = d.gonePid.get(p.id);
+    let badges = '';
+    if (w) badges += `<span class="wish">★ ${w.map(x => `${x.slot} #${x.prio}`).join(' · ')} · max ${w[0].maxprice}</span>`;
+    if (!w && sl) badges += `<span class="sleep">◆ occasione · ~${esc(sl[0].price ?? '?')}</span>`;
+    if (al) badges += `<span class="adot" title="${esc(al.map(a=>a.text).join(' | '))}"></span>`;
+    if (mine) badges += `<span class="tag mine">mio · ${mine.price}</span>`;
+    if (gone) badges += `<span class="tag gone">andato</span>`;
+    return `<div class="res ${i===selIdx?'sel':''} ${mine||gone?'dead':''}" data-i="${i}">
+      <span class="rb ${p.r}">${p.r}</span>
+      <span class="nm">${esc(p.name)}</span><span class="tm">${esc(p.team)}</span>
+      ${badges}
+      <span class="fig">Qt ${p.qta} · FVM ${p.fvm}</span>
+    </div>`;
+  }).join('');
+  box.classList.add('open');
+  box.querySelectorAll('.res').forEach(el => {
+    el.addEventListener('click', () => openBuy(curResults[+el.dataset.i]));
+  });
+}
+
+/* ============================== buy card ============================== */
+let buyTarget = null;
+function openBuy(p) {
+  buyTarget = p;
+  const d = derive();
+  const w = wishByPid.get(p.id) || [];
+  const sl = sleepByPid.get(p.id) || [];
+  const al = alertByPid.get(p.id) || [];
+  const mine = d.minePid.get(p.id), gone = d.gonePid.get(p.id);
+  const free = freeSlots(p.r);
+  const rig = (DATA.rigoristi || {})[p.team];
+  const advisedMax = w.length ? w[0].maxprice : (sl.length ? sl[0].price : null);
+  const roleLeft = state.roleBudget[p.r] - d.spentRole[p.r];
+
+  const card = $('#buycard');
+  card.hidden = false;
+  card.innerHTML = `
+    <div class="bctop">
+      <span class="rb ${p.r}">${p.r}</span>
+      <span class="bcname">${esc(p.name)}</span>
+      <span class="bcteam">${esc(p.team)} · ${esc(p.rm || '')}</span>
+      <span class="figs">Qt.A ${p.qta} · FVM ${p.fvm}</span>
+    </div>
+    ${mine ? `<div class="bcalert">✅ Già tuo (${mine.slot} a ${mine.price})</div>` : ''}
+    ${gone ? `<div class="bcalert">⛔ Già segnato come preso da altri</div>` : ''}
+    ${w.length ? `<div class="bcwish">${w.map(x => `
+        <div class="wrow"><span class="pos">★ ${x.slot} · scelta #${x.prio} · max ${x.maxprice}</span>
+        <span>${esc(x.bonus || '')}</span>
+        <span class="nt">${esc([x.tit ? 'Titolarità: '+x.tit : '', x.rig && x.rig !== 'No' ? 'Rigorista: '+x.rig : ''].filter(Boolean).join(' · '))}</span></div>
+        ${x.note ? `<div class="wrow"><span class="nt">↳ ${esc(x.note)}</span></div>` : ''}`).join('')}</div>`
+      : sl.length ? `<div class="bcwish">${sl.map(x => `<div class="wrow"><span class="pos" style="color:var(--rC)">◆ occasione dal web · ~${esc(x.price ?? '?')}</span><span>${esc(x.why || '')}</span></div>`).join('')}</div>`
+      : `<div class="bcwish"><div class="wrow"><span class="nt">Non è nella tua lista desiderata — vai solo se il prezzo è giusto.</span></div></div>`}
+    ${al.map(a => `<div class="bcalert">⚠ <span><b>${esc(a.type)}</b> — ${esc(a.text)}</span></div>`).join('')}
+    ${rig ? `<div class="bcrig">🎯 ${esc(p.team)} — rigori: <b>${esc(rig.rigori || '?')}</b>${rig.punizioni ? ` · punizioni: ${esc(rig.punizioni)}` : ''}${rig.corner ? ` · corner: ${esc(rig.corner)}` : ''}</div>` : ''}
+    <div class="caps">
+      ${advisedMax != null ? `<div class="cap main"><label>Prezzo max consigliato</label><b>${advisedMax}</b></div>` : ''}
+      <div class="cap"><label>Cap assoluto ora</label><b>${d.maxBid}</b></div>
+      ${free.length ? `<div class="cap" title="Budget pianificato dello slot, riproporzionato sui crediti che ti restano"><label>Tetto slot</label><b id="capSlot">–</b></div>` : ''}
+      <div class="cap"><label>Residuo reparto ${p.r}</label><b>${roleLeft}</b></div>
+      <div class="cap"><label>Crediti totali</label><b>${d.left}</b></div>
+    </div>
+    ${free.length ? '<div class="bcalts" id="bcalts"></div>' : ''}
+    <div class="buyrow">
+      <input type="number" id="price" min="1" placeholder="crediti" ${free.length ? '' : 'disabled'}>
+      <select id="slotSel" title="Slot di destinazione">${free.map((s,i) => `<option value="${s.id}">${s.id} — ${esc(s.profile)}</option>`).join('')}</select>
+      <button class="primary" id="btnBuy" ${free.length ? '' : 'disabled'}>Comprato ⏎</button>
+      <button id="btnGone">⛔ Preso da altri</button>
+      <button class="ghost" id="btnCancel">Annulla (Esc)</button>
+    </div>
+    ${free.length ? '' : `<div class="buyerr">Reparto ${ROLENAME[p.r]} già completo (${DATA.roleSlots[p.r]}/${DATA.roleSlots[p.r]}).</div>`}
+    <div class="buyerr" id="buyerr"></div>`;
+
+  // preselect preferred wishlist slot if free
+  if (w.length) {
+    const pref = w.map(x => x.slot).find(sid => free.some(f => f.id === sid));
+    if (pref) $('#slotSel').value = pref;
+  }
+  // slot-dependent info: adjusted slot cap + remaining alternatives ("Se lo perdi")
+  function refreshSlotInfo() {
+    const sid = $('#slotSel')?.value;
+    if (!sid) return;
+    const dd = derive();
+    const s = slotById.get(sid), adj = dd.adjBudget(sid);
+    const capEl = $('#capSlot');
+    if (capEl && s) capEl.innerHTML = adj === s.budget ? `${adj}` : `<s style="color:var(--faint);font-weight:400">${s.budget}</s> <span class="${adj > s.budget ? 'adjup' : 'adjdown'}">${adj}</span>`;
+    const box = $('#bcalts');
+    if (!box) return;
+    const alts = slotAvailable(sid, dd).filter(x => x.p.id !== p.id).slice(0, 3);
+    const inList = (wishBySlot.get(sid)?.players || []).some(x => findPlayer(x.name, x.team)?.id === p.id);
+    if (!alts.length) {
+      box.innerHTML = inList
+        ? `<div class="bcalert">🚨 <span><b>Ultimo della lista per ${sid}</b> — se lo molli resti scoperto su questo slot.</span></div>`
+        : `<div class="altshead">Se lo perdi (${sid})</div><div class="altrow" style="color:var(--faint)">Lista ${sid} esaurita — restano solo gli sleeper.</div>`;
+    } else {
+      box.innerHTML = `<div class="altshead">Se lo perdi (${sid})</div>` + alts.map(x =>
+        `<div class="altrow"><span class="pr">#${x.w.prio}</span><b>${esc(x.w.name)}</b><span class="tm">${esc(x.w.team)}</span><span class="mx">max ${x.w.maxprice}</span></div>`).join('');
+    }
+  }
+  if (free.length) { refreshSlotInfo(); $('#slotSel').addEventListener('change', refreshSlotInfo); }
+  const priceEl = $('#price');
+  if (priceEl && !priceEl.disabled) { priceEl.focus(); }
+  $('#btnBuy')?.addEventListener('click', confirmBuy);
+  $('#btnGone').addEventListener('click', () => { doGone(p); closeBuy(); });
+  $('#btnCancel').addEventListener('click', closeBuy);
+  priceEl?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); confirmBuy(); }
+    if (e.key === 'Escape') { e.preventDefault(); closeBuy(); }
+  });
+  $('#results').classList.remove('open');
+}
+function confirmBuy() {
+  if (!buyTarget) return;
+  const d = derive();
+  const price = parseInt($('#price').value, 10);
+  const slotId = $('#slotSel').value;
+  const err = $('#buyerr');
+  if (!price || price < 1) { err.textContent = 'Inserisci i crediti pagati.'; $('#price').focus(); return; }
+  if (d.minePid.has(buyTarget.id)) { err.textContent = 'Già comprato.'; return; }
+  if (price > d.maxBid) { err.textContent = `Impossibile: puoi offrire al massimo ${d.maxBid} (devi tenere 1 credito per ogni altro slot vuoto).`; return; }
+  if (!slotId) { err.textContent = 'Nessuno slot libero per questo ruolo.'; return; }
+  const p = buyTarget;
+  closeBuy();
+  doBuy(p, price, slotId);
+}
+function closeBuy() {
+  buyTarget = null;
+  $('#buycard').hidden = true;
+  $('#buycard').innerHTML = '';
+  const q = $('#q'); q.value = ''; curResults = []; $('#results').classList.remove('open'); q.focus();
+}
+
+/* ============================== header/meters ============================== */
+function renderHeader() {
+  const d = derive();
+  $('#stCred').textContent = d.left;
+  $('#stSpent').textContent = d.spent;
+  $('#stSlots').textContent = d.slotsLeft;
+  $('#stAvg').textContent = d.avg;
+  $('#stCap').textContent = d.maxBid;
+  const plan = $('#stPlan');
+  plan.textContent = (d.planDelta > 0 ? '+' : '') + d.planDelta;
+  plan.style.color = d.planDelta > 0 ? 'var(--ok)' : d.planDelta < 0 ? 'var(--warn)' : '';
+  $('#meters').innerHTML = ROLES.map(r => {
+    const sp = d.spentRole[r], b = state.roleBudget[r];
+    const pct = Math.min(100, b ? sp / b * 100 : 0);
+    return `<div class="meter ${sp > b ? 'over' : ''}">
+      <div class="mrow"><b>${r} ${d.cntRole[r]}/${DATA.roleSlots[r]}</b><b>${sp}/${b}</b></div>
+      <div class="bar"><i style="width:${pct}%;background:var(--r${r})"></i></div></div>`;
+  }).join('');
+  $('#cntRosa').textContent = `${d.mine.length}/25`;
+  $('#cntLog').textContent = state.actions.length || '';
+}
+
+/* ============================== advice ============================== */
+function renderAdvice() {
+  const d = derive();
+  const html = ROLES.map(r => {
+    const chips = [];
+    for (const grp of (DATA.wishlist[r] || [])) {
+      if (d.slotFill.has(grp.slot)) continue;
+      const avail = slotAvailable(grp.slot, d);
+      if (avail.length) chips.push({slot: grp.slot, n: avail.length, ...avail[0].w});
+    }
+    if (!chips.length) return '';
+    return `<div class="adv-role"><span class="rb ${r}">${r}</span>` +
+      chips.map(c => `<span class="chip ${c.n === 1 ? 'last' : c.n === 2 ? 'scarce' : ''}" data-n="${esc(c.name)}" data-t="${esc(c.team)}" ${c.n <= 2 ? `title="Restano ${c.n === 1 ? 'solo questo nome' : '2 nomi'} in lista per ${c.slot}"` : ''}>
+        <span class="sl">${c.slot}</span> ${esc(c.name)} <span class="px">≤${c.maxprice}</span>${c.n <= 2 ? `<span class="sc">${c.n === 1 ? 'ultimo!' : 'solo 2'}</span>` : ''}</span>`).join('') + `</div>`;
+  }).join('');
+  $('#advice').innerHTML = html || '<span style="color:var(--faint)">Rosa completa 🎉</span>';
+  $('#advice').querySelectorAll('.chip').forEach(el => el.addEventListener('click', () => {
+    const p = findPlayer(el.dataset.n, el.dataset.t);
+    if (p) openBuy(p);
+  }));
+}
+
+/* ============================== tabs ============================== */
+let curTab = 'rosa';
+const listoneFilter = {q:'', role:'', team:'', sort:'fvm'};
+$('#tabs').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  curTab = b.dataset.tab;
+  document.querySelectorAll('#tabs button').forEach(x => x.classList.toggle('on', x === b));
+  renderTab();
+});
+function renderTab() {
+  const body = $('#tabbody');
+  if (curTab === 'rosa') body.innerHTML = viewRosa();
+  else if (curTab === 'liste') body.innerHTML = viewListe();
+  else if (curTab === 'listone') body.innerHTML = viewListone();
+  else if (curTab === 'log') body.innerHTML = viewLog();
+  else body.innerHTML = viewNews();
+  bindTab(body);
+}
+function bindTab(body) {
+  body.querySelectorAll('[data-open]').forEach(el => el.addEventListener('click', ev => {
+    if (ev.target.closest('button,input,select')) return;
+    const p = byId.get(+el.dataset.open); if (p) openBuy(p);
+  }));
+  body.querySelectorAll('[data-unslot]').forEach(el => el.addEventListener('click', () => {
+    const i = state.actions.findIndex(a => a.t === 'buy' && a.slot === el.dataset.unslot);
+    if (i >= 0 && confirm(`Rimuovere ${state.actions[i].name} dalla rosa?`)) removeAction(i);
+  }));
+  body.querySelectorAll('[data-del]').forEach(el => el.addEventListener('click', () => {
+    const i = +el.dataset.del;
+    if (confirm(`Rimuovere "${state.actions[i]?.name}" dal log?`)) removeAction(i);
+  }));
+  body.querySelectorAll('[data-editprice]').forEach(el => el.addEventListener('change', () => {
+    const a = state.actions[+el.dataset.editprice];
+    const v = parseInt(el.value, 10);
+    if (a && v >= 0) { a.price = v || null; save(); renderAll(); }
+  }));
+  body.querySelectorAll('[data-editbuyer]').forEach(el => el.addEventListener('change', () => {
+    const a = state.actions[+el.dataset.editbuyer];
+    if (a) { a.buyer = el.value; save(); }
+  }));
+  // listone controls
+  const lq = body.querySelector('#lq');
+  if (lq) {
+    lq.addEventListener('input', () => { listoneFilter.q = lq.value; refreshListoneRows(body); });
+    body.querySelector('#lteam').addEventListener('change', e => { listoneFilter.team = e.target.value; refreshListoneRows(body); });
+    body.querySelector('#lsort').addEventListener('change', e => { listoneFilter.sort = e.target.value; refreshListoneRows(body); });
+    body.querySelectorAll('.fchip[data-role]').forEach(ch => ch.addEventListener('click', () => {
+      listoneFilter.role = listoneFilter.role === ch.dataset.role ? '' : ch.dataset.role;
+      body.querySelectorAll('.fchip[data-role]').forEach(x => x.classList.toggle('on', x.dataset.role === listoneFilter.role));
+      refreshListoneRows(body);
+    }));
+  }
+}
+
+function viewRosa() {
+  const d = derive();
+  return ROLES.map(r => {
+    const slots = DATA.slots.filter(s => s.role === r);
+    return `<div class="rgroup">
+      <div class="rghead"><span class="rb ${r}">${r}</span><h3>${ROLENAME[r]}</h3>
+        <span class="rgfig">${d.cntRole[r]}/${DATA.roleSlots[r]} · speso ${d.spentRole[r]}/${state.roleBudget[r]}</span></div>
+      <table><thead><tr><th>Slot</th><th>Profilo</th><th>Giocatore</th><th class="num">Pagato</th><th></th></tr></thead><tbody>
+      ${slots.map(s => {
+        const a = d.slotFill.get(s.id);
+        if (a) {
+          const p = byId.get(a.pid);
+          return `<tr><td class="slotid">${s.id}</td><td class="emptyslot">${esc(s.profile)}</td>
+            <td class="owned">${esc(a.name)} <span style="color:var(--mut);font-weight:400">· ${esc(a.team)}</span></td>
+            <td class="num">${a.price}</td><td><button class="xbtn" data-unslot="${s.id}" title="Rimuovi">✕</button></td></tr>`;
+        }
+        const avail = slotAvailable(s.id, d);
+        const next = avail[0]?.w;
+        const adj = d.adjBudget(s.id);
+        return `<tr><td class="slotid">${s.id}</td><td class="emptyslot">${esc(s.profile)}</td>
+          <td class="nexthint">${next ? `→ <b>${esc(next.name)}</b> (max ${next.maxprice})` : '<i>—</i>'}${avail.length && avail.length <= 2 ? `<span class="scbadge ${avail.length === 1 ? 'last' : ''}">${avail.length === 1 ? 'ultimo in lista' : 'solo 2 in lista'}</span>` : ''}</td>
+          <td class="num" style="color:var(--faint)">≤${s.budget}${adj !== s.budget ? ` <span class="${adj > s.budget ? 'adjup' : 'adjdown'}">→ ${adj}</span>` : ''}</td><td></td></tr>`;
+      }).join('')}
+      </tbody></table></div>`;
+  }).join('');
+}
+
+function viewListe() {
+  const d = derive();
+  return ROLES.map(r => (DATA.wishlist[r] || []).map(grp => `
+    <div class="wl-slot">
+      <header><span class="rb ${r}">${r}</span><h3>${grp.slot} — ${esc(grp.profile)}</h3><span class="wsb">budget ${grp.budget}</span></header>
+      <ul class="wl-list">
+      ${grp.players.map(w => {
+        const p = findPlayer(w.name, w.team);
+        const mine = p && d.minePid.get(p.id), gone = p && d.gonePid.get(p.id);
+        const al = p && alertByPid.get(p.id);
+        return `<li class="${gone ? 'dead' : ''} ${mine ? 'mine' : ''}" ${p ? `data-open="${p.id}"` : ''}>
+          <span class="pr">${w.prio}</span>
+          <span class="nm">${mine ? '✓ ' : ''}${esc(w.name)}</span>
+          <span class="tm">${esc(w.team)}</span>
+          ${w.rig && w.rig !== 'No' ? `<span class="rig-yes" title="Rigorista: ${esc(w.rig)}">🎯</span>` : ''}
+          ${al ? `<span class="adot" title="${esc(al.map(a=>a.text).join(' | '))}"></span>` : ''}
+          <span class="ti">${esc(w.tit || '')}</span>
+          <span class="mx">${mine ? `pagato ${mine.price}` : `max ${w.maxprice}`}</span>
+          ${w.note ? `<span class="note">↳ ${esc(w.note)}</span>` : ''}
+        </li>`;
+      }).join('')}
+      </ul>
+    </div>`).join('')).join('');
+}
+
+function listoneRows() {
+  const d = derive();
+  const nq = norm(listoneFilter.q);
+  let rows = DATA.players.filter(p =>
+    (!listoneFilter.role || p.r === listoneFilter.role) &&
+    (!listoneFilter.team || p.team === listoneFilter.team) &&
+    (!nq || p._n.includes(nq) || p._t.includes(nq)));
+  const key = listoneFilter.sort;
+  rows.sort((a,b) => key === 'name' ? a.name.localeCompare(b.name) : (b[key] || 0) - (a[key] || 0));
+  return rows.slice(0, 250).map(p => {
+    const mine = d.minePid.get(p.id), gone = d.gonePid.get(p.id);
+    const w = wishByPid.get(p.id), sl = sleepByPid.get(p.id);
+    return `<tr data-open="${p.id}" style="cursor:pointer" class="${mine||gone ? 'dead' : ''}">
+      <td><span class="rb ${p.r}">${p.r}</span></td>
+      <td ${mine||gone ? 'style="text-decoration:line-through;color:var(--faint)"' : ''}><b>${esc(p.name)}</b></td>
+      <td style="color:var(--mut)">${esc(p.team)}</td>
+      <td class="num">${p.qta}</td><td class="num">${p.fvm}</td>
+      <td>${w ? `<span class="wish">★ ${w[0].slot} #${w[0].prio} max ${w[0].maxprice}</span>` : sl ? `<span class="sleep">◆ ~${esc(sl[0].price ?? '?')}</span>` : ''}
+          ${mine ? `<span class="tag mine">mio ${mine.price}</span>` : ''}${gone ? '<span class="tag gone">andato</span>' : ''}</td>
+    </tr>`;
+  }).join('');
+}
+function refreshListoneRows(body) { body.querySelector('#lrows').innerHTML = listoneRows(); bindTab(body); }
+function viewListone() {
+  const teams = [...new Set(DATA.players.map(p => p.team))].sort();
+  return `<div class="filters">
+      <input id="lq" placeholder="Filtra…" value="${esc(listoneFilter.q)}" style="width:160px">
+      ${ROLES.map(r => `<button class="fchip ${listoneFilter.role===r?'on':''}" data-role="${r}">${r}</button>`).join('')}
+      <select id="lteam"><option value="">Tutte le squadre</option>${teams.map(t => `<option ${listoneFilter.team===t?'selected':''}>${esc(t)}</option>`).join('')}</select>
+      <select id="lsort">
+        <option value="fvm" ${listoneFilter.sort==='fvm'?'selected':''}>FVM ↓</option>
+        <option value="qta" ${listoneFilter.sort==='qta'?'selected':''}>Qt.A ↓</option>
+        <option value="name" ${listoneFilter.sort==='name'?'selected':''}>Nome A→Z</option>
+      </select>
+    </div>
+    <table><thead><tr><th></th><th>Nome</th><th>Squadra</th><th class="num">Qt.A</th><th class="num">FVM</th><th>Status</th></tr></thead>
+    <tbody id="lrows">${listoneRows()}</tbody></table>
+    <p style="color:var(--faint);font-size:12px;margin-top:8px">Mostrati max 250 risultati — filtra per vederli tutti. Click su una riga per aprirla.</p>`;
+}
+
+function viewLog() {
+  if (!state.actions.length) return '<p style="color:var(--faint)">Nessuna operazione ancora. Il log registra i tuoi acquisti e i giocatori presi dagli altri.</p>';
+  return state.actions.map((a, i) => ({a, i})).reverse().map(({a, i}) => `
+    <div class="logrow">
+      <span class="lt">${new Date(a.ts).toLocaleTimeString('it-IT', {hour:'2-digit',minute:'2-digit'})}</span>
+      ${a.t === 'buy' ? '✅' : '⛔'}
+      <span class="rb ${a.role}">${a.role}</span>
+      <b>${esc(a.name)}</b> <span style="color:var(--mut)">${esc(a.team)}${a.slot ? ' · ' + a.slot : ''}</span>
+      <input class="pz" type="number" min="0" value="${a.price ?? ''}" placeholder="crediti" data-editprice="${i}" title="Crediti pagati">
+      ${a.t === 'gone' ? `<input class="by" value="${esc(a.buyer || '')}" placeholder="chi l'ha preso?" data-editbuyer="${i}">` : ''}
+      <button class="xbtn" data-del="${i}" title="Elimina">✕</button>
+    </div>`).join('');
+}
+
+function viewNews() {
+  const alerts = DATA.alerts || [];
+  const rig = DATA.rigoristi || {};
+  const sleepers = DATA.sleepers || {};
+  const teams = Object.keys(rig).sort();
+  return `
+    ${alerts.length ? `<div class="newsblock"><h2>⚠ Alert pre-asta ${DATA.researchDate ? `<span style="text-transform:none;letter-spacing:0">(ricerca del ${esc(DATA.researchDate)})</span>` : ''}</h2>
+      ${alerts.map(a => `<div class="alert-item"><span class="at ${esc(a.type)}">${esc(a.type)}</span><span><b>${esc(a.name)}</b> (${esc(a.team)}) — ${esc(a.text)}</span></div>`).join('')}</div>` : '<p style="color:var(--faint)">Nessun alert caricato (research.json non ancora generato).</p>'}
+    ${teams.length ? `<div class="newsblock"><h2>🎯 Rigoristi e piazzati</h2>
+      <table><thead><tr><th>Squadra</th><th>Rigori</th><th>Punizioni</th><th>Corner</th></tr></thead><tbody>
+      ${teams.map(t => `<tr><td><b>${esc(t)}</b></td><td>${esc(rig[t].rigori || '')}</td><td>${esc(rig[t].punizioni || '')}</td><td>${esc(rig[t].corner || '')}</td></tr>`).join('')}
+      </tbody></table></div>` : ''}
+    ${Object.keys(sleepers).length ? `<div class="newsblock"><h2>◆ Occasioni dal web (sleeper)</h2>
+      ${ROLES.filter(r => sleepers[r]?.length).map(r => `
+        <h3 style="font-family:var(--cond);margin:10px 0 4px"><span class="rb ${r}">${r}</span> ${ROLENAME[r]}</h3>
+        <ul class="wl-list">${sleepers[r].map(s => {
+          const p = findPlayer(s.name, s.team);
+          return `<li ${p ? `data-open="${p.id}"` : ''}><span class="nm">${esc(s.name)}</span><span class="tm">${esc(s.team)}</span>
+            <span class="ti">${esc(s.why || '')}</span><span class="mx">~${esc(s.price ?? '?')}</span></li>`;
+        }).join('')}</ul>`).join('')}</div>` : ''}
+    ${(DATA.sources || []).length ? `<div class="newsblock"><h2>Fonti consultate</h2><p class="srcs">${DATA.sources.map(esc).join('<br>')}</p></div>` : ''}`;
+}
+
+/* ============================== global keys & wiring ============================== */
+const qEl = $('#q');
+qEl.addEventListener('input', () => doSearch(qEl.value));
+qEl.addEventListener('keydown', e => {
+  if (e.key === 'ArrowDown') { e.preventDefault(); if (curResults.length) { selIdx = (selIdx + 1) % curResults.length; renderResults(); } }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); if (curResults.length) { selIdx = (selIdx - 1 + curResults.length) % curResults.length; renderResults(); } }
+  else if (e.key === 'Enter') {
+    e.preventDefault();
+    const p = curResults[selIdx];
+    if (!p) return;
+    if (e.shiftKey) { doGone(p); qEl.value = ''; curResults = []; $('#results').classList.remove('open'); }
+    else openBuy(p);
+  }
+  else if (e.key === 'Escape') { qEl.value = ''; curResults = []; $('#results').classList.remove('open'); }
+});
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); undo(); return; }
+  if (e.key === 'Escape' && buyTarget) { closeBuy(); return; }
+  // any printable char refocuses search (when not already in an input)
+  if (!e.ctrlKey && !e.metaKey && !e.altKey && e.key.length === 1 && !/INPUT|SELECT|TEXTAREA/.test(document.activeElement?.tagName || '')) {
+    qEl.focus();
+  }
+});
+document.addEventListener('click', e => {
+  if (!e.target.closest('.searchbox')) $('#results').classList.remove('open');
+});
+
+$('#btnUndo').addEventListener('click', undo);
+$('#btnReset').addEventListener('click', () => {
+  if (confirm('Azzerare TUTTA l\'asta? (acquisti, giocatori andati, budget)') && confirm('Sicuro sicuro? Non si torna indietro (hai fatto un export?)')) {
+    state = defaultState(); save(); renderAll(); toast('Asta azzerata');
+  }
+});
+$('#btnExp').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(state, null, 1)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `fantaasta-backup-${new Date().toISOString().slice(0,16).replace(/[:T]/g,'-')}.json`;
+  a.click();
+  toast('Backup scaricato ⬇');
+});
+function buildCsv() {
+  const d = derive();
+  const rows = [['slot','ruolo','nome','squadra','prezzo']];
+  for (const r of ROLES) for (const s of DATA.slots.filter(x => x.role === r)) {
+    const a = d.slotFill.get(s.id);
+    rows.push([s.id, r, a?.name || '', a?.team || '', a ? a.price : '']);
+  }
+  return rows.map(row => row.map(v => /[";\n]/.test(String(v)) ? `"${String(v).replace(/"/g,'""')}"` : String(v)).join(';')).join('\r\n');
+}
+$('#btnCsv').addEventListener('click', () => {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['\ufeff' + buildCsv()], {type:'text/csv;charset=utf-8'}));
+  a.download = `fantaasta-rosa-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  toast('Rosa CSV scaricata ⬇');
+});
+$('#btnImp').addEventListener('click', () => $('#impFile').click());
+$('#impFile').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  f.text().then(txt => {
+    const st = JSON.parse(txt);
+    if (!Array.isArray(st.actions)) throw new Error('bad');
+    state = {...defaultState(), ...st}; save(); renderAll();
+    toast('Backup ripristinato ⬆');
+  }).catch(() => toast('File non valido', 'err'));
+  e.target.value = '';
+});
+$('#btnSet').addEventListener('click', () => {
+  $('#setBudget').value = state.budget;
+  ROLES.forEach(r => $('#set' + r).value = state.roleBudget[r]);
+  $('#dlgSet').showModal();
+});
+$('#setCancel').addEventListener('click', () => $('#dlgSet').close());
+$('#setSave').addEventListener('click', () => {
+  const b = parseInt($('#setBudget').value, 10);
+  if (b > 0) state.budget = b;
+  ROLES.forEach(r => { const v = parseInt($('#set' + r).value, 10); if (v >= 0) state.roleBudget[r] = v; });
+  save(); renderAll(); $('#dlgSet').close(); toast('Impostazioni salvate');
+});
+
+/* ============================== boot ============================== */
+function renderAll() { renderHeader(); renderAdvice(); renderTab(); }
+$('#footNote').textContent = `Listone ufficiale ${DATA.season}: ${DATA.players.length} giocatori · Rosa 3P+8D+8C+6A · I dati restano solo in questo browser (localStorage + cookie di backup). Fai un export ⬇ a fine asta.`;
+renderAll();
+qEl.focus();
+</script>
+</body>
+</html>
