@@ -2,7 +2,7 @@
 
 App single-file (`index.html`) per condurre l'asta del fantacalcio (Classic, budget 1000,
 rosa 3P+8D+8C+6A). Sostituisce `asta.xlsx`: stessa wishlist per slot, ma con ricerca
-istantanea, flusso d'acquisto a due Invii e dati aggiornati dalla ricerca web del 12/08/2026.
+istantanea, flusso d'acquisto a due Invii e dati aggiornati dalla ricerca web del 14/08/2026.
 
 ## Avvio
 
@@ -63,9 +63,12 @@ Estrae slot e wishlist da `asta.xlsx`, il listone da `listone.xlsx`, applica
 acquisto, cap, undo, tab e persistenza (35 assert; risultati in pagina e via
 `fetch /__RESULTS__` nel log del server).
 
-## Fonti della ricerca (12/08/2026)
+## Fonti della ricerca (14/08/2026)
 
-20+ siti tra cui fantacalcio.it, SOS Fanta, FantaMaster, Goal, Calciodangolo, Sky Sport,
-TMW, Corriere dello Sport, fantacalciopedia, pazzidifanta + testate locali. Dettaglio nel
-tab News. Mercato aperto fino all'1/9: ricontrolla i dossier caldi (porta Juve, rigorista
-Milan, Scamacca/Krstovic, uscite Pinamonti/Pellegrino) il giorno dell'asta.
+30+ siti tra cui fantacalcio.it, SOS Fanta, FantaMaster, Goal, Calciodangolo, Sky Sport,
+TMW, Corriere dello Sport, fantacalciopedia, pazzidifanta, Transfermarkt (cartellini per
+il bonus fairplay) + testate locali. Dettaglio nel tab News. Mercato aperto fino all'1/9:
+ricontrolla i dossier caldi (porta Juve/Vicario, Leao, Pinamonti/Bowie, Badiashile,
+Lucumì, rigori Cagliari, attacco Lazio) il giorno dell'asta. La wishlist aggiornata è
+stata riportata ("baked") anche in `asta.xlsx`: le `wishlist_ops` di `research.json`
+ripartono vuote per le correzioni future.
