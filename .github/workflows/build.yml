@@ -1,0 +1,20 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install openpyxl
+      # build gate: fails on any '!!' line (wishlist op not matching the listone)
+      - run: python3 update.py
+      # the committed index.html must match what the sources generate
+      - run: git diff --exit-code index.html || { echo '::error::index.html is stale — run python3 build.py and commit it'; exit 1; }
