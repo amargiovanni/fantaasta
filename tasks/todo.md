@@ -1,14 +1,20 @@
-# Aggiornamento ricerca pre-asta — 14/08/2026 ✅
+# Sala d'asta intelligente — 14/08/2026 ✅ (49/49 test PASS)
 
-- [x] Ricerca parallela (7 agenti): porte, mercato caldo, rigoristi/piazzati,
-      infortunati/squalificati, probabili formazioni, cartellini/fairplay, sleepers
-- [x] Sintesi in `research.json` (124 alert, 74 sleeper, 160 wishlist_ops, fairplay
-      integrato: 9 alert dedicati + note nei giocatori)
-- [x] `python3 build.py` senza righe `!!` (201 KB, 497 giocatori)
-- [x] Wishlist aggiornata baked in `asta.xlsx` (verificata: estrazione == merge);
-      `wishlist_ops` svuotate per le correzioni future
-- [ ] Smoke test `test.html` nel browser (Chrome non raggiungeva localhost dalla
-      sessione: da fare a mano — `python3 -m http.server 8642` → 26 PASS attesi)
-- [ ] Il giorno dell'asta: rilanciare punto 7 di UPDATE.md (probabili vere del 19-21/8)
-      e i dossier: Vicario-Juve, Leao, Pinamonti/Bowie, Badiashile, Lucumì,
-      rigori Cagliari (Kevin Carlos vs Maldini), attacco Lazio a 3
+- [x] FantaScore 0-99 in build.py (percentile FVM + titolarità + rigori/piazzati −
+      infortuni − cartellini − mercato) — top: Orsolini 91, Da Cunha/Malen 89;
+      flop coerenti: Neres 24, David 25, Ratkov 27
+- [x] Setup avversari in ⚙ (textarea, default Squadra 2…10)
+- [x] Shift+Invio → prezzo → tasto 1-9/0 per il compratore (Esc = registra e basta)
+- [x] Strip avversari sotto la testata (crediti, slot per ruolo, max offerta)
+- [x] Walk-away "Molla a" nella scheda + riga "possono superarti"
+- [x] FantaScore in Listone (colonna+sort), ricerca (S xx) e scheda
+- [x] test.html: 49 assert, tutti PASS (via /__RESULTS__ nel log del server)
+- [x] README e UPDATE.md aggiornati
+
+## Prossimi (in ordine, ognuno col suo mini-design)
+- [ ] Simulatore d'asta (bot a FVM±rumore per la prova generale)
+- [ ] Pipeline ricerca a un click (runbook UPDATE.md automatizzato + diff novità)
+- [ ] UX contorno: vista secondo schermo, report post-asta
+- [ ] Il giorno dell'asta: rilanciare ricerca (probabili vere 19-21/8) — dossier:
+      Vicario-Juve, Leao, Pinamonti/Bowie, Badiashile, Lucumì, rigori Cagliari,
+      attacco Lazio a 3

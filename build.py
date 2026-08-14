@@ -104,6 +104,80 @@ def apply_ops(wishlist, ops):
             p["prio"] = i
 
 
+def compute_scores(players, wishlist, research):
+    """FantaScore 0-99: FVM percentile in role + titolarità + rigori/piazzati
+    − infortuni − cartellini − rischio mercato. Stored as p['score']."""
+    import bisect
+
+    wentries = {}
+    for groups in wishlist.values():
+        for g in groups:
+            for w in g["players"]:
+                wentries.setdefault(norm(w["name"]), []).append(w)
+    alerts = {}
+    for a in research.get("alerts", []):
+        alerts.setdefault((norm(a["name"]), norm(a.get("team", ""))), []).append(a)
+    rigoristi = research.get("rigoristi", {})
+
+    fvm_by_role = {}
+    for p in players:
+        fvm_by_role.setdefault(p["r"], []).append(p["fvm"] or 0)
+    for r in fvm_by_role:
+        fvm_by_role[r].sort()
+
+    LONG_OUT = ("crociato", "operat", "mesi", "ottobre", "novembre", "dicembre",
+                "settembre", "salta le prime", "fino a")
+    GONE_MKT = ("lasciarlo", "depenn", "via dall", "fuori dal campionato",
+                "non comprar", "fuori rosa")
+
+    for p in players:
+        vals = fvm_by_role[p["r"]]
+        pct = bisect.bisect_left(vals, p["fvm"] or 0) / max(1, len(vals) - 1)
+        s = 55 * pct
+
+        ws = wentries.get(norm(p["name"]), [])
+        tit = " ".join((w.get("tit") or "") for w in ws).lower()
+        rig = " ".join((w.get("rig") or "") for w in ws).lower()
+        if any(k in tit for k in ("altissima", "titolare", "inamovibile", "favorito", "promosso")):
+            s += 20
+        elif any(k in tit for k in ("uscita", "panchina", "riserva", "fondo", "out", "evitare", "al psg", "conteso a 3")):
+            s += 0
+        elif "alta" in tit:
+            s += 14
+        elif any(k in tit for k in ("ballottaggio", "conteso", "50", "monitorare", "dubbio", "scommessa")):
+            s += 6
+        else:
+            s += 8  # nessuna informazione: neutro
+
+        if rig.startswith(("sì", "si ")) or any(k in rig for k in ("1°", "pole", "blindato", "eredita")):
+            s += 12
+        elif any(k in rig for k in ("conteso", "in corsa", "alternanza", "2/2")):
+            s += 6
+
+        team_rig = rigoristi.get(p["team"], {})
+        placed = norm(team_rig.get("punizioni", "") + " " + team_rig.get("corner", ""))
+        pname = norm(p["name"])
+        first = pname.split(" ")[0] if pname else ""
+        if pname and (pname in placed or (len(first) > 3 and first in placed)):
+            s += 5
+
+        for a in alerts.get((pname, norm(p["team"])), []):
+            t, txt = a.get("type", ""), (a.get("text") or "").lower()
+            if t == "infortunio":
+                s -= 20 if any(k in txt for k in LONG_OUT) else 10
+            elif t == "fairplay":
+                s -= 8
+            elif t == "mercato":
+                s -= 15 if any(k in txt for k in GONE_MKT) else 4
+            elif t == "squalifica":
+                s -= 3
+            elif t == "ballottaggio":
+                s -= 4
+            elif t == "ok":
+                s += 3
+        p["score"] = max(1, min(99, round(s)))
+
+
 def main():
     players = extract_listone()
     slots, wishlist = extract_asta()
@@ -112,6 +186,7 @@ def main():
     if rpath.exists():
         research = json.loads(rpath.read_text())
         apply_ops(wishlist, research.get("wishlist_ops", []))
+    compute_scores(players, wishlist, research)
 
     data = {
         "season": "2026-27",

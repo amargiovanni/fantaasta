@@ -21,7 +21,10 @@ lo stesso browser per tutta l'asta e fai un export a fine serata.
    alert e i tre tetti di spesa (max consigliato, cap assoluto, residuo reparto), col
    campo crediti già a fuoco. Digiti il prezzo, **Invio** di nuovo: registrato nello
    slot giusto, budget aggiornato, focus di nuovo sulla ricerca.
-3. **Shift+Invio** = l'ha preso un altro → depennato ovunque (liste, consigli, ricerca).
+3. **Shift+Invio** = l'ha preso un altro → si apre la mini-scheda: digiti il prezzo,
+   **Invio**, poi un tasto **1-9** per dire chi l'ha comprato (**0** o Invio = non so;
+   **Esc** = registra e basta, come una volta). Così l'app traccia budget e slot
+   residui di ogni avversario.
 4. `↑↓` scorri i risultati · `Esc` pulisci/annulla · `Ctrl/Cmd+Z` undo.
 
 Il cap assoluto impedisce offerte che non ti lascerebbero 1 credito per ogni slot vuoto.
@@ -35,6 +38,20 @@ Il cap assoluto impedisce offerte che non ti lascerebbero 1 credito per ogni slo
 - **News & Rigoristi** — 70 alert pre-asta, rigoristi/piazzati delle 20 squadre, sleeper dal web, fonti.
 - **⚙** budget totale e per reparto · **⬇/⬆** export/import JSON · **CSV** rosa per
   Excel (`;`, slot vuoti inclusi) · **✕** reset.
+
+## Sala d'asta intelligente
+
+- **Strip avversari** (sotto la testata) — per ognuna delle 9 squadre rivali (nomi in ⚙,
+  uno per riga): crediti residui, slot mancanti per ruolo e max offerta teorica. La più
+  ricca è evidenziata; a rosa completa si spegne.
+- **"Molla a" (walk-away)** nella scheda d'acquisto — prezzo oltre cui conviene lasciare:
+  parte dal max del piano e lo corregge con le alternative ancora libere in lista
+  (FantaScore ≥75% del target), il tetto slot riproporzionato e la pressione reale degli
+  avversari (se nessuno può superarti oltre X, non pagare più di X+1). Sotto, la riga
+  "possono superarti: …" coi nomi.
+- **FantaScore 0-99** — sintesi calcolata dal build: percentile FVM nel ruolo +
+  titolarità + rigori/piazzati − infortuni − cartellini (fairplay) − rischio mercato.
+  Colonna ordinabile nel Listone, badge `S` nella ricerca e nella scheda.
 
 ## Aiuti alla decisione (in asta)
 
@@ -60,8 +77,8 @@ Estrae slot e wishlist da `asta.xlsx`, il listone da `listone.xlsx`, applica
 `research.json` e si rilancia il build — i dati di stato nel browser non vengono toccati.
 
 `test.html` è lo smoke test: servito via http accanto a `index.html`, esercita ricerca,
-acquisto, cap, undo, tab e persistenza (35 assert; risultati in pagina e via
-`fetch /__RESULTS__` nel log del server).
+acquisto, cap, undo, tab, persistenza, tracking avversari, walk-away e FantaScore
+(49 assert; risultati in pagina e via `fetch /__RESULTS__` nel log del server).
 
 ## Fonti della ricerca (14/08/2026)
 

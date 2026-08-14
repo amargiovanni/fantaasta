@@ -72,6 +72,29 @@ header{
 .hactions{margin-left:auto;display:flex;gap:8px;align-items:center}
 .hactions button{padding:5px 10px;font-size:13px}
 
+/* ---------- opponents strip ---------- */
+#oppbar{max-width:1560px;margin:10px auto 0;padding:0 22px;display:flex;gap:8px;flex-wrap:wrap}
+.opp{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:4px 10px;font-size:12px;display:flex;gap:8px;align-items:baseline;white-space:nowrap}
+.opp .on{font-family:var(--cond);text-transform:uppercase;letter-spacing:.05em;font-size:12px;color:var(--mut)}
+.opp .ol{font-family:var(--num);font-size:14px;font-weight:700;color:var(--gold)}
+.opp .os{font-family:var(--num);font-size:10.5px;color:var(--faint)}
+.opp .om{font-family:var(--num);font-size:10.5px;color:var(--mut)}
+.opp.done{opacity:.45}
+.opp.rich .ol{color:var(--volt)}
+
+/* ---------- gone card & walk-away ---------- */
+.gonewho{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.gonewho button{font-size:12.5px;padding:4px 9px}
+.gonewho button b{font-family:var(--num);color:var(--volt);margin-right:5px}
+#goneWho{width:120px;font-family:var(--num)}
+.cap.walk{border-color:rgba(198,241,77,.4)}
+.cap.walk b{color:var(--volt)}
+#walkinfo{font-size:12.5px;color:var(--mut);margin:2px 0 8px}
+#walkinfo b{color:var(--ink)}
+.scpill{font-family:var(--num);font-size:11px;border:1px solid var(--line2);border-radius:5px;padding:1px 6px;color:var(--mut);white-space:nowrap}
+.scpill.hi{color:var(--volt);border-color:rgba(198,241,77,.4)}
+.scpill.mid{color:var(--gold);border-color:rgba(236,198,92,.4)}
+
 /* ---------- layout ---------- */
 main{max-width:1560px;margin:18px auto;padding:0 22px;display:grid;grid-template-columns:minmax(400px,4.4fr) 7fr;gap:20px;align-items:start}
 @media(max-width:1080px){main{grid-template-columns:1fr}}
@@ -257,13 +280,15 @@ dialog h2{margin-bottom:14px;color:var(--ink)}
   </div>
 </header>
 
+<div id="oppbar"></div>
+
 <main>
   <section>
     <div class="searchbox">
       <input id="q" placeholder="Digita un nome o una squadra…" autocomplete="off" spellcheck="false" autofocus>
       <div id="results"></div>
     </div>
-    <div class="hint"><kbd>↑↓</kbd> scegli · <kbd>Invio</kbd> l'ho comprato · <kbd>Shift+Invio</kbd> preso da altri · <kbd>Esc</kbd> pulisci · <kbd>Ctrl+Z</kbd> undo</div>
+    <div class="hint"><kbd>↑↓</kbd> scegli · <kbd>Invio</kbd> l'ho comprato · <kbd>Shift+Invio</kbd> preso da altri (poi prezzo + tasto <kbd>1-9</kbd> per chi) · <kbd>Esc</kbd> pulisci · <kbd>Ctrl+Z</kbd> undo</div>
 
     <div id="buycard" class="panel" hidden></div>
 
@@ -296,6 +321,7 @@ dialog h2{margin-bottom:14px;color:var(--ink)}
   <div class="setrow"><label>Budget Difensori</label><input type="number" id="setD" min="0"></div>
   <div class="setrow"><label>Budget Centrocampisti</label><input type="number" id="setC" min="0"></div>
   <div class="setrow"><label>Budget Attaccanti</label><input type="number" id="setA" min="0"></div>
+  <div class="setrow" style="align-items:flex-start"><label>Avversari (uno per riga)</label><textarea id="setOpps" rows="9" style="flex:1;min-width:190px;background:var(--panel2);border:1px solid var(--line2);color:var(--ink);border-radius:8px;padding:7px 10px;font:13px var(--num)"></textarea></div>
   <div class="dlgbtns"><button id="setCancel">Annulla</button><button id="setSave" class="primary">Salva</button></div>
 </dialog>
 
@@ -362,7 +388,8 @@ for (const a of (DATA.alerts || [])) {
 const LS_KEY = 'fantaasta_2627_v1';
 let state = loadState();
 function defaultState() {
-  return { budget: DATA.budget, roleBudget: {...DATA.roleBudget}, actions: [] };
+  return { budget: DATA.budget, roleBudget: {...DATA.roleBudget}, actions: [],
+           oppNames: Array.from({length: 9}, (_, i) => `Squadra ${i + 2}`) };
 }
 function loadState() {
   try {
@@ -409,7 +436,19 @@ function derive() {
   // dynamic budget: spread surplus/deficit over empty slots, proportional to their planned budget
   const emptyPlanSum = DATA.slots.reduce((s,x) => s + (slotFill.has(x.id) ? 0 : x.budget), 0);
   const factor = emptyPlanSum > 0 ? left / emptyPlanSum : 0;
-  return {mine, gone, minePid, gonePid, spent, spentRole, cntRole, slotFill, left, slotsLeft,
+  const opps = (state.oppNames || []).map(name => {
+    const buys = gone.filter(a => a.buyer === name);
+    const oSpent = buys.reduce((s,a) => s + (a.price || 0), 0);
+    const cnt = {P:0,D:0,C:0,A:0};
+    buys.forEach(a => cnt[a.role]++);
+    const oLeft = state.budget - oSpent;
+    const oSlotsLeft = totSlots - buys.length;
+    const canBuyRole = {};
+    ROLES.forEach(r => canBuyRole[r] = cnt[r] < DATA.roleSlots[r]);
+    return {name, spent: oSpent, cnt, left: oLeft, slotsLeft: oSlotsLeft, canBuyRole,
+            maxBid: Math.max(0, oLeft - Math.max(0, oSlotsLeft - 1))};
+  });
+  return {mine, gone, minePid, gonePid, spent, spentRole, cntRole, slotFill, left, slotsLeft, opps,
           emptyPlanSum, factor, planDelta: left - emptyPlanSum,
           adjBudget: id => { const s = slotById.get(id); return s ? Math.round(s.budget * factor) : 0; },
           maxBid: Math.max(0, left - Math.max(0, slotsLeft - 1)),
@@ -438,7 +477,56 @@ function doBuy(p, price, slotId) {
 function doGone(p, price=null, buyer='') {
   state.actions.push({t:'gone', pid:p.id, name:p.name, role:p.r, team:p.team, price, buyer, ts:Date.now()});
   save(); renderAll();
-  toast(`⛔ <b>${esc(p.name)}</b> segnato come preso da altri`, 'warn');
+  toast(`⛔ <b>${esc(p.name)}</b> preso da altri${buyer ? ` (<b>${esc(buyer)}</b>${price ? ` a ${price}` : ''})` : ''}`, 'warn');
+}
+
+/* gone card: Shift+Invio → prezzo → tasto 1-9 per il compratore (0/Invio = non so) */
+let goneTarget = null;
+function openGone(p) {
+  goneTarget = p; buyTarget = null;
+  const names = state.oppNames || [];
+  const card = $('#buycard');
+  card.hidden = false;
+  card.innerHTML = `
+    <div class="bctop">
+      <span class="rb ${p.r}">${p.r}</span>
+      <span class="bcname">${esc(p.name)}</span>
+      <span class="bcteam">${esc(p.team)} · andato a un altro</span>
+    </div>
+    <div class="buyrow">
+      <input type="number" id="gonePrice" min="1" placeholder="crediti">
+      <input id="goneWho" placeholder="a chi? 1-9 · 0=?" hidden>
+      <button class="ghost" id="goneSkip" title="Registra e basta (Esc)">Registra senza dettagli</button>
+    </div>
+    <div class="gonewho" id="goneBtns" hidden>
+      ${names.map((n, i) => `<button data-b="${esc(n)}"><b>${i + 1}</b>${esc(n)}</button>`).join('')}
+      <button data-b=""><b>0</b>non so</button>
+    </div>
+    <div class="hint" style="margin:6px 0 0">Invio = avanti · Esc = registra senza dettagli</div>`;
+  const priceEl = $('#gonePrice'), whoEl = $('#goneWho');
+  const finalize = (price, buyer) => {
+    const t = goneTarget; goneTarget = null;
+    doGone(t, price, buyer);
+    closeBuy();
+  };
+  priceEl.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (!names.length) { finalize(parseInt(priceEl.value, 10) || null, ''); return; }
+      whoEl.hidden = false; $('#goneBtns').hidden = false; whoEl.focus();
+    }
+    if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); finalize(parseInt(priceEl.value, 10) || null, ''); }
+  });
+  whoEl.addEventListener('keydown', e => {
+    e.preventDefault(); e.stopPropagation();
+    if (/^[1-9]$/.test(e.key)) { const n = names[+e.key - 1]; if (n) finalize(parseInt(priceEl.value, 10) || null, n); }
+    else if (e.key === '0' || e.key === 'Enter' || e.key === 'Escape') finalize(parseInt(priceEl.value, 10) || null, '');
+  });
+  $('#goneSkip').addEventListener('click', () => finalize(parseInt(priceEl.value, 10) || null, ''));
+  card.querySelectorAll('#goneBtns button').forEach(b =>
+    b.addEventListener('click', () => finalize(parseInt(priceEl.value, 10) || null, b.dataset.b)));
+  priceEl.focus();
+  $('#results').classList.remove('open');
 }
 function undo() {
   const a = state.actions.pop();
@@ -507,13 +595,34 @@ function renderResults() {
       <span class="rb ${p.r}">${p.r}</span>
       <span class="nm">${esc(p.name)}</span><span class="tm">${esc(p.team)}</span>
       ${badges}
-      <span class="fig">Qt ${p.qta} · FVM ${p.fvm}</span>
+      <span class="fig">Qt ${p.qta} · FVM ${p.fvm} · S ${p.score ?? '–'}</span>
     </div>`;
   }).join('');
   box.classList.add('open');
   box.querySelectorAll('.res').forEach(el => {
     el.addEventListener('click', () => openBuy(curResults[+el.dataset.i]));
   });
+}
+
+/* ============================== walk-away ============================== */
+/* prezzo oltre cui mollare: max del piano corretto per alternative rimaste
+   (FantaScore ≥75% del target), tetto slot riproporzionato e pressione avversari */
+function walkAway(p, slotId, d) {
+  const w = (wishByPid.get(p.id) || []).find(x => x.slot === slotId) || (wishByPid.get(p.id) || [])[0];
+  const sl = (sleepByPid.get(p.id) || [])[0];
+  const adj = d.adjBudget(slotId);
+  const base = w?.maxprice ?? sl?.price ?? adj ?? 1;
+  const myScore = p.score || 50;
+  const alts = slotAvailable(slotId, d).filter(x => x.p.id !== p.id && (x.p.score || 0) >= .75 * myScore).length;
+  const f = alts >= 3 ? .92 : alts === 2 ? 1 : alts === 1 ? 1.08 : 1.22;
+  let v = Math.round(base * f);
+  if (adj) v = Math.min(v, Math.round(adj * 1.35));
+  v = Math.min(v, d.maxBid);
+  const rivals = d.opps.filter(o => o.canBuyRole[p.r] && o.maxBid > 0);
+  const topRival = rivals.length ? Math.max(...rivals.map(o => o.maxBid)) : 0;
+  if (topRival + 1 < v) v = topRival + 1;   // nessuno può arrivarci: non pagare di più
+  v = Math.max(1, v);
+  return {v, alts, topRival, overtakers: rivals.filter(o => o.maxBid >= v)};
 }
 
 /* ============================== buy card ============================== */
@@ -537,7 +646,7 @@ function openBuy(p) {
       <span class="rb ${p.r}">${p.r}</span>
       <span class="bcname">${esc(p.name)}</span>
       <span class="bcteam">${esc(p.team)} · ${esc(p.rm || '')}</span>
-      <span class="figs">Qt.A ${p.qta} · FVM ${p.fvm}</span>
+      <span class="figs">Qt.A ${p.qta} · FVM ${p.fvm} · Score ${p.score ?? '–'}</span>
     </div>
     ${mine ? `<div class="bcalert">✅ Già tuo (${mine.slot} a ${mine.price})</div>` : ''}
     ${gone ? `<div class="bcalert">⛔ Già segnato come preso da altri</div>` : ''}
@@ -554,10 +663,11 @@ function openBuy(p) {
       ${advisedMax != null ? `<div class="cap main"><label>Prezzo max consigliato</label><b>${advisedMax}</b></div>` : ''}
       <div class="cap"><label>Cap assoluto ora</label><b>${d.maxBid}</b></div>
       ${free.length ? `<div class="cap" title="Budget pianificato dello slot, riproporzionato sui crediti che ti restano"><label>Tetto slot</label><b id="capSlot">–</b></div>` : ''}
+      ${free.length ? `<div class="cap walk" title="Prezzo di walk-away: piano corretto per alternative rimaste, tetto slot e pressione avversari"><label>Molla a</label><b id="capWalk">–</b></div>` : ''}
       <div class="cap"><label>Residuo reparto ${p.r}</label><b>${roleLeft}</b></div>
       <div class="cap"><label>Crediti totali</label><b>${d.left}</b></div>
     </div>
-    ${free.length ? '<div class="bcalts" id="bcalts"></div>' : ''}
+    ${free.length ? '<div id="walkinfo"></div><div class="bcalts" id="bcalts"></div>' : ''}
     <div class="buyrow">
       <input type="number" id="price" min="1" placeholder="crediti" ${free.length ? '' : 'disabled'}>
       <select id="slotSel" title="Slot di destinazione">${free.map((s,i) => `<option value="${s.id}">${s.id} — ${esc(s.profile)}</option>`).join('')}</select>
@@ -581,6 +691,16 @@ function openBuy(p) {
     const s = slotById.get(sid), adj = dd.adjBudget(sid);
     const capEl = $('#capSlot');
     if (capEl && s) capEl.innerHTML = adj === s.budget ? `${adj}` : `<s style="color:var(--faint);font-weight:400">${s.budget}</s> <span class="${adj > s.budget ? 'adjup' : 'adjdown'}">${adj}</span>`;
+    const wkEl = $('#capWalk');
+    if (wkEl) {
+      const wk = walkAway(p, sid, dd);
+      wkEl.textContent = wk.v;
+      const parts = [];
+      parts.push(wk.alts ? `<b>${wk.alts}</b> alternativ${wk.alts === 1 ? 'a' : 'e'} ≥75% ancora libere` : 'nessuna alternativa comparabile: premio scarsità');
+      if (wk.overtakers.length) parts.push(`possono superarti: ${wk.overtakers.slice(0, 4).map(o => `<b>${esc(o.name)}</b> (max ${o.maxBid})`).join(', ')}${wk.overtakers.length > 4 ? '…' : ''}`);
+      else parts.push(`nessun avversario può andare oltre <b>${wk.topRival}</b>`);
+      $('#walkinfo').innerHTML = '↳ ' + parts.join(' · ');
+    }
     const box = $('#bcalts');
     if (!box) return;
     const alts = slotAvailable(sid, dd).filter(x => x.p.id !== p.id).slice(0, 3);
@@ -598,7 +718,7 @@ function openBuy(p) {
   const priceEl = $('#price');
   if (priceEl && !priceEl.disabled) { priceEl.focus(); }
   $('#btnBuy')?.addEventListener('click', confirmBuy);
-  $('#btnGone').addEventListener('click', () => { doGone(p); closeBuy(); });
+  $('#btnGone').addEventListener('click', () => openGone(p));
   $('#btnCancel').addEventListener('click', closeBuy);
   priceEl?.addEventListener('keydown', e => {
     if (e.key === 'Enter') { e.preventDefault(); confirmBuy(); }
@@ -647,6 +767,19 @@ function renderHeader() {
   }).join('');
   $('#cntRosa').textContent = `${d.mine.length}/25`;
   $('#cntLog').textContent = state.actions.length || '';
+}
+
+/* ============================== opponents strip ============================== */
+function renderOpps() {
+  const d = derive();
+  const maxLeft = Math.max(1, ...d.opps.map(o => o.left));
+  $('#oppbar').innerHTML = d.opps.map(o => `
+    <span class="opp ${o.slotsLeft <= 0 ? 'done' : ''} ${o.left === maxLeft && o.spent > 0 ? 'rich' : ''}"
+          title="${esc(o.name)}: speso ${o.spent}, ${o.slotsLeft} slot da riempire, offerta massima teorica ${o.maxBid}">
+      <span class="on">${esc(o.name)}</span><span class="ol">${o.left}</span>
+      <span class="os">${ROLES.map(r => `${DATA.roleSlots[r] - o.cnt[r]}${r}`).join(' ')}</span>
+      <span class="om">max ${o.maxBid}</span>
+    </span>`).join('');
 }
 
 /* ============================== advice ============================== */
@@ -794,6 +927,7 @@ function listoneRows() {
       <td ${mine||gone ? 'style="text-decoration:line-through;color:var(--faint)"' : ''}><b>${esc(p.name)}</b></td>
       <td style="color:var(--mut)">${esc(p.team)}</td>
       <td class="num">${p.qta}</td><td class="num">${p.fvm}</td>
+      <td class="num"><span class="scpill ${p.score >= 75 ? 'hi' : p.score >= 55 ? 'mid' : ''}">${p.score ?? ''}</span></td>
       <td>${w ? `<span class="wish">★ ${w[0].slot} #${w[0].prio} max ${w[0].maxprice}</span>` : sl ? `<span class="sleep">◆ ~${esc(sl[0].price ?? '?')}</span>` : ''}
           ${mine ? `<span class="tag mine">mio ${mine.price}</span>` : ''}${gone ? '<span class="tag gone">andato</span>' : ''}</td>
     </tr>`;
@@ -808,11 +942,12 @@ function viewListone() {
       <select id="lteam"><option value="">Tutte le squadre</option>${teams.map(t => `<option ${listoneFilter.team===t?'selected':''}>${esc(t)}</option>`).join('')}</select>
       <select id="lsort">
         <option value="fvm" ${listoneFilter.sort==='fvm'?'selected':''}>FVM ↓</option>
+        <option value="score" ${listoneFilter.sort==='score'?'selected':''}>Score ↓</option>
         <option value="qta" ${listoneFilter.sort==='qta'?'selected':''}>Qt.A ↓</option>
         <option value="name" ${listoneFilter.sort==='name'?'selected':''}>Nome A→Z</option>
       </select>
     </div>
-    <table><thead><tr><th></th><th>Nome</th><th>Squadra</th><th class="num">Qt.A</th><th class="num">FVM</th><th>Status</th></tr></thead>
+    <table><thead><tr><th></th><th>Nome</th><th>Squadra</th><th class="num">Qt.A</th><th class="num">FVM</th><th class="num">Score</th><th>Status</th></tr></thead>
     <tbody id="lrows">${listoneRows()}</tbody></table>
     <p style="color:var(--faint);font-size:12px;margin-top:8px">Mostrati max 250 risultati — filtra per vederli tutti. Click su una riga per aprirla.</p>`;
 }
@@ -826,9 +961,9 @@ function viewLog() {
       <span class="rb ${a.role}">${a.role}</span>
       <b>${esc(a.name)}</b> <span style="color:var(--mut)">${esc(a.team)}${a.slot ? ' · ' + a.slot : ''}</span>
       <input class="pz" type="number" min="0" value="${a.price ?? ''}" placeholder="crediti" data-editprice="${i}" title="Crediti pagati">
-      ${a.t === 'gone' ? `<input class="by" value="${esc(a.buyer || '')}" placeholder="chi l'ha preso?" data-editbuyer="${i}">` : ''}
+      ${a.t === 'gone' ? `<input class="by" list="oppdl" value="${esc(a.buyer || '')}" placeholder="chi l'ha preso?" data-editbuyer="${i}">` : ''}
       <button class="xbtn" data-del="${i}" title="Elimina">✕</button>
-    </div>`).join('');
+    </div>`).join('') + `<datalist id="oppdl">${(state.oppNames || []).map(n => `<option value="${esc(n)}">`).join('')}</datalist>`;
 }
 
 function viewNews() {
@@ -864,13 +999,14 @@ qEl.addEventListener('keydown', e => {
     e.preventDefault();
     const p = curResults[selIdx];
     if (!p) return;
-    if (e.shiftKey) { doGone(p); qEl.value = ''; curResults = []; $('#results').classList.remove('open'); }
+    if (e.shiftKey) { qEl.value = ''; curResults = []; openGone(p); }
     else openBuy(p);
   }
   else if (e.key === 'Escape') { qEl.value = ''; curResults = []; $('#results').classList.remove('open'); }
 });
 document.addEventListener('keydown', e => {
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); undo(); return; }
+  if (e.key === 'Escape' && goneTarget) { const t = goneTarget; goneTarget = null; doGone(t); closeBuy(); return; }
   if (e.key === 'Escape' && buyTarget) { closeBuy(); return; }
   // any printable char refocuses search (when not already in an input)
   if (!e.ctrlKey && !e.metaKey && !e.altKey && e.key.length === 1 && !/INPUT|SELECT|TEXTAREA/.test(document.activeElement?.tagName || '')) {
@@ -925,6 +1061,7 @@ $('#impFile').addEventListener('change', e => {
 $('#btnSet').addEventListener('click', () => {
   $('#setBudget').value = state.budget;
   ROLES.forEach(r => $('#set' + r).value = state.roleBudget[r]);
+  $('#setOpps').value = (state.oppNames || []).join('\n');
   $('#dlgSet').showModal();
 });
 $('#setCancel').addEventListener('click', () => $('#dlgSet').close());
@@ -932,11 +1069,14 @@ $('#setSave').addEventListener('click', () => {
   const b = parseInt($('#setBudget').value, 10);
   if (b > 0) state.budget = b;
   ROLES.forEach(r => { const v = parseInt($('#set' + r).value, 10); if (v >= 0) state.roleBudget[r] = v; });
+  state.oppNames = $('#setOpps').value.split('\n').map(s => s.trim()).filter(Boolean).slice(0, 15);
   save(); renderAll(); $('#dlgSet').close(); toast('Impostazioni salvate');
 });
 
 /* ============================== boot ============================== */
-function renderAll() { renderHeader(); renderAdvice(); renderTab(); }
+function renderAll() { renderHeader(); renderOpps(); renderAdvice(); renderTab(); }
+window.DATA = DATA;
+Object.defineProperty(window, 'state', {get: () => state, configurable: true});
 $('#footNote').textContent = `Listone ufficiale ${DATA.season}: ${DATA.players.length} giocatori · Rosa 3P+8D+8C+6A · I dati restano solo in questo browser (localStorage + cookie di backup). Fai un export ⬇ a fine asta.`;
 renderAll();
 qEl.focus();

@@ -65,7 +65,7 @@ python3 -m http.server 8642
 ```
 
 - [ ] Apri `http://localhost:8642/test.html`: in fondo alla pagina devono esserci
-      **26 PASS e nessun FAIL** (⚠ il test azzera lo stato salvato nel browser in cui
+      **49 PASS e nessun FAIL** (⚠ il test azzera lo stato salvato nel browser in cui
       lo apri: usa una finestra in incognito, oppure fallo PRIMA del punto 6).
 - [ ] Chiudi il server (Ctrl+C).
 

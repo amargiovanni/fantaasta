@@ -75,14 +75,50 @@ window.addEventListener('load', async () => {
     await sleep(80);
     ok('search: tag mio su Svilar', /mio · 62/.test($('#results')?.textContent || ''));
 
-    // gone flow: Shift+Enter
+    // gone flow: Shift+Enter -> price -> buyer key
     q.value = 'butez'; q.dispatchEvent(new Event('input', {bubbles:true}));
     await sleep(80);
     kbd(q, 'Enter', {shiftKey:true});
     await sleep(120);
+    ok('gone: card compratore aperta', !!$('#gonePrice'), $('#buycard')?.hidden ? 'hidden' : 'shown');
+    $('#gonePrice').value = '25';
+    kbd($('#gonePrice'), 'Enter');
+    await sleep(80);
+    ok('gone: step compratore', D2.activeElement === $('#goneWho'), D2.activeElement?.id);
+    kbd($('#goneWho'), '1');
+    await sleep(120);
+    const lastGone = W2.state.actions[W2.state.actions.length - 1];
+    ok('gone: prezzo e compratore registrati', lastGone.t === 'gone' && lastGone.price === 25 && lastGone.buyer === W2.state.oppNames[0], JSON.stringify({p:lastGone.price, b:lastGone.buyer}));
+    const dOpp = W2.derive();
+    ok('opp: budget avversario scalato', dOpp.opps[0].left === 975, String(dOpp.opps[0].left));
+    ok('opp: slot P avversario scalato', dOpp.opps[0].cnt.P === 1, String(dOpp.opps[0].cnt.P));
+    ok('opp: oppbar renderizzata', D2.querySelectorAll('#oppbar .opp').length === 9, String(D2.querySelectorAll('#oppbar .opp').length));
     q.value = 'butez'; q.dispatchEvent(new Event('input', {bubbles:true}));
     await sleep(80);
     ok('gone: tag andato su Butez', /andato/.test($('#results')?.textContent || ''));
+
+    // gone flow fallback: Esc sul prezzo registra senza dettagli
+    q.value = 'thiam'; q.dispatchEvent(new Event('input', {bubbles:true}));
+    await sleep(80);
+    kbd(q, 'Enter', {shiftKey:true});
+    await sleep(100);
+    kbd($('#gonePrice'), 'Escape');
+    await sleep(100);
+    const lastGone2 = W2.state.actions[W2.state.actions.length - 1];
+    ok('gone: Esc registra senza dettagli', lastGone2.t === 'gone' && lastGone2.name === 'Thiam' && !lastGone2.buyer, JSON.stringify({n:lastGone2.name, b:lastGone2.buyer}));
+    W2.undo();
+    await sleep(80);
+
+    // fantascore
+    ok('score: presente sui giocatori', W2.DATA.players.every(p => typeof p.score === 'number'), 'score mancante');
+    ok('score: range 1-99', W2.DATA.players.every(p => p.score >= 1 && p.score <= 99));
+    // walk-away su chip advice
+    D2.querySelector('#advice .chip').click();
+    await sleep(120);
+    ok('walkaway: valorizzato', /\d/.test($('#capWalk')?.textContent || ''), $('#capWalk')?.textContent);
+    ok('walkaway: info presenti', !!$('#walkinfo'), 'manca #walkinfo');
+    kbd(D2.body, 'Escape');
+    await sleep(80);
 
     // price cap enforcement: try to buy Martinez L. for 999
     q.value = 'martinez l'; q.dispatchEvent(new Event('input', {bubbles:true}));
@@ -96,9 +132,22 @@ window.addEventListener('load', async () => {
     kbd($('#price'), 'Escape');
     await sleep(80);
 
+    // listone: colonna e ordinamento score
+    D2.querySelector('#tabs button[data-tab="listone"]').click();
+    await sleep(120);
+    const lsort = D2.querySelector('#lsort');
+    ok('listone: opzione score', !!lsort.querySelector('option[value="score"]'));
+    lsort.value = 'score'; lsort.dispatchEvent(new Event('change', {bubbles:true}));
+    await sleep(100);
+    const scoreCells = [...D2.querySelectorAll('#lrows tr td:nth-child(6)')].slice(0, 5).map(td => parseInt(td.textContent, 10));
+    ok('listone: ordinato per score desc', scoreCells.every((v, i) => i === 0 || scoreCells[i-1] >= v), scoreCells.join(','));
+    D2.querySelector('#tabs button[data-tab="rosa"]').click();
+    await sleep(100);
+
     // persistence
     const st = JSON.parse(W2.localStorage.getItem('fantaasta_2627_v1') || '{}');
     ok('persist: 2 azioni in localStorage', (st.actions || []).length === 2, String((st.actions||[]).length));
+    ok('persist: oppNames salvati', (st.oppNames || []).length === 9, String((st.oppNames||[]).length));
     ok('persist: cookie backup scritto', W2.document.cookie.includes('fantaasta_bk='));
 
     // undo
