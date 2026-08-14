@@ -184,3 +184,9 @@ Sport, TMW, Corriere dello Sport, fantacalciopedia, pazzidifanta, Transfermarkt
 aperto fino all'1/9: il giorno dell'asta rilancia `/aggiorna-ricerca` per chiudere i
 dossier caldi (porta Juve/Vicario, Leao, Pinamonti/Bowie, Badiashile, Lucumì, rigori
 Cagliari, attacco Lazio).
+
+## Licenza e contributi
+
+Rilasciato sotto licenza [MIT](LICENSE). Contributi benvenuti: leggi
+[CONTRIBUTING.md](CONTRIBUTING.md); per le vulnerabilità di sicurezza
+[SECURITY.md](SECURITY.md) (segnalazione privata, niente issue pubbliche).
