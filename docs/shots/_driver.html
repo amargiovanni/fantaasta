@@ -1,0 +1,63 @@
+<!doctype html>
+<meta charset="utf-8">
+<body style="margin:0;background:#0c1210">
+<script>
+// pulizia PRIMA che l'app booti (stesso origin): ogni scatto parte pulito
+localStorage.clear();
+document.cookie = 'fantaasta_bk=;max-age=0;path=/';
+const S = new URLSearchParams(location.search).get('s') || 'main';
+const f = document.createElement('iframe');
+f.style.cssText = 'width:1600px;height:1000px;border:0';
+f.addEventListener('load', () => {
+  const W = f.contentWindow, D = W.document;
+  // squadre della lega
+  W.state.oppNames = ['Aston Birra','Real Divano','Longobarda','AC Picchia','Bayern Leverdisagio',
+                      'Inter Nos','Sportiva Sciarpa','Atletico Ma Non Troppo','Fanta Cugino'];
+  const buy = (n, t, price, slot) => { const p = W.findPlayer(n, t); if (p) W.doBuy(p, price, slot); };
+  const gone = (n, t, price, b) => { const p = W.findPlayer(n, t); if (p) W.doGone(p, price, b); };
+  // i miei acquisti
+  buy('Svilar','Roma',62,'P1');       buy('Falcone','Lecce',10,'P2');
+  buy('Bastoni','Inter',66,'D3');     buy('Dodò','Fiorentina',12,'D2');
+  buy('Doekhi','Lazio',11,'D4');      buy('Bella-Kotchap','Venezia',6,'D6');
+  buy('Paz N.','Como',118,'C1');      buy('Samardzic','Atalanta',26,'C3');
+  buy('Calò','Frosinone',11,'C7');
+  buy('Malen','Roma',132,'A1');       buy('Douvikas','Como',88,'A2');
+  buy('Cutrone','Monza',13,'A5');
+  // andati agli altri
+  gone('Martinez L.','Inter',262,'Aston Birra');   gone('Hojlund','Napoli',218,'Real Divano');
+  gone('Kolo Muani','Juventus',196,'Longobarda');  gone('Ramos G.','Milan',185,'AC Picchia');
+  gone('Kean','Fiorentina',171,'Bayern Leverdisagio'); gone('Yildiz','Juventus',158,'Inter Nos');
+  gone('Orsolini','Bologna',149,'Sportiva Sciarpa');   gone('Thuram','Inter',144,'Aston Birra');
+  gone('Calhanoglu','Inter',108,'Atletico Ma Non Troppo'); gone('De Bruyne','Napoli',92,'Fanta Cugino');
+  gone('Dybala','Roma',96,'Real Divano');          gone('Dimarco','Inter',84,'Longobarda');
+  gone('Zaccagni','Lazio',68,'AC Picchia');        gone('Bremer','Juventus',58,'Inter Nos');
+  gone('Carnesecchi','Atalanta',54,'Sportiva Sciarpa'); gone('Maignan','Milan',44,'Fanta Cugino');
+  gone('Vlasic','Torino',41,'Bayern Leverdisagio'); gone('Ostigard','Genoa',24,'Atletico Ma Non Troppo');
+  // scenario
+  const q = D.querySelector('#q');
+  if (S === 'main') {
+    q.value = 'sca';
+    q.dispatchEvent(new Event('input', {bubbles:true}));
+  } else if (S === 'buy') {
+    W.openBuy(W.findPlayer('Colombo','Genoa'));
+    setTimeout(() => {
+      const pr = D.querySelector('#price');
+      if (pr) { pr.value = '25'; pr.blur(); }
+      W.scrollTo(0, 0);
+    }, 300);
+  } else if (S === 'report') {
+    D.querySelector('#tabs button[data-tab="report"]').click();
+  } else if (S === 'liste') {
+    D.querySelector('#tabs button[data-tab="liste"]').click();
+  } else if (S === 'sim') {
+    W.toggleSim(true);
+    W.state.oppNames = ['Aston Birra','Real Divano','Longobarda','AC Picchia','Bayern Leverdisagio',
+                        'Inter Nos','Sportiva Sciarpa','Atletico Ma Non Troppo','Fanta Cugino'];
+    for (let i = 0; i < 7; i++) W.simStep(false);
+    W.simNext();
+    setTimeout(() => { D.activeElement?.blur(); W.scrollTo(0, 0); }, 400);
+  }
+});
+f.src = '../../index.html';
+document.body.appendChild(f);
+</script>

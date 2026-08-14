@@ -25,6 +25,7 @@ window.addEventListener('load', async () => {
     ok('boot: meters 4', D2.querySelectorAll('.meter').length === 4);
     ok('boot: rosa tab con 25 righe slot', D2.querySelectorAll('#tabbody tbody tr').length === 25);
     ok('boot: advice presente', D2.querySelectorAll('#advice .chip').length >= 10, String(D2.querySelectorAll('#advice .chip').length));
+    ok('boot: simbar davvero invisibile', W2.getComputedStyle($('#simbar')).display === 'none', W2.getComputedStyle($('#simbar')).display);
 
     // search
     const q = $('#q');
@@ -177,6 +178,7 @@ window.addEventListener('load', async () => {
     D5.querySelector('#btnSim').click();
     await sleep(150);
     ok('sim: banner e body.sim', !D5.querySelector('#simbar').hidden && D5.body.classList.contains('sim'));
+    ok('sim: banner davvero visibile', W3.getComputedStyle(D5.querySelector('#simbar')).display !== 'none');
     ok('sim: stato pulito a 1000', D5.querySelector('#stCred').textContent === '1000', D5.querySelector('#stCred').textContent);
     W3.simNext();
     await sleep(120);

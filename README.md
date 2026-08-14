@@ -8,6 +8,27 @@ di sintesi su ogni giocatore, **simulatore** per la prova generale, **report** f
 vista **secondo schermo**. I consigli (alert, rigoristi, sleeper) vengono dalla ricerca
 web multi-agente, rilanciabile con un comando (`/aggiorna-ricerca`).
 
+![La sala d'asta a metà serata: strip avversari, ricerca con badge e FantaScore, prossimi obiettivi e rosa](docs/shots/main.png)
+
+<table>
+<tr>
+<td width="50%"><img src="docs/shots/buy.png" alt="La scheda d'acquisto: consigli, alert, rigoristi, tetti di spesa e walk-away con la pressione degli avversari"></td>
+<td width="50%"><img src="docs/shots/sim.png" alt="Il simulatore: un giocatore sul banco, i bot rilanciano, tu decidi se superarli"></td>
+</tr>
+<tr>
+<td align="center"><em>La scheda d'acquisto: tetti, <b>walk-away</b> e chi può ancora superarti</em></td>
+<td align="center"><em>Il <b>simulatore</b>: Orsolini sul banco, i bot arrivano a 160 — rilanci o molli?</em></td>
+</tr>
+<tr>
+<td colspan="2"><img src="docs/shots/report.png" alt="Il tab Report: speso per reparto, acquisti vs piano, occasioni sfumate e la tabella del tavolo"></td>
+</tr>
+<tr>
+<td colspan="2" align="center"><em>Il <b>Report</b>: ogni acquisto vs il piano (affare o strapagato), e la spesa di tutto il tavolo</em></td>
+</tr>
+</table>
+
+*(Screenshot generati da uno stato di esempio con `docs/shots/_driver.html`; i nomi delle squadre avversarie sono, ovviamente, di fantasia.)*
+
 ## Avvio
 
 Doppio click su `index.html` (o `python3 -m http.server` nella cartella e apri
