@@ -49,7 +49,7 @@ Se un giocatore nuovo va aggiunto, prendi Qt.A e FVM dal listone via
 - `python3 update.py` — build + verifica (zero righe `!!`, altrimenti correggi i nomi e
   rilancia) + **diff delle novità** rispetto allo snapshot: mostralo all'utente com'è.
 - `python3 update.py --test` — apre lo smoke test nel browser e attende i PASS
-  (57 assert; se l'utente non può aprire il browser, salta e dillo).
+  (64 assert; se l'utente non può aprire il browser, salta e dillo).
 
 ## 5. Chiusura
 

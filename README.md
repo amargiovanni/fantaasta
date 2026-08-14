@@ -35,9 +35,13 @@ Il cap assoluto impedisce offerte che non ti lascerebbero 1 credito per ogni slo
 - **Liste** — la wishlist completa per slot (priorità, prezzi max, note), con depennamento live.
 - **Listone** — tutti i 499 giocatori, filtrabili; click per aprire l'acquisto.
 - **Log** — cronologia: prezzi modificabili, per i giocatori "andati" puoi segnare chi li ha presi.
-- **News & Rigoristi** — 70 alert pre-asta, rigoristi/piazzati delle 20 squadre, sleeper dal web, fonti.
-- **⚙** budget totale e per reparto · **⬇/⬆** export/import JSON · **CSV** rosa per
-  Excel (`;`, slot vuoti inclusi) · **✕** reset.
+- **Report** — come sta andando (e com'è andata): speso per reparto vs budget, ogni
+  acquisto vs il max del piano (affare/strapagato), occasioni sfumate (top-3 di lista
+  andati ad altri), tabella del tavolo con la spesa di tutti.
+- **News & Rigoristi** — 124 alert pre-asta, rigoristi/piazzati delle 20 squadre, sleeper dal web, fonti.
+- **⚙** budget, reparti e nomi avversari · **⧉** Liste su una finestra separata
+  (secondo schermo, sola lettura, si aggiorna da sola; `index.html?view=liste`) ·
+  **⬇/⬆** export/import JSON · **CSV** rosa per Excel (`;`, slot vuoti inclusi) · **✕** reset.
 
 ## Sala d'asta intelligente
 
@@ -88,8 +92,9 @@ Estrae slot e wishlist da `asta.xlsx`, il listone da `listone.xlsx`, applica
 `research.json` e si rilancia il build — i dati di stato nel browser non vengono toccati.
 
 `test.html` è lo smoke test: servito via http accanto a `index.html`, esercita ricerca,
-acquisto, cap, undo, tab, persistenza, tracking avversari, walk-away, FantaScore e
-simulatore (57 assert; risultati in pagina e via `fetch /__RESULTS__` nel log del server).
+acquisto, cap, undo, tab, persistenza, tracking avversari, walk-away, FantaScore,
+simulatore, report e vista specchio (64 assert; risultati in pagina e via
+`fetch /__RESULTS__` nel log del server).
 
 ## La mattina dell'asta (runbook, 20-30 min)
 
@@ -141,7 +146,7 @@ stato per il diff; `python3 build.py` resta il build "nudo".
 python3 update.py --test
 ```
 
-Apre `test.html` nel browser e attende i risultati: **57 PASS e nessun FAIL**.
+Apre `test.html` nel browser e attende i risultati: **64 PASS e nessun FAIL**.
 ⚠ Il test azzera lo stato salvato nel browser in cui gira: usa una finestra in
 incognito, oppure fallo PRIMA del punto 6.
 

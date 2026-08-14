@@ -18,7 +18,9 @@
 - [x] Pipeline ricerca a un click ✅ (`/aggiorna-ricerca` + `update.py`:
       snapshot/diff novità/build gate su `!!`/smoke test integrato — collaudati
       diff simulato e --test 57/57)
-- [ ] UX contorno: vista secondo schermo, report post-asta
+- [x] UX contorno ✅ (tab Report: acquisti vs piano, occasioni sfumate, tavolo;
+      bottone ⧉ / ?view=liste: specchio sola-lettura per il secondo schermo con
+      sync via storage event + poll; 64/64 test PASS)
 - [ ] Il giorno dell'asta: rilanciare ricerca (probabili vere 19-21/8) — dossier:
       Vicario-Juve, Leao, Pinamonti/Bowie, Badiashile, Lucumì, rigori Cagliari,
       attacco Lazio a 3

@@ -195,6 +195,34 @@ window.addEventListener('load', async () => {
     D5.querySelector('#simExitBtn').click();
     await sleep(150);
     ok('sim: uscita ripristina asta vera', D5.querySelector('#stCred').textContent === '938', D5.querySelector('#stCred').textContent);
+
+    // report tab
+    D5.querySelector('#tabs button[data-tab="report"]').click();
+    await sleep(120);
+    ok('report: acquisti con Svilar', /Svilar/.test(D5.querySelector('#tabbody')?.textContent || ''));
+    ok('report: sezioni presenti', /[Ss]peso/.test(D5.querySelector('#tabbody')?.textContent || '') && D5.querySelectorAll('#tabbody table').length >= 2, String(D5.querySelectorAll('#tabbody table').length));
+    D5.querySelector('#tabs button[data-tab="rosa"]').click();
+    await sleep(100);
+
+    // second screen (mirror ?view=liste)
+    const f2 = document.createElement('iframe');
+    f2.src = 'index.html?view=liste';
+    f2.style.cssText = 'width:1000px;height:600px';
+    document.body.appendChild(f2);
+    await new Promise(r => f2.addEventListener('load', r));
+    await sleep(400);
+    const W6 = f2.contentWindow, D6 = W6.document;
+    ok('mirror: liste renderizzate', D6.querySelectorAll('.wl-slot').length >= 20, String(D6.querySelectorAll('.wl-slot').length));
+    ok('mirror: colonna ricerca nascosta', getComputedStyle(D6.querySelector('main>section')).display === 'none');
+    ok('mirror: azioni header nascoste', getComputedStyle(D6.querySelector('.hactions')).display === 'none');
+    ok('mirror: stato condiviso (Svilar mio)', !!D6.querySelector('.wl-list li.mine'));
+    const W7 = document.getElementById('f').contentWindow;
+    W7.doGone(W7.findPlayer('Meret', 'Napoli'));
+    await sleep(500);
+    ok('mirror: sync live su storage event', [...D6.querySelectorAll('.wl-list li.dead .nm')].some(el => /Meret/.test(el.textContent)), 'Meret non depennato nel mirror');
+    W7.undo();
+    await sleep(200);
+    f2.remove();
   } catch (e) {
     results.push('EXCEPTION ' + (e.stack || e));
   }

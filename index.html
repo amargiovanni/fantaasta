@@ -95,6 +95,18 @@ header{
 .scpill.hi{color:var(--volt);border-color:rgba(198,241,77,.4)}
 .scpill.mid{color:var(--gold);border-color:rgba(236,198,92,.4)}
 
+/* ---------- mirror (second screen) ---------- */
+body.mini main{grid-template-columns:1fr}
+body.mini main>section:first-child,body.mini .hactions,body.mini #simbar{display:none}
+body.mini .tabbody{pointer-events:none}
+body.mini .tabs{top:0}
+.minitag{font-family:var(--cond);text-transform:uppercase;letter-spacing:.12em;font-size:11px;color:var(--rC);border:1px solid rgba(90,171,255,.4);border-radius:5px;padding:1px 8px;margin-left:10px}
+
+/* ---------- report ---------- */
+.repgrid{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.rep-deal{color:var(--ok);font-family:var(--num);font-size:13px}
+.rep-over{color:var(--warn);font-family:var(--num);font-size:13px}
+
 /* ---------- simulation mode ---------- */
 #simbar{margin:10px 0 0;padding:8px 12px;border:1px dashed rgba(245,165,36,.6);border-radius:8px;font-size:13px;color:var(--warn);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 #simbar button{padding:3px 10px;font-size:12.5px}
@@ -279,6 +291,7 @@ dialog h2{margin-bottom:14px;color:var(--ink)}
   </div>
   <div class="hactions">
     <button id="btnUndo" title="Annulla ultima operazione (Ctrl+Z)">↩ Undo</button>
+    <button id="btnMirror" title="Apri le Liste in una finestra separata (secondo schermo, sola lettura, si aggiorna da sola)">⧉</button>
     <button id="btnSim" title="Modalità simulazione: prova generale con bot, senza toccare l'asta vera">🤖</button>
     <button id="btnSet" title="Budget e impostazioni">⚙</button>
     <button id="btnExp" title="Scarica backup JSON">⬇</button>
@@ -320,6 +333,7 @@ dialog h2{margin-bottom:14px;color:var(--ink)}
       <button data-tab="liste">Liste</button>
       <button data-tab="listone">Listone</button>
       <button data-tab="log">Log <span class="cnt" id="cntLog"></span></button>
+      <button data-tab="report">Report</button>
       <button data-tab="news">News &amp; Rigoristi</button>
     </nav>
     <div class="tabbody" id="tabbody"></div>
@@ -897,6 +911,7 @@ function renderTab() {
   else if (curTab === 'liste') body.innerHTML = viewListe();
   else if (curTab === 'listone') body.innerHTML = viewListone();
   else if (curTab === 'log') body.innerHTML = viewLog();
+  else if (curTab === 'report') body.innerHTML = viewReport();
   else body.innerHTML = viewNews();
   bindTab(body);
 }
@@ -1044,6 +1059,58 @@ function viewLog() {
     </div>`).join('') + `<datalist id="oppdl">${(state.oppNames || []).map(n => `<option value="${esc(n)}">`).join('')}</datalist>`;
 }
 
+function viewReport() {
+  const d = derive();
+  const fvmMine = d.mine.reduce((s,a) => s + (byId.get(a.pid)?.fvm || 0), 0);
+  const scMine = d.mine.length ? Math.round(d.mine.reduce((s,a) => s + (byId.get(a.pid)?.score || 0), 0) / d.mine.length) : 0;
+  const buysRows = d.mine.map(a => {
+    const p = byId.get(a.pid);
+    const w = (wishByPid.get(a.pid) || []).find(x => x.slot === a.slot) || (wishByPid.get(a.pid) || [])[0];
+    const max = w?.maxprice ?? (sleepByPid.get(a.pid) || [])[0]?.price ?? null;
+    const delta = max != null ? max - a.price : null;
+    return `<tr><td class="slotid">${a.slot}</td><td><span class="rb ${a.role}">${a.role}</span> <b>${esc(a.name)}</b> <span style="color:var(--mut)">${esc(a.team)}</span></td>
+      <td class="num">${a.price}</td><td class="num">${max ?? '—'}</td>
+      <td>${delta == null ? '' : delta >= 0 ? `<span class="rep-deal">▼ ${delta} sotto il max</span>` : `<span class="rep-over">▲ ${-delta} oltre il max</span>`}</td>
+      <td class="num">${p?.score ?? ''}</td></tr>`;
+  }).join('');
+  const missed = [];
+  for (const role of ROLES) for (const grp of (DATA.wishlist[role] || [])) {
+    for (const w of grp.players.filter(x => x.prio <= 3)) {
+      const p = findPlayer(w.name, w.team);
+      const g = p && d.gonePid.get(p.id);
+      if (g) missed.push(`<div class="altrow"><span class="pr">${grp.slot} #${w.prio}</span><b>${esc(w.name)}</b><span class="tm">${esc(w.team)}</span>
+        <span>${g.buyer ? `→ ${esc(g.buyer)}` : '→ altri'}${g.price ? ` per <b>${g.price}</b>` : ''}</span><span class="mx">tuo max ${w.maxprice}</span></div>`);
+    }
+  }
+  return `
+    <div class="repgrid">
+      <div class="cap"><label>Speso</label><b>${d.spent}</b></div>
+      <div class="cap"><label>Residuo</label><b>${d.left}</b></div>
+      <div class="cap"><label>Vs piano</label><b>${(d.planDelta > 0 ? '+' : '') + d.planDelta}</b></div>
+      <div class="cap"><label>FVM rosa</label><b>${fvmMine}</b></div>
+      <div class="cap"><label>Score medio</label><b>${scMine || '—'}</b></div>
+      <div class="cap"><label>Slot pieni</label><b>${d.mine.length}/25</b></div>
+    </div>
+    <div class="newsblock"><h2>Speso per reparto</h2>
+      <table><thead><tr><th>Reparto</th><th class="num">Speso</th><th class="num">Budget</th><th class="num">Delta</th><th class="num">Slot</th></tr></thead><tbody>
+      ${ROLES.map(r => { const dl = state.roleBudget[r] - d.spentRole[r];
+        return `<tr><td><span class="rb ${r}">${r}</span> ${ROLENAME[r]}</td><td class="num">${d.spentRole[r]}</td><td class="num">${state.roleBudget[r]}</td>
+        <td class="num" style="color:${dl >= 0 ? 'var(--ok)' : 'var(--warn)'}">${dl >= 0 ? '+' + dl : dl}</td><td class="num">${d.cntRole[r]}/${DATA.roleSlots[r]}</td></tr>`; }).join('')}
+      </tbody></table></div>
+    <div class="newsblock"><h2>Acquisti vs piano</h2>
+      ${d.mine.length ? `<table><thead><tr><th>Slot</th><th>Giocatore</th><th class="num">Pagato</th><th class="num">Max piano</th><th>Esito</th><th class="num">Score</th></tr></thead><tbody>${buysRows}</tbody></table>`
+        : '<p style="color:var(--faint)">Nessun acquisto ancora.</p>'}</div>
+    <div class="newsblock"><h2>Occasioni sfumate (top-3 di lista andati ad altri)</h2>
+      ${missed.length ? `<div class="bcalts">${missed.join('')}</div>` : '<p style="color:var(--faint)">Nessuna, per ora: i primi nomi delle tue liste sono ancora lì (o già tuoi).</p>'}</div>
+    <div class="newsblock"><h2>Il tavolo</h2>
+      <table><thead><tr><th>Squadra</th><th class="num">Speso</th><th class="num">Residuo</th><th class="num">Max offerta</th><th>Rosa</th></tr></thead><tbody>
+      <tr><td><b>Tu</b></td><td class="num">${d.spent}</td><td class="num">${d.left}</td><td class="num">${d.maxBid}</td><td class="num" style="text-align:left">${ROLES.map(r => `${d.cntRole[r]}${r}`).join(' ')}</td></tr>
+      ${d.opps.map(o => `<tr><td>${esc(o.name)}</td><td class="num">${o.spent}</td><td class="num">${o.left}</td><td class="num">${o.maxBid}</td>
+        <td class="num" style="text-align:left">${ROLES.map(r => `${o.cnt[r]}${r}`).join(' ')}</td></tr>`).join('')}
+      </tbody></table>
+      <p style="color:var(--faint);font-size:12px;margin-top:6px">I dati degli avversari valgono quanto i prezzi/compratori registrati con Shift+Invio.</p></div>`;
+}
+
 function viewNews() {
   const alerts = DATA.alerts || [];
   const rig = DATA.rigoristi || {};
@@ -1096,6 +1163,10 @@ document.addEventListener('click', e => {
 });
 
 $('#btnUndo').addEventListener('click', undo);
+$('#btnMirror').addEventListener('click', () => {
+  window.open(location.pathname + '?view=liste', 'fantaasta_mirror', 'width=1100,height=900');
+  toast('⧉ Liste aperte in una finestra separata: trascinala sul secondo schermo');
+});
 $('#btnSim').addEventListener('click', () => toggleSim());
 $('#simExitBtn').addEventListener('click', () => toggleSim(false));
 $('#simNextBtn').addEventListener('click', () => simNext());
@@ -1166,6 +1237,23 @@ function renderAll() {
 }
 window.DATA = DATA;
 Object.defineProperty(window, 'state', {get: () => state, configurable: true});
+
+/* mirror mode (?view=<tab>): sola lettura per il secondo schermo, sync automatico */
+const VIEW = new URLSearchParams(location.search).get('view');
+if (VIEW) {
+  document.body.classList.add('mini');
+  curTab = ['rosa','liste','listone','log','report','news'].includes(VIEW) ? VIEW : 'liste';
+  document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === curTab));
+  document.querySelector('.brand').insertAdjacentHTML('beforeend', '<span class="minitag">specchio · sola lettura</span>');
+  const resync = () => { state = loadState(); renderAll(); };
+  window.addEventListener('storage', e => { if (!e.key || e.key === lsKey()) resync(); });
+  let lastRaw = null;
+  setInterval(() => {                        // fallback per file:// dove gli storage event non arrivano
+    let raw = null;
+    try { raw = localStorage.getItem(lsKey()); } catch (e) {}
+    if (raw !== lastRaw) { lastRaw = raw; resync(); }
+  }, 2500);
+}
 $('#footNote').textContent = `Listone ufficiale ${DATA.season}: ${DATA.players.length} giocatori · Rosa 3P+8D+8C+6A · I dati restano solo in questo browser (localStorage + cookie di backup). Fai un export ⬇ a fine asta.`;
 renderAll();
 qEl.focus();
