@@ -91,6 +91,88 @@ Estrae slot e wishlist da `asta.xlsx`, il listone da `listone.xlsx`, applica
 acquisto, cap, undo, tab, persistenza, tracking avversari, walk-away, FantaScore e
 simulatore (57 assert; risultati in pagina e via `fetch /__RESULTS__` nel log del server).
 
+## La mattina dell'asta (runbook, 20-30 min)
+
+Ordine consigliato: prima i dati (1-3), poi build e verifica (4-5), poi il browser (6).
+
+### 1 · Listone aggiornato (5 min)
+
+Le quotazioni ufficiali cambiano fino all'ultimo (nuovi acquisti, ceduti, cambi ruolo).
+
+- Scarica le **Quotazioni Fantacalcio** aggiornate da fantacalcio.it (Excel, stagione
+  2026-27 — lo stesso file da cui viene `listone.xlsx`).
+- Sostituisci `listone.xlsx` (tieni una copia: `cp listone.xlsx listone.old.xlsx`).
+- Controllo rapido: foglio `Tutti`, intestazioni alla riga 2, dati dalla riga 3
+  (`Id, R, RM, Nome, Squadra, Qt.A, …, FVM`). Se il formato è cambiato, dillo a
+  Claude che adatta `build.py`.
+- Se un giocatore della wishlist è sparito dal listone (ceduto all'estero), il build
+  lo segnala: va tolto da `asta.xlsx`/`research.json` o semplicemente ignorato.
+
+### 2 · Ricerca fresca (15-20 min, la fa Claude)
+
+Apri Claude Code nella cartella e digita **`/aggiorna-ricerca`** — fa tutto da solo:
+snapshot, 7 agenti di ricerca paralleli, sintesi in `research.json`, build con **diff
+delle novità** e smoke test. Argomenti opzionali per restringere, es.
+`/aggiorna-ricerca solo infortuni e porte`. Alla fine rileggi gli alert nuovi nel tab
+**News & Rigoristi** e verifica che i dossier aperti abbiano una risposta (non
+"invariato" per pigrizia dell'agente).
+
+### 3 · Ritocchi manuali (5 min, opzionale)
+
+Nomi che vuoi assolutamente, prezzi max da alzare/abbassare: aggiungili come
+`wishlist_ops` in `research.json` — formato
+`{"op":"update","role":"A","slot":"A3","name":"Simeone","maxprice":70}`
+(op: `update` / `add` / `remove`) — oppure chiedi a Claude in italiano.
+
+### 4 · Build + diff (1 min)
+
+```bash
+python3 update.py
+```
+
+Output atteso: `index.html written: …` + sezione `=== NOVITÀ ===` col diff rispetto
+allo snapshot. Lo script **esce con errore se ci sono righe `!!`** (nome di una op che
+non matcha il listone: correggilo e rilancia). `python3 update.py snapshot` salva lo
+stato per il diff; `python3 build.py` resta il build "nudo".
+
+### 5 · Smoke test (1 min)
+
+```bash
+python3 update.py --test
+```
+
+Apre `test.html` nel browser e attende i risultati: **57 PASS e nessun FAIL**.
+⚠ Il test azzera lo stato salvato nel browser in cui gira: usa una finestra in
+incognito, oppure fallo PRIMA del punto 6.
+
+### 6 · Browser dell'asta (5 min)
+
+- Apri `index.html` **nel browser e profilo che userai la sera** — lo stato vive lì
+  (localStorage): niente incognito, niente "l'apro sull'altro PC".
+- Roba di prova dentro? **✕ Reset** (doppia conferma). Poi **⚙**: budget, reparti e
+  **nomi dei 9 avversari** (servono per il tracking a tasti 1-9).
+- Prova il giro completo: cerca → Invio → prezzo → Invio, poi Ctrl+Z. Prova anche una
+  chiamata del simulatore 🤖 e un **⬇ export** (è il tuo salvagente).
+- Pagina nei preferiti / tab pinnato.
+
+### 7 · Ultimi 10 minuti (la sera)
+
+- Occhiata a SOS Fanta / FantaMaster per le news dell'ultima ora: eventuali novità le
+  appunti nel campo note del Log — niente rebuild a quel punto.
+- Laptop in carica; seconda finestra col tab **Liste** se hai due schermi.
+- Durante l'asta registra ogni giocatore battuto (tuo = Invio+prezzo, altrui =
+  Shift+Invio+prezzo+chi): è ciò che tiene affidabili "Prossimi obiettivi", strip
+  avversari e walk-away. A fine asta: **⬇ export**.
+
+### Riferimenti rapidi
+
+| Cosa | Dove |
+|---|---|
+| Consigli/alert/rigoristi | `research.json` → `build.py` → embedded in `index.html` |
+| Wishlist di base (slot e priorità) | `asta.xlsx` (fogli Portieri/Difensori/…) |
+| Stato dell'asta | Solo nel browser (localStorage + cookie) — il rebuild NON lo tocca |
+| Stato della simulazione | localStorage separato (`…_sim`) — reset sim non tocca l'asta |
+
 ## Fonti della ricerca (14/08/2026)
 
 30+ siti tra cui fantacalcio.it, SOS Fanta, FantaMaster, Goal, Calciodangolo, Sky Sport,
