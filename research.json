@@ -1,575 +1,887 @@
 {
-  "date": "14 agosto 2026 (sera)",
+  "date": "16 agosto 2026",
   "rigoristi": {
     "Atalanta": {
-      "rigori": "Scamacca in pole (70/30 su Krstovic, 3/3) ma Sarri non ufficializza; De Ketelaere 3/4 (ko adduttori), Samardzic 2/2",
+      "rigori": "Scamacca in pole (70/30 su Krstovic) ma con Sarri gerarchia azzerata e MAI ufficializzata; 2° conteso: Samardzic (FantaMaster/SOS/F-online) vs Krstovic (Sky) vs De Ketelaere (ko adduttori). Nessuna partita 14-16/8: zero prove di campo",
       "punizioni": "De Ketelaere, Samardzic, Gaetano, Raspadori",
       "corner": "Samardzic, Gaetano, Bellanova, Ederson"
     },
     "Bologna": {
-      "rigori": "Orsolini confermato 1° (Dovbyk solo 3° per le fonti: insidia ridimensionata), poi Bernardeschi",
+      "rigori": "Orsolini confermato 1° (solo Calcio d'Angolo dà Dovbyk 1°, isolato), poi Bernardeschi. Ma entrambi opachi nell'amichevole col Brighton (15/8)",
       "punizioni": "Orsolini, Bernardeschi, Ferguson",
       "corner": "Orsolini, Bernardeschi, Miranda J."
     },
     "Cagliari": {
-      "rigori": "CONTESO: Fantacalcio.it dà Kevin Carlos 1° e Maldini 2°; FantaMaster/Sky danno Maldini. Maldini comunque titolare (7/7 fonti) e sulle punizioni",
+      "rigori": "RIBALTONE DAL CAMPO: in Coppa Italia (14/8, unico rigore dei 32esimi) l'ha calciato e SEGNATO DEIOLA, capitano — con Winks e Fazzini in campo; ha ribattuto lui anche dopo la prima esecuzione annullata dal VAR. Nessuna fonte pre-asta lo dava (erano spaccate su Maldini/Kevin Carlos/Fazzini/S.Esposito = nessuna sapeva). Kevin Carlos assente, Maldini entrato a rigore già battuto",
       "punizioni": "Maldini, Winks, Fazzini",
       "corner": "Fazzini, Obert, Winks, Romano"
     },
     "Como": {
-      "rigori": "Da Cunha (4/4) — NON Nico Paz (0/2); Douvikas 12/13 in carriera",
+      "rigori": "Da Cunha (4/4) confermato — NON Nico Paz; ma il 31/7 in amichevole un rigore l'ha battuto (e segnato) DOUVIKAS: gerarchia da ricontrollare alla prima occasione",
       "punizioni": "Paz N., Baturina, Da Cunha",
       "corner": "Paz N., Baturina, Da Cunha, Perrone"
     },
     "Fiorentina": {
-      "rigori": "Gudmundsson A. (26/29) RESTA e favorito su Kean (7/8); Mastantuono (3/3 al River) possibile 1° dopo l'adattamento",
-      "punizioni": "Gudmundsson A., Mastantuono, Mandragora, Fagioli",
+      "rigori": "Gudmundsson A. (26/29) confermato 1° (e in gol al 2' in Coppa); occhio: Fantacalcio-online mette già Pellegrino M. (nuovo arrivo, ex rigorista Parma) 2° davanti a Kean. Mastantuono ridimensionato (subentro al 58' in Coppa)",
+      "punizioni": "Gudmundsson A., Mandragora, Fagioli",
       "corner": "Gudmundsson A., Mandragora, Fagioli"
     },
     "Frosinone": {
-      "rigori": "Calò (5/5 in B), a segno anche in amichevole con la Lazio: tutti i piazzati sono suoi",
+      "rigori": "Calò confermato (5 fonti su 6; solo FantaMaster dà Schmid — outlier, e Schmid non è neanche nell'XI di Coppa): tutti i piazzati sono suoi",
       "punizioni": "Calò, Ghedjemis, Kvernadze",
       "corner": "Calò, Ghedjemis, Kvernadze"
     },
     "Genoa": {
-      "rigori": "Colombo — 2 rigori segnati in precampionato, gerarchia blindata; poi Ostigard, Vitinha, Messias",
+      "rigori": "Colombo confermato unanime; a segno in quasi tutte le amichevoli estive. Poi Vitinha, Messias (ko)",
       "punizioni": "Baldanzi, Messias, Frendrup, Ellertsson",
       "corner": "Baldanzi, Martin, Messias"
     },
     "Inter": {
-      "rigori": "Calhanoglu (55/62): la certezza più solida della Serie A; poi Zielinski, Martinez L. — ma 7 gialli in 22 presenze: fairplay pessimo",
+      "rigori": "Calhanoglu (55/62) confermato unanime: la certezza più solida della A; poi Zielinski, Martinez L. — ma 7 gialli in 22 presenze: fairplay pessimo",
       "punizioni": "Calhanoglu, Dimarco, Zielinski",
       "corner": "Calhanoglu, Dimarco, Barella, Sucic"
     },
     "Juventus": {
-      "rigori": "Kolo Muani (6/6) in pole CONSOLIDATO (Fantacalcio.it, Sky, FantaMaster, fantacalcio-online); solo Fantacalciopedia tiene Yildiz. Nessuna ufficialità di Spalletti",
+      "rigori": "Kolo Muani (6/6) in pole per FantaMaster/F-online/CalcioDangolo; ma Goal/SOS dicono Yildiz/Locatelli e TMW Locatelli: fonti più spaccate di quanto sembrava. Zero ufficialità di Spalletti",
       "punizioni": "Yildiz, Locatelli, Koopmeiners",
       "corner": "Yildiz, Cambiaso, Locatelli"
     },
     "Lazio": {
-      "rigori": "ANCORA APERTO: Zaccagni favorito per i più, ma Sky mette Cataldi 1° e Taylor K. (14/16) ha i numeri migliori. 'Una delle gerarchie più aperte della A' (SOS)",
+      "rigori": "CORRETTO: Zaccagni 1° UNANIME (6/6 fonti — la lettura 'Sky dà Cataldi 1°' era sbagliata: Sky dà Zaccagni 1°, Cataldi 2°). 2° conteso Taylor K. (14/16, numeri migliori) vs Cataldi (2/2, ma OUT pubalgia operata: rientro fine agosto). ATTENZIONE: se arriva Pinamonti (20/24 in carriera, trattativa avanzata) è candidato immediato a scavalcare tutti",
       "punizioni": "Zaccagni, Cataldi, Taylor K., Rovella",
       "corner": "Zaccagni, Taylor K., Rovella"
     },
     "Lecce": {
-      "rigori": "Geubbels (7/7, la % più pulita della A) confermato su Stulic (70/30 anche per il posto)",
+      "rigori": "PIÙ APERTO del previsto: Geubbels (7/7) per Sky/CalcioDangolo/Fantacalcio.it, ma FantaMaster/SOS/TMW/F-online danno STULIC. Per il POSTO Geubbels resta avanti (Stulic fuori dalla probabile di Coppa). Palermo-Lecce del 17/8 può sciogliere",
       "punizioni": "Gallo, Pierotti, Berisha M.",
       "corner": "Gallo, Pierotti, Berisha M."
     },
     "Milan": {
-      "rigori": "INVERTITO dalle fonti fresche: Ramos G. (11/13) 1° per FantaMaster 12/8 e Fantacalcio.it live; Nkunku (rigore segnato in amichevole) 1° per Sky/Fantacalciopedia. Pulisic out fino a settembre",
+      "rigori": "A TRE, mai deciso da Amorim: Nkunku (17/20, ha segnato il rigore in Milan-Inter a Perth) / Pulisic (13/15, out fino a settembre) / Ramos G. (11/13). MA Nkunku è FUORI ROSA per mercato (escluso col Man United, la Roma lo vuole): di fatto alla 1ª tira RAMOS",
       "punizioni": "Modric, Nkunku, Ricci",
       "corner": "Modric, Bartesaghi, Jashari"
     },
     "Monza": {
-      "rigori": "PESSINA OPERATO (out 2-3 mesi): rigori attesi a Cutrone, poi Petagna",
+      "rigori": "Pessina operato (rientro novembre): rigori attesi a Cutrone, poi Petagna. Occhio: Sky dava COLPANI 2° dietro Pessina → outsider reale e sottovalutato. Nessun rigore in Coppa (3-0 all'Avellino)",
       "punizioni": "Colpani, Ciurria",
       "corner": "Colpani, Ciurria"
     },
     "Napoli": {
-      "rigori": "De Bruyne (15/17) 1° confermato — Lukaku UFFICIALE al Fenerbahçe. Attenzione: fantacalcio.it 14/8 schiera Anguissa dal 1', il minutaggio di KDB è il vero tema",
+      "rigori": "De Bruyne (15/17) 1° per Sky/TMW/F-online/CalcioDangolo — Lukaku al Fenerbahçe. Attenzione doppia: SOS e Goal danno ancora Lukaku 1° (pagine stantie, da ignorare) e il minutaggio di KDB con Allegri resta il vero tema (segnali contrastanti su De Bruyne vs Anguissa)",
       "punizioni": "De Bruyne, Politano, Lobotka",
       "corner": "De Bruyne, Politano"
     },
     "Parma": {
-      "rigori": "RISOLTA: Pellegrino UFFICIALE alla Fiorentina (13/8) → rigori a Tourè E. (3/3), poi Bernabè",
+      "rigori": "CORRETTO: Tourè E. NON è il rigorista designato — con Pellegrino partito NESSUNO specialista in rosa; candidati Bernabè (1° per F-online, ma valuta la cessione), Tourè, Frigan, Romero D. In Coppa (2-0 al Catania) nessun rigore. Non pagare nessuno del Parma per i rigori",
       "punizioni": "Bernabè, Nicolussi Caviglia (ko), Valeri",
       "corner": "Bernabè, Valeri"
     },
     "Roma": {
-      "rigori": "Malen 1° di misura (10/13, 4/5 in giallorosso; FantaMaster inverte, SOS parla di alternanza): davanti a Dybala per 5 fonti su 7. Ed è il 9 favorito (70/30 su Castro)",
+      "rigori": "Malen confermato 1° (sorpasso su Dybala già a maggio, resta 'di misura'): titolare e 9 anche nell'amichevole col Dortmund (15/8, con Dybala-Soulé dietro). Dybala (43/49) 2°",
       "punizioni": "Dybala, Soulè, Pellegrini Lo.",
       "corner": "Dybala, Soulè, Wesley, Molina N."
     },
     "Sassuolo": {
-      "rigori": "Berardi (57/66) indiscusso MA in dubbio per la 1ª (caviglia, preparazione saltata); poi Pinamonti (in uscita rallentata)",
+      "rigori": "Berardi 1° MA doppio rischio: condizione (preparazione saltata, anche se Aquilani assicura 'a disposizione per la 1ª') e il 2° è PINAMONTI (20/24) in uscita verso la Lazio (out da Sassuolo-Cesena per mercato). Se mancano entrambi: LAURIENTÉ",
       "punizioni": "Berardi, Adzic, Laurientè, Volpato",
       "corner": "Berardi, Adzic, Laurientè"
     },
     "Torino": {
-      "rigori": "Vlasic (5/5), poi Kulenovic, Simeone — occhio: 7 gialli nel 25/26 per Vlasic",
+      "rigori": "Vlasic (5/5) confermato unanime — 90' pieni in Coppa; poi Kulenovic, Simeone (in gol in Coppa). Occhio ai 7 gialli 25/26 di Vlasic",
       "punizioni": "Vlasic, Oristanio, Ilic",
       "corner": "Vlasic, Oristanio, Ilic"
     },
     "Udinese": {
-      "rigori": "Davis K. (4/4), zero concorrenza reale; Solet 2° per le fonti",
+      "rigori": "Davis K. (4/4) confermato, zero concorrenza reale (in gol su azione in Coppa col Padova); Solet 2° per le fonti",
       "punizioni": "Zaniolo, Vojvoda, Ekkelenkamp, Miller L.",
       "corner": "Vojvoda, Ekkelenkamp, Miller L., Zaniolo"
     },
     "Venezia": {
-      "rigori": "APERTO: Adams A. (3/3 al Siviglia) / Rrahmani Al. (14/18) — alternanza probabile, tira chi è in campo. Adorante scavalcato",
+      "rigori": "APERTO: Adams A. 1° per Sky/TMW/CalcioDangolo/F-online, Rrahmani Al. 1° per FantaMaster/SOS. La Coppa non ha sciolto: doppietta di Adams ma su azione, nessun rigore. Adorante scavalcato CONFERMATO; Busio alternativa",
       "punizioni": "Busio, Basic, Yeboah J.",
       "corner": "Busio, Perez K., Basic, Helgason"
     }
   },
   "alerts": [
     {
+      "name": "Nkunku",
+      "team": "Milan",
+      "type": "mercato",
+      "text": "FUORI ROSA per scelta tecnica/mercato: escluso da Milan-Man United (15/8) con Tomori e Fofana. Lo scambio con Soulè è MORTO (Pedullà: 'da escludere'), ma la ROMA lo vuole in prestito (il Milan chiede 35M). Da NON comprare finché non si chiarisce: era il nostro semi-top di trequarti."
+    },
+    {
       "name": "Leao",
       "team": "Milan",
       "type": "infortunio",
-      "text": "DOPPIO ALLARME 14/8: problema muscolare (salta l'amichevole col Manchester United, in dubbio per la 1ª) E il Milan apre alla cessione abbassando la richiesta a 40-45M — Galatasaray pronto al rilancio, incontro Cardinale-Leao la prossima settimana. Forte sconto o lasciare."
+      "text": "Quadro aggiornato 15-16/8: problema da 'affaticamento' riclassificato al QUADRICIPITE, in dubbio per la 1ª (ha saltato lo United a 8 giorni dal via). Sul mercato il Milan ha ALZATO la richiesta a 50-60M e rifiuta il prestito con obbligo: permanenza più probabile (per Pedullà è solo la 2ª scelta del Gala dopo Martinelli). Resta: forte sconto o lasciare."
     },
     {
-      "name": "De Ketelaere",
-      "team": "Atalanta",
-      "type": "infortunio",
-      "text": "Distrazione di basso grado agli adduttori (12/8): a rischio per la 1ª col Sassuolo. Resta il titolare designato a destra: comprarlo con lo sconto-infortunio."
+      "name": "Maignan",
+      "team": "Milan",
+      "type": "ballottaggio",
+      "text": "RIENTRATO IN ANTICIPO a Milanello (15/8): il 'Torriani favorito 65%' è superato — ora è Maignan favorito 55-60% per Torino-Milan, con test atletici decisivi. Torriani (7,5 col Man United) resta il vice reale con Terracciano ko. Anche Rabiot rientrato solo il 16/8."
     },
     {
-      "name": "Ahanor",
-      "team": "Atalanta",
-      "type": "infortunio",
-      "text": "Distrazione agli adduttori (stesso allenamento di DK): a rischio 1ª. Era in ballottaggio con Bernasconi/Kolasinac a sinistra."
+      "name": "Ramos G.",
+      "team": "Milan",
+      "type": "ok",
+      "text": "Il 9 fisso: titolare e gol col Man United (7,5 Sky). Con Nkunku fuori rosa e Gimenez ko/verso il Porto, alla 1ª è lui il rigorista di fatto. Da pagare."
     },
     {
-      "name": "Pessina",
-      "team": "Monza",
-      "type": "infortunio",
-      "text": "LUSSAZIONE DELLA ROTULA, OPERATO: out 2-3 mesi (nov-dic). Da depennare; rigori e piazzati del Monza passano a Cutrone/Colpani. ATTENZIONE: quasi tutti gli aggregatori lo schierano ancora titolare — è l'errore più costoso in circolazione."
+      "name": "Jashari",
+      "team": "Milan",
+      "type": "ok",
+      "text": "RAFFORZATO: titolare col Man United (7 Sky), Rabiot rientrato tardi e non in gruppo, Fofana in trattativa con la JUVE (17-18M). Il perno con Modric è lui. Zero cartellini: fairplay perfetto."
     },
     {
       "name": "Pulisic",
       "team": "Milan",
       "type": "infortunio",
-      "text": "PEGGIORATO: microfrattura + edema osseo tibia/perone, rientro realistico INIZIO SETTEMBRE col mirino sulla trasferta con la Juve (Tuttosport). Non 'tra 1ª e 2ª'. Non pagarlo da top."
-    },
-    {
-      "name": "Thuram",
-      "team": "Inter",
-      "type": "infortunio",
-      "text": "Fastidio al polpaccio (lo stesso del Mondiale), salta l'ultima amichevole: a rischio concreto per la 1ª. Chivu: coppia d'avvio Bonny-Esposito. Top sull'anno, non per l'avvio."
-    },
-    {
-      "name": "Neres",
-      "team": "Napoli",
-      "type": "infortunio",
-      "text": "CONFERMATO OUT per la 1ª (terapia rigenerativa al ginocchio, zero minuti in tutte le amichevoli): non più 'in dubbio', salta il Genoa. Trappola d'asta."
-    },
-    {
-      "name": "Beukema",
-      "team": "Napoli",
-      "type": "infortunio",
-      "text": "Tendinopatia achillea bilaterale cronica: 'a Genova non ci sarà' (CdS), obiettivo 2ª col Como. Al rientro sarà titolare: prendilo a poco, non zero. Occhio: DAZN/Goal lo schierano ancora — è sbagliato."
-    },
-    {
-      "name": "Buongiorno",
-      "team": "Napoli",
-      "type": "infortunio",
-      "text": "Operato al ginocchio il 23/7: fonti tra ottobre e DICEMBRE-GENNAIO (TMW/Messaggero). Prudenzialmente: mezzo girone. Solo parcheggio a 1."
-    },
-    {
-      "name": "Marianucci",
-      "team": "Napoli",
-      "type": "infortunio",
-      "text": "Salta le prime 5 (rientro ~10 ottobre). Lasciarlo."
-    },
-    {
-      "name": "Marin R.",
-      "team": "Napoli",
-      "type": "ok",
-      "text": "TITOLARE CONFERMATO dalle probabili (fantacalcio.it 14/8, FantaMaster): quartetto Di Lorenzo-Rrahmani-Marin-Spinazzola con Buongiorno/Beukema/Marianucci out. A Qt 2 il difensore-occasione delle prime giornate. Occhio all'arrivo di Badiashile (in chiusura dal Chelsea)."
-    },
-    {
-      "name": "Badiashile",
-      "team": "Napoli",
-      "type": "mercato",
-      "text": "IN CHIUSURA dal Chelsea (prestito 3M + riscatto 27M, priorità del giocatore al Napoli): se arriva è il titolare al posto di Marin. Non è nel listone: monitorare l'aggiornamento quotazioni."
-    },
-    {
-      "name": "Maignan",
-      "team": "Milan",
-      "type": "infortunio",
-      "text": "Rientra a Milanello solo il 16/8 (Mondiale): TORRIANI favorito (~65%) per Torino-Milan, 4ª titolarità consecutiva attesa. Terracciano ko (anca). Non pagare Maignan pensando alla 1ª."
-    },
-    {
-      "name": "Gila",
-      "team": "Milan",
-      "type": "ballottaggio",
-      "text": "Recuperato e convocato per lo United (14/8) ma lo stato del muscolo resta incerto: Tomori pronto. E nel 24/25 aveva preso 9 gialli: fairplay mediocre."
+      "text": "CONFERMATO: microfrattura perone + edema osseo, stop ~6 settimane, rientro inizio settembre (mirino su Juve-Milan). Out per le prime. Non pagarlo da top."
     },
     {
       "name": "Gimenez",
       "team": "Milan",
       "type": "mercato",
-      "text": "Non partito: il Porto vuole il diritto, il Milan l'obbligo. E la caviglia non è recuperata (out 1ª). Lasciarlo."
+      "text": "Verso il PORTO: prestito con diritto (che può diventare obbligo a obiettivi) oltre 20M — il Porto valuta la caviglia operata. Out anche per la 1ª. Lasciarlo."
     },
     {
-      "name": "Suzuki",
-      "team": "Parma",
+      "name": "Gabbia",
+      "team": "Milan",
+      "type": "infortunio",
+      "text": "Botta alla caviglia: NON convocato per lo United, rimasto a Milanello. Da monitorare in settimana: era il perno del terzetto."
+    },
+    {
+      "name": "Gila",
+      "team": "Milan",
+      "type": "ok",
+      "text": "RECUPERATO: a disposizione ed entrato nell'amichevole col Man United (15/8). Resta il tema 9 gialli nel 24/25."
+    },
+    {
+      "name": "Tomori",
+      "team": "Milan",
       "type": "mercato",
-      "text": "RIBALTONE 13-14/8: il PSG lo compra (~35M, non convocato in Coppa) ma FRENA sul prestito alla Juve — vuole valutarlo. Via dall'Italia: depennare. La Juve ha virato su Vicario."
+      "text": "Escluso col Man United per mercato, fuori dal progetto Amorim per MilanNews; ipotesi SCAMBIO con NUNO TAVARES della Lazio (Il Messaggero, ostacolo ingaggio 3,5M). Non è più una scommessa da fare."
     },
     {
-      "name": "Di Gregorio",
-      "team": "Juventus",
-      "type": "mercato",
-      "text": "PORTA JUVE NEL CAOS: Suzuki saltato, si punta Vicario (Tottenham apre al prestito, chiusura attesa nel weekend); Di Gregorio verso il Marsiglia (prestito + obbligo ~15M). Alla 1ª possibile Perin (alternanza dichiarata da Spalletti). Porta da NON toccare all'asta."
-    },
-    {
-      "name": "Vicario",
-      "team": "Juventus",
-      "type": "mercato",
-      "text": "Tornato in pole per la porta Juve (15-16M, apertura del Tottenham al prestito, giocatore convinto): se si chiude ed entra nel listone è il titolare bianconero. Verificare ufficialità e quotazione."
-    },
-    {
-      "name": "Frattesi",
+      "name": "Thuram",
       "team": "Inter",
-      "type": "mercato",
-      "text": "ALLA LAZIO: bloccato dalla Lega il 14/8 mattina (indici finanziari), sbloccato alle 14:40 con formula nuova (prestito oneroso 5M + DIRITTO a 10M + 50% rivendita). Firma e visite sabato 15/8. Mezzala di Gattuso, ballottaggio iniziale con Dele-Bashiru."
+      "type": "infortunio",
+      "text": "Polpaccio: ha saltato anche il Betis (15/8). Chivu in 'cauto ottimismo' ma parte titolare solo se risolve del tutto. E fantacalcio.it lo dà ancora titolare all'80%: ritardo da sfruttare."
     },
     {
-      "name": "Pellegrino M.",
-      "team": "Parma",
-      "type": "mercato",
-      "text": "UFFICIALE alla Fiorentina (13/8, 25M, contratto 2031): listato Parma ma è viola, e alla 1ª è indisponibile (tesseramento). Alla Viola parte DIETRO Kean (90/10). Lasciarlo; i rigori del Parma passano a Tourè E."
-    },
-    {
-      "name": "Piccoli",
-      "team": "Fiorentina",
-      "type": "mercato",
-      "text": "UFFICIALE al Bologna (13/8, prestito + obbligo 18M+2): listato Fiorentina ma è rossoblù, e NON fa il trequartista — è il VICE-Dovbyk (30%). Non pagarlo da titolare."
-    },
-    {
-      "name": "Kristensen T.",
-      "team": "Udinese",
-      "type": "ok",
-      "text": "UFFICIALE all'Atalanta (13/8, 22M+3, 5 anni): listato Udinese ma è nerazzurro e TITOLARE nel terzetto di Sarri (nelle probabili). Occasione di listone confermata."
-    },
-    {
-      "name": "Lucumì",
-      "team": "Bologna",
-      "type": "mercato",
-      "text": "VERSO LA JUVE (~20M, visite attese 15-16/8): se si chiude è in ballottaggio con Kelly da titolare bianconero e lascia un buco nella difesa del Bologna. Comprare la notizia solo a ufficialità."
-    },
-    {
-      "name": "Lukaku",
-      "team": "Napoli",
-      "type": "mercato",
-      "text": "UFFICIALE al Fenerbahçe (6M+3): fuori dal campionato. De Bruyne eredita i rigori, Hojlund il peso dell'attacco."
-    },
-    {
-      "name": "Pinamonti",
-      "team": "Sassuolo",
-      "type": "mercato",
-      "text": "Trattativa Lazio RALLENTATA (13/8: distanza su formula e prezzo, il Sassuolo non scende da ~15M e rifiuta l'obbligo condizionato; spunta la suggestione Icardi). Nelle probabili è ancora il 9 del Sassuolo. Rischio addio entro l'1/9 reale ma non imminente."
-    },
-    {
-      "name": "Esposito Se.",
-      "team": "Cagliari",
-      "type": "mercato",
-      "text": "GUERRA TOTALE: secondo certificato medico il 13/8 (altri 15 giorni lontano da Cagliari). Atalanta in pole ma offre 5M + Maldini contro richiesta di 20M. NON comprarlo."
-    },
-    {
-      "name": "Milinkovic-Savic V.",
-      "team": "Napoli",
-      "type": "mercato",
-      "text": "Pista araba sfumata: ora Hull City (nodo formula) e Besiktas, ADL chiede 15-18M. Scavalcato da Meret. Solo da 3° portiere a 1."
-    },
-    {
-      "name": "Morata",
-      "team": "Como",
-      "type": "mercato",
-      "text": "FUORI ROSA DI FATTO: non compare in nessuna formazione-tipo 26/27, Atlanta United in pole, e il Como si muove su Delap. Douvikas titolare all'85%. Lasciarlo."
-    },
-    {
-      "name": "David",
-      "team": "Juventus",
-      "type": "mercato",
-      "text": "PSG concreto (sondaggio 11/8, la Juve non si oppone: 25-30M) ma LUI vuole restare a Torino: rischio 'resta e non gioca' immutato (Kolo Muani 75/25). La sua cessione sbloccherebbe Zirkzee. Lasciarlo."
-    },
-    {
-      "name": "Gudmundsson A.",
-      "team": "Fiorentina",
-      "type": "ok",
-      "text": "RESTA (nessuna offerta concreta, Bournemouth non ha formalizzato) ed è 'certo del posto' per Grosso (14/8): rigorista favorito. Occhio solo al mercato fino all'1/9."
-    },
-    {
-      "name": "Mastantuono",
-      "team": "Fiorentina",
-      "type": "ballottaggio",
-      "text": "RIDIMENSIONATO: panchina in Coppa Italia il 14/8 ('formazione già collaudata'), Atta favorito per il 2° slot dietro Kean. Resta prospetto (3/3 sui rigori al River), non titolare subito: dimezzare il prezzo."
-    },
-    {
-      "name": "Dodò",
-      "team": "Fiorentina",
-      "type": "ok",
-      "text": "RIBALTONE: le fonti del 13-14/8 lo danno NETTAMENTE FAVORITO (Joao Mario terzo, dietro anche Jimenez). Resta il rischio mercato (Milan interessato, ipotesi rinnovo-ponte) e i 7 gialli/anno: sconto sì, saldo estremo no."
-    },
-    {
-      "name": "Soulè",
-      "team": "Roma",
-      "type": "mercato",
-      "text": "RISCHIO CONCRETO 14/8: ipotesi SCAMBIO col Milan (per Nkunku), Galatasaray in agguato (sbloccherebbe Endrick), la Roma DEVE cedere per il FFP e lui è il 1° indiziato con Koné. Nelle probabili è titolare: solo con sconto-mercato."
-    },
-    {
-      "name": "Malen",
-      "team": "Roma",
-      "type": "ok",
-      "text": "IL 9 FAVORITO (70/30 su Castro, titolare in 6/6 probabili) e rigorista confermato di misura. 1 solo giallo nel 25/26: perfetto anche per il fairplay."
-    },
-    {
-      "name": "Castro S.",
-      "team": "Roma",
-      "type": "ballottaggio",
-      "text": "È l'ALTERNATIVA a Malen (30%), non il titolare: 'si alternerà spesso'. Pagalo da co-titolare, non da 9 fisso."
-    },
-    {
-      "name": "Dybala",
-      "team": "Roma",
-      "type": "ok",
-      "text": "Titolare in TUTTE le probabili (e con Soulè in uscita il posto si blinda): non più rigorista (Malen) ma punizioni e corner suoi. Fisico permettendo."
-    },
-    {
-      "name": "Spence",
-      "team": "Inter",
-      "type": "ballottaggio",
-      "text": "FRENATA: deve ancora svolgere i test atletici ad Appiano (Sky 14/8), non arruolabile subito: alla 1ª gioca DIOUF a destra (65%). Titolare designato sul medio periodo."
-    },
-    {
-      "name": "Diouf",
+      "name": "Martinez L.",
       "team": "Inter",
       "type": "ok",
-      "text": "Titolare a destra alla 1ª (Spence non pronto, Sky 14/8), gol e doppiette in amichevole da esterno: a Qt 8 ottimo avvio garantito."
+      "text": "RECUPERATO (era solo affaticamento post-Mondiale): 'scalpita', entrato al 70' col Betis, ha cerchiato il 22/8 del debutto (suo compleanno). La coppia d'avvio più probabile è LAUTARO-Bonny, non più Bonny-Esposito."
     },
     {
       "name": "Bonny",
       "team": "Inter",
       "type": "ok",
-      "text": "Coppia d'avvio Bonny-Esposito confermata (Lautaro/Thuram non pronti, Thuram polpaccio) e Bonny è 'già in palla', più avanti di Esposito (a secco nelle ultime 4). Avvio garantito a Qt 7."
+      "text": "Titolare anche col Betis (15/8) e resta favorito su Esposito — ma con Lautaro recuperato l'avvio non è più 'garantito': da co-titolare, non da titolare fisso."
     },
     {
       "name": "Esposito F.P.",
       "team": "Inter",
       "type": "ballottaggio",
-      "text": "Titolare alla 1ª con Bonny MA a secco nelle ultime 4 amichevoli e dietro Bonny nelle gerarchie di condizione: sconto rispetto all'hype."
+      "text": "Titolare col Betis ma a secco da 5 amichevoli e con Lautaro recuperato scala a 3ª/4ª scelta d'avvio: sconto pieno rispetto all'hype (Qt 16)."
     },
     {
-      "name": "Okoye",
-      "team": "Udinese",
-      "type": "infortunio",
-      "text": "Spalla ko in ritiro MA tornato in gruppo il 13/8, obiettivo esserci per Como-Udinese (salta solo la Coppa: gioca Padelli). Selvik NON arriva (va al Brest). Resta il low cost n.1: verificare i convocati il 21/8."
-    },
-    {
-      "name": "Muric",
-      "team": "Sassuolo",
+      "name": "Diouf",
+      "team": "Inter",
       "type": "ok",
-      "text": "GERARCHIA RISOLTA: riscattato, titolare chiaro di Aquilani (~80%), Turati vice, Satalino fuori. Non più porta da evitare: il prezzo è ancora schiacciato dal caos percepito = occasione."
+      "text": "CONFERMATO dal campo: titolare a destra anche col Betis (15/8). Spence (ufficiale Inter il 15/8, ~30M+5, ora listato D a Qt 12) è il titolare designato sul medio periodo: Diouf vale per l'avvio."
     },
     {
-      "name": "Paleari",
-      "team": "Torino",
-      "type": "ballottaggio",
-      "text": "Porta Toro IRRISOLTA A TRE: Perri arrivato (visite 13/8) ma non ancora listato; fantacalcio.it/DAZN danno Paleari, FantaMaster e il campo Mascardi. Israel operato (fuori fino a gennaio). Evitare in blocco."
-    },
-    {
-      "name": "Falcone",
-      "team": "Lecce",
+      "name": "Spence",
+      "team": "Inter",
       "type": "mercato",
-      "text": "ATTENZIONE: è il vice-Meret designato dal NAPOLI (ha superato Kovar e Vicario). Il Lecce smentisce offerte, ma se parte la porta salentina cambia padrone: verificare prima dell'asta."
+      "text": "UFFICIALE all'Inter (15/8, dal Tottenham, fino al 2031) e ORA LISTATO D (E) a Qt 12 FVM 41: ridisegna la fascia destra. Non arruolabile subito (test atletici): alla 1ª gioca Diouf."
     },
     {
-      "name": "Palmisani",
-      "team": "Frosinone",
-      "type": "ok",
-      "text": "Più avanti di quanto si creda (~65%): titolare nelle ultime due amichevoli, Desplanches subentra al 70'. SOS lo promuove, FantaMaster lo boccia: scommessa da 1-2 crediti, non porta da evitare del tutto."
-    },
-    {
-      "name": "Corvi",
-      "team": "Parma",
-      "type": "ok",
-      "text": "Titolare designato appena Suzuki vola a Parigi (fantacalcio.it lo schierava ancora il 14/8: transizione in corso). Daffara ko coscia. Confermato low cost top, ormai NOTO (SOS/Goal lo consigliano): non arriverà a 1."
+      "name": "Stones",
+      "team": "Inter",
+      "type": "ballottaggio",
+      "text": "Col Betis è partito BISSECK titolare e Stones ha segnato da subentrato: il 60/40 per Stones non è confermato dal campo. Ballottaggio vero, non pagarlo da inamovibile."
     },
     {
       "name": "Mkhitaryan",
       "team": "Inter",
       "type": "squalifica",
-      "text": "Squalificato per la 1ª (5° giallo), come Britschgi (Parma). Kabasele (Udinese) fuori 2 giornate. Confermato: solo questi 3 in A. (Ramadani-Lecce circolato ma NON confermato dalle fonti primarie.)"
-    },
-    {
-      "name": "Zapata D.",
-      "team": "Torino",
-      "type": "infortunio",
-      "text": "NON CONVOCATO in Coppa Italia, ginocchio ancora gonfio dai carichi, zero minuti in 6 amichevoli: Simeone e Adams davanti. Non è un investimento."
-    },
-    {
-      "name": "Berardi",
-      "team": "Sassuolo",
-      "type": "infortunio",
-      "text": "NUOVO: caviglia problematica da inizio preparazione, niente ritiro, programma personalizzato — IN DUBBIO per la 1ª. E nel 25/26 ha preso anche un rosso. Scontare."
-    },
-    {
-      "name": "Holm",
-      "team": "Bologna",
-      "type": "infortunio",
-      "text": "Lesione al soleo in nazionale: rientrato con 37' col Pisa, obiettivo 1ª ma in dubbio (pianetafanta lo dà alla 2ª). Zortea favorito 70/30."
-    },
-    {
-      "name": "Bah",
-      "team": "Roma",
-      "type": "infortunio",
-      "text": "Rottura del crociato (amichevole col Cardiff), operato: out fino ad aprile."
-    },
-    {
-      "name": "Nicolussi Caviglia",
-      "team": "Parma",
-      "type": "infortunio",
-      "text": "Lesione alla coscia: rientro a settembre (~5ª). Piazzati del Parma tutti su Bernabè nel frattempo."
-    },
-    {
-      "name": "Noa Lang",
-      "team": "Napoli",
-      "type": "mercato",
-      "text": "Problema al ginocchio in allenamento (13/8) E trattativa Galatasaray in chiusura: lasciarlo."
-    },
-    {
-      "name": "Vergara",
-      "team": "Napoli",
-      "type": "infortunio",
-      "text": "Riacutizzazione della contusione alla tibia (12/8): la scommessa da 1-2 crediti resta valida solo se recupera — ha segnato in Champions, PlayerManager la esalta."
-    },
-    {
-      "name": "Sulemana K.",
-      "team": "Atalanta",
-      "type": "infortunio",
-      "text": "Lesione collaterale (8/8): rientro ottobre, ~6ª-8ª."
-    },
-    {
-      "name": "Hien",
-      "team": "Atalanta",
-      "type": "infortunio",
-      "text": "Rientro spostato a OTTOBRE (~6ª), più tardi delle prime stime. E da rientrato è un mangia-gialli (10 nel 24/25): solo parcheggio a 1."
-    },
-    {
-      "name": "Isaksen",
-      "team": "Lazio",
-      "type": "infortunio",
-      "text": "In gruppo dal 10/8 ma servono 2-3 settimane di condizione: prima chance realistica la 2ª col Genoa (30/8)."
-    },
-    {
-      "name": "Cataldi",
-      "team": "Lazio",
-      "type": "infortunio",
-      "text": "Come Isaksen: rientro effettivo ~2ª-3ª. Ma per Sky è LUI il 1° rigorista della Lazio (5/5): a 2-4 crediti resta l'assicurazione per chi prende Zaccagni."
-    },
-    {
-      "name": "Tavares N.",
-      "team": "Lazio",
-      "type": "ok",
-      "text": "Cauto ottimismo: l'esordio non appare a rischio, favorito 65/35 su Pedraza. Fermo 3 settimane però: condizione da verificare."
-    },
-    {
-      "name": "Patric",
-      "team": "Lazio",
-      "type": "infortunio",
-      "text": "Out per la 1ª col Bologna; Gigot e Furlanetto out, Pellegrini Lu. in dubbio (caviglia): Lazio ancora la squadra più contata del via."
-    },
-    {
-      "name": "Ratkov",
-      "team": "Lazio",
-      "type": "ballottaggio",
-      "text": "EVITARE: attacco Lazio irrisolto A TRE (Ratkov/Dia/Noslin, fonti spaccate 40/30/30) e il club vuole cederlo per finanziare il nuovo 9 (rifiutato il Southampton il 13/8, Dynamo Mosca su di lui)."
-    },
-    {
-      "name": "Dia",
-      "team": "Lazio",
-      "type": "ballottaggio",
-      "text": "RESTA nei piani (titolare nell'amichevole di Frosinone, la Lazio lo cede solo da 15M in su) ma il posto da 9 è conteso a tre con Ratkov e Noslin: prezzo da scommessa."
-    },
-    {
-      "name": "Zaniolo",
-      "team": "Udinese",
-      "type": "ok",
-      "text": "Titolarissimo (7/7 fonti), piazzati col mancino, Sky lo mette tra i low cost. MA 8 gialli nel 25/26 e in peggioramento: malus da mettere in conto col fairplay."
-    },
-    {
-      "name": "Solet",
-      "team": "Udinese",
-      "type": "ok",
-      "text": "Titolare confermato 7/7 e SOLO 1 giallo in 35 presenze: il centrale pulito ideale per il fairplay. SOS lo dà 'pendente dal mercato': monitorare fino al 22/8."
-    },
-    {
-      "name": "Zanoli",
-      "team": "Udinese",
-      "type": "infortunio",
-      "text": "Crociato: rientro inizio ottobre. Vojvoda titolare a destra (70%)."
-    },
-    {
-      "name": "Kabasele",
-      "team": "Udinese",
-      "type": "squalifica",
-      "text": "2 giornate (rosso col VAR): salta Como e Monza. Nelle probabili c'è comunque lui dal rientro; alla 1ª spazio a Bertola/Ebosse."
-    },
-    {
-      "name": "Chakvetadze",
-      "team": "Udinese",
-      "type": "infortunio",
-      "text": "Frattura del metatarso: rientro ~2ª."
-    },
-    {
-      "name": "Boloca",
-      "team": "Sassuolo",
-      "type": "infortunio",
-      "text": "Ginocchio: out 1ª, rientro settembre. Fuori anche Candè (crociato, metà settembre), Pieragnolo (ottobre), Konè I. (dicembre); Walukiewicz in dubbio."
-    },
-    {
-      "name": "Idrissi R.",
-      "team": "Cagliari",
-      "type": "infortunio",
-      "text": "Crociato: rientro fine ottobre (~5ª)."
-    },
-    {
-      "name": "Sverko",
-      "team": "Venezia",
-      "type": "infortunio",
-      "text": "Anca: recuperabile da fine ottobre; gioca Moreno M. o Schingtienne."
-    },
-    {
-      "name": "Adorante",
-      "team": "Venezia",
-      "type": "infortunio",
-      "text": "Operato alla schiena e scavalcato da Adams/Rrahmani anche sui rigori (era l'MVP della B con 17 gol): rientro set/ott, solo da ultimo slot a 1."
-    },
-    {
-      "name": "Ekhator",
-      "team": "Juventus",
-      "type": "infortunio",
-      "text": "Lesione al bicipite femorale: con K. Thuram (ginocchio) punta la 1ª col Frosinone. FantaMaster lo consiglia come sorpresa da subentro dietro Kolo Muani: ultimo slot."
-    },
-    {
-      "name": "Thuram K.",
-      "team": "Juventus",
-      "type": "infortunio",
-      "text": "NUOVO: problemi al ginocchio, lavoro a parte, escluso dalla tournée: in dubbio per la 1ª. Douglas Luiz pronto."
-    },
-    {
-      "name": "Daffara",
-      "team": "Parma",
-      "type": "infortunio",
-      "text": "Lesione alla coscia dal 25/7: parte dietro Corvi nonostante i 6M investiti. Rischio alternanza più avanti."
-    },
-    {
-      "name": "Meichtry",
-      "team": "Genoa",
-      "type": "infortunio",
-      "text": "Botta al ginocchio: salta Coppa e Napoli (2-3 settimane). Out anche Messias (adduttori, tempi incerti); Traorè Hj., Havel, Venturino in dubbio."
+      "text": "Squalificato per la 1ª (5° giallo), come Britschgi (Parma); Kabasele (Udinese) fuori 2 giornate. Lista CHIUSA e riverificata su 3 fonti: solo loro 3 in A. Ramadani: era squalificato ma ha lasciato la Serie A (Çorum FK) — caso chiuso."
     },
     {
       "name": "Meret",
       "team": "Napoli",
       "type": "ok",
-      "text": "Titolare scelto da Allegri (~85%), candidato per Genova: miglior rapporto qualità/prezzo tra i pali. Il vice designato in arrivo è Falcone del Lecce."
+      "text": "Titolare confermato (~85%), in porta a Marassi il 22/8. NOVITÀ: Falcone NON arriva (ha rifiutato il ruolo di vice) — il Napoli è senza vice designato (piste: Kovar, Restes); Milinkovic-Savic proposto alla Juve come contropartita per Gatti."
+    },
+    {
+      "name": "Milinkovic-Savic V.",
+      "team": "Napoli",
+      "type": "mercato",
+      "text": "Hull City/Besiktas raffreddate; il Napoli lo ha PROPOSTO ALLA JUVENTUS come contropartita per Gatti (valutazione 15M). Scavalcato da Meret. Solo da 3° portiere a 1."
+    },
+    {
+      "name": "De Bruyne",
+      "team": "Napoli",
+      "type": "ballottaggio",
+      "text": "Rigorista 1° per 4 fonti (SOS/Goal ferme a Lukaku: ignorarle) e fairplay pulito, MA il ballottaggio col posto di Anguissa resta APERTO con segnali contrastanti nello stesso giorno. Semi-top, non 1° slot."
+    },
+    {
+      "name": "Neres",
+      "team": "Napoli",
+      "type": "infortunio",
+      "text": "CONFERMATO OUT per la 1ª (lavoro personalizzato, zero amichevoli) MA la Qt è CROLLATA a 6 nel listone aggiornato: il mercato ha già prezzato l'infortunio. A sconto è un'ottima chiamata per il medio periodo (SOS lo dà nel tridente al rientro). Nel frattempo a sinistra gioca Alisson Santos."
+    },
+    {
+      "name": "Santos A.",
+      "team": "Napoli",
+      "type": "ok",
+      "text": "Titolare atteso a sinistra alla 1ª (Neres e Lang out/ai margini): interessante per l'avvio, cambio ruolo C→A svantaggioso ma posto vero. Qt 14."
+    },
+    {
+      "name": "Beukema",
+      "team": "Napoli",
+      "type": "infortunio",
+      "text": "CONFERMATO OUT 1ª (achille bilaterale, programma personalizzato); obiettivo 2ª col Como ma le fonti napoletane estendono il rischio anche a Como e Inter. DAZN lo schierava ancora il 15/8: errore. Al rientro sarà titolare: prendilo a poco."
+    },
+    {
+      "name": "Buongiorno",
+      "team": "Napoli",
+      "type": "infortunio",
+      "text": "Operato: fonti tra ottobre e dicembre-gennaio. Prudenzialmente mezzo girone: solo parcheggio a 1."
+    },
+    {
+      "name": "Marianucci",
+      "team": "Napoli",
+      "type": "infortunio",
+      "text": "Out ~2 mesi (collaterale mediale). Lasciarlo."
+    },
+    {
+      "name": "Marin R.",
+      "team": "Napoli",
+      "type": "ok",
+      "text": "TITOLARE CONFERMATO in coppia con Rrahmani (Buongiorno/Beukema/Marianucci out): a Qt 2 resta il difensore-occasione delle prime giornate. Unico rischio: Badiashile (visite martedì 18/8)."
+    },
+    {
+      "name": "Badiashile",
+      "team": "Napoli",
+      "type": "mercato",
+      "text": "SLITTATO ma vivo: accordo verbale col Chelsea (prestito 3M+1 + riscatto 27M), visite fissate MARTEDÌ 18/8 a Villa Stuart, in stallo sull'ok di ADL ai bonus. NON ancora nel listone: se viene listato è il titolare al posto di Marin."
+    },
+    {
+      "name": "Noa Lang",
+      "team": "Napoli",
+      "type": "infortunio",
+      "text": "Ginocchio (12/8, entità mai comunicata) + mercato RAFFREDDATO: il Gala non riscatta a 30M e lo considera solo 3ª scelta. Doppia incertezza: lasciarlo."
+    },
+    {
+      "name": "Gilmour",
+      "team": "Napoli",
+      "type": "infortunio",
+      "text": "NUOVO: indietro di condizione, lavoro personalizzato con Neres e Beukema. Non è un'opzione d'avvio."
+    },
+    {
+      "name": "Vergara",
+      "team": "Napoli",
+      "type": "ok",
+      "text": "RECUPERATO (rientrato in gruppo): la scommessa da 1-2 crediti torna valida."
+    },
+    {
+      "name": "Lukaku",
+      "team": "Napoli",
+      "type": "mercato",
+      "text": "Al Fenerbahçe, RIMOSSO DAL LISTONE (come Vlahovic, al Besiktas). De Bruyne eredita i rigori, Hojlund il peso dell'attacco."
+    },
+    {
+      "name": "Vicario",
+      "team": "Juventus",
+      "type": "mercato",
+      "text": "RAFFREDDATO, NON chiuso: il Tottenham vuole solo il definitivo, la Juve solo prestito+diritto. Il nuovo obiettivo n.1 è DIBU MARTINEZ (intesa di massima sul triennale, distanza col Villa); alternative Musso, Trubin, Lunin, Mandas. A 7 giorni dal via la Juve NON ha un portiere: porta da NON toccare all'asta."
+    },
+    {
+      "name": "Di Gregorio",
+      "team": "Juventus",
+      "type": "mercato",
+      "text": "NON è partito (il Marsiglia non tratta, solo sondaggi; il MONZA ci pensa per il ritorno) ma è fuori dal progetto e NON giocherà l'esordio. Alla 1ª col Frosinone tocca a PERIN (~70%) se non arriva nessuno."
+    },
+    {
+      "name": "Lucumì",
+      "team": "Juventus",
+      "type": "mercato",
+      "text": "VISITE MEDICHE il 16/8: 20M+bonus, contratto 2031, in ufficializzazione. In ballottaggio con Kelly da titolare; lascia un BUCO al centro della difesa del Bologna (nessun sostituto annunciato: candidati Vitik/Heggem, con Casale ko)."
+    },
+    {
+      "name": "Kolo Muani",
+      "team": "Juventus",
+      "type": "ok",
+      "text": "Titolare certo — David ora è IN USCITA vera (PSG e Aston Villa; il ricavato serve per Zirkzee, per cui lo United apre al prestito). Rigorista in pole ma con fonti più spaccate di quanto pensassimo (Goal/SOS: Yildiz/Locatelli). Nessuna ufficialità di Spalletti."
+    },
+    {
+      "name": "David",
+      "team": "Juventus",
+      "type": "mercato",
+      "text": "IN USCITA vera: PSG concreto (25-30M) e ora anche l'Aston Villa. La cessione sbloccherebbe Zirkzee. Lasciarlo."
+    },
+    {
+      "name": "Yildiz",
+      "team": "Juventus",
+      "type": "infortunio",
+      "text": "NUOVO: tendinopatia rotulea + strascico polpaccio dal Mondiale, terapia conservativa (niente intervento). Pronto per la 1ª ma non al 100% e gestito: rischio-gestione da prezzare, non un out."
+    },
+    {
+      "name": "Thuram K.",
+      "team": "Juventus",
+      "type": "infortunio",
+      "text": "PEGGIORATO: sindrome femoro-rotulea mai risolta, ha saltato TUTTA la preparazione e la tournée. Nessuna data di rientro in gruppo: molto difficile per la 1ª. Douglas Luiz/Locatelli in mediana."
+    },
+    {
+      "name": "Alajbegovic",
+      "team": "Juventus",
+      "type": "ballottaggio",
+      "text": "RIVALUTATO: favorito da trequartista nell'XI atteso (il vero a rischio è Conceicao, non McKennie). Resta scommessa informata a Qt alta."
+    },
+    {
+      "name": "Koopmeiners",
+      "team": "Juventus",
+      "type": "ballottaggio",
+      "text": "Invariato: alternativa da centrale di difesa, nessuna fonte lo mette nell'XI. Trappola a prezzo pieno."
+    },
+    {
+      "name": "Kalulu",
+      "team": "Juventus",
+      "type": "ok",
+      "text": "Terzino destro titolare ma il ballottaggio con Celik resta APERTO (si sono alternati nelle amichevoli). Da difensore normale."
+    },
+    {
+      "name": "Zhegrova",
+      "team": "Juventus",
+      "type": "mercato",
+      "text": "Nessuna notizia fresca 15-16/8: resta esubero (Trabzonspor/Besiktas ~12-14M). Non investire."
+    },
+    {
+      "name": "Fofana Y.",
+      "team": "Milan",
+      "type": "mercato",
+      "text": "NUOVO: verso la JUVENTUS (sì del giocatore, il Milan chiede 17-18M, gradito solo Nico Gonzalez come contropartita). Escluso col Man United. Non comprarlo da titolare Milan."
+    },
+    {
+      "name": "Frattesi",
+      "team": "Lazio",
+      "type": "ok",
+      "text": "UFFICIALE alla Lazio (15/8: prestito oneroso 5M + diritto 10M + 50% rivendita) e ORA LISTATO LAZIO (Qt 7, FVM 55). In Coppa col Mantova è partito Dele-Bashiru, ma Gattuso lo indica titolare col Bologna il 24/8: 'ci darà una mano'."
+    },
+    {
+      "name": "Zaccagni",
+      "team": "Lazio",
+      "type": "fairplay",
+      "text": "CORRETTO IN MEGLIO sui rigori: 1° UNANIME (6/6 fonti, anche Sky). Resta il malus disciplina (6 gialli + 1 rosso nel 25/26) e l'insidia Pinamonti se arriva. Il prezzo può salire: rifare i conti."
+    },
+    {
+      "name": "Cataldi",
+      "team": "Lazio",
+      "type": "infortunio",
+      "text": "Pubalgia OPERATA: rientro fine agosto/inizio settembre, alla 1ª non c'è. Non è più il 1° rigorista per nessuna fonte (è 2° per Sky): l'assicurazione a 2-4 crediti vale meno di prima."
+    },
+    {
+      "name": "Tavares N.",
+      "team": "Lazio",
+      "type": "infortunio",
+      "text": "PEGGIORATO: non 'condizione' ma INFIAMMAZIONE AL GINOCCHIO, fuori dall'esordio di Coppa (Pedraza titolare). E c'è l'ipotesi scambio con Tomori. Da favorito 65/35 a rischio pieno: solo a saldo."
+    },
+    {
+      "name": "Pedraza",
+      "team": "Lazio",
+      "type": "ok",
+      "text": "NUOVO: titolare a sinistra in Coppa col Mantova (Tavares ko). Low cost d'avvio a Qt 5 se Tavares resta indietro o parte."
+    },
+    {
+      "name": "Dia",
+      "team": "Lazio",
+      "type": "ballottaggio",
+      "text": "AVANTI: in Coppa col Mantova è partito LUI da 9 con Noslin e Zaccagni — Ratkov in panchina. Il conteso a 3 ora pende 45/30/25 per Dia. Prezzo da scommessa buona."
+    },
+    {
+      "name": "Ratkov",
+      "team": "Lazio",
+      "type": "ballottaggio",
+      "text": "INDIETRO: panchina in Coppa, il club lo cederebbe (Dinamo Mosca raffreddata, agente smentisce). E se arriva Pinamonti scala ancora. EVITARE a prezzo pieno."
+    },
+    {
+      "name": "Patric",
+      "team": "Lazio",
+      "type": "infortunio",
+      "text": "Out per la 1ª col Bologna; out anche Gigot e Furlanetto, Pellegrini Lu. a rischio (caviglia), Isaksen da 2ª-3ª. Lazio ancora la squadra più contata del via. Nuovo nome fermo: Artistico."
+    },
+    {
+      "name": "Isaksen",
+      "team": "Lazio",
+      "type": "infortunio",
+      "text": "Rientro parziale in gruppo: prima chance realistica la 2ª-3ª. Sconto d'avvio."
+    },
+    {
+      "name": "Pinamonti",
+      "team": "Sassuolo",
+      "type": "mercato",
+      "text": "ACCELERATA: il Sassuolo è sceso da 15 a 12M, formula prestito+obbligo condizionato (nodo residuo), accordo di massima col giocatore, e lui è OUT da Sassuolo-Cesena PROPRIO per il mercato. Icardi prende tempo. Se va alla Lazio: 1) è candidato rigorista biancoceleste (20/24), 2) BOWIE diventa il 9 del Sassuolo."
+    },
+    {
+      "name": "Bowie",
+      "team": "Sassuolo",
+      "type": "ok",
+      "text": "TRIGGER QUASI SCATTATO: è il 9 nella probabile di Coppa (17/8) con Pinamonti fuori per mercato. Se Pinamonti-Lazio si chiude prima del 23/8, Bowie parte titolare alla 1ª a Bergamo. Scommessa condizionata da fare a 4-8."
+    },
+    {
+      "name": "Berardi",
+      "team": "Sassuolo",
+      "type": "infortunio",
+      "text": "FONTI DIVISE: lui stesso ammette che la caviglia 'se la porta dietro da febbraio' e non è in gruppo pieno (rischio 1ª), ma Aquilani assicura 'sarà tranquillamente a disposizione'. Il test è Sassuolo-Cesena (17/8): verificare i convocati. Scontare comunque."
+    },
+    {
+      "name": "Muric",
+      "team": "Sassuolo",
+      "type": "ok",
+      "text": "Titolare (~75%): riscattato dall'Ipswich. NOVITÀ: Turati è in USCITA (Sampdoria) — il vice diventa un ignoto (si valuta Pigliacelli). CalcioDangolo/SOS tengono il ballottaggio 'formalmente aperto': il prezzo resta schiacciato = occasione."
+    },
+    {
+      "name": "Obrador",
+      "team": "Sassuolo",
+      "type": "mercato",
+      "text": "NUOVO: ufficiale dal Benfica (15/8, prestito + diritto 7M), ora listato D a Qt 6. Ballottaggio futuro con Doig a sinistra: per ora Doig resta avanti (Obrador non integrato)."
+    },
+    {
+      "name": "Boloca",
+      "team": "Sassuolo",
+      "type": "infortunio",
+      "text": "Confermati lungodegenti: Boloca (settembre), Candè, Pieragnolo, Konè I. (gennaio: frattura tibia-perone), Walukiewicz (zero minuti). Lista ferma al 27/7: guardare i convocati col Cesena (17/8)."
+    },
+    {
+      "name": "Suzuki",
+      "team": "Parma",
+      "type": "mercato",
+      "text": "RIBALTONE 15/8: il PSG è SALTATO (commissioni agenti) e si è inserito l'ASTON VILLA (~35-41M), che Suzuki preferisce. In ogni caso è in uscita e non gioca: depennare. Effetto domino: Dibu Martinez sul mercato → obiettivo Juve."
+    },
+    {
+      "name": "Corvi",
+      "team": "Parma",
+      "type": "ok",
+      "text": "CONFERMATO DAL CAMPO: titolare in Coppa (2-0 al Catania). ATTENZIONE: Daffara ha RECUPERATO ed era in panchina — rischio alternanza più avanti, ma alla 1ª è Corvi. Low cost noto: 3-5 crediti."
+    },
+    {
+      "name": "Tourè E.",
+      "team": "Parma",
+      "type": "ballottaggio",
+      "text": "RIDIMENSIONATO SUI RIGORI: titolare e assist in Coppa, MA non è il rigorista designato (nessuno specialista nel Parma; Bernabè il candidato per F-online). E occhio a LONTANI (2008, doppietta al Catania da centravanti, NON listato): insidia minutaggio. Pagarlo da titolare, non da rigorista."
+    },
+    {
+      "name": "Romero D.",
+      "team": "Parma",
+      "type": "mercato",
+      "text": "ORA LISTATO (Qt 10, FVM 38): contratto al 2031, ma appena arrivato e non disponibile in Coppa. Il prezzo da 'scommessa a 4' non esiste più. Elphege invece né in campo né in panchina (muscolare): declassato."
+    },
+    {
+      "name": "Nicolussi Caviglia",
+      "team": "Parma",
+      "type": "infortunio",
+      "text": "Lesione medio grado: stime tra 45 giorni e 2 mesi — di fatto out fino a settembre inoltrato. Nuovi fermi Parma: Cremaschi (menisco, ~ottobre), Diallo (ginocchio), Elphege (muscolare), Ndiaye."
+    },
+    {
+      "name": "Esposito Se.",
+      "team": "Cagliari",
+      "type": "mercato",
+      "text": "ROTTURA TOTALE: secondo certificato (stress) fino al 27/8 — salta Coppa e 1ª col Parma. NOVITÀ: il COMO è ora il club più interessato (richiesta scesa a 15M cash, Inter col 40% sulla rivendita); l'ipotesi Atalanta 5M+Maldini non è più il quadro. NON comprarlo."
+    },
+    {
+      "name": "Deiola",
+      "team": "Cagliari",
+      "type": "ok",
+      "text": "IL SEGNALE DEL TURNO: rigorista DAL CAMPO (calciato e segnato in Coppa, ribattuto anche dopo l'annullamento VAR), capitano, schierato da CENTRALE DI DIFESA pur listato C a Qt 3. Nessuna guida lo dà: sleeper-rigori a 2-4 crediti."
+    },
+    {
+      "name": "Maldini",
+      "team": "Cagliari",
+      "type": "ballottaggio",
+      "text": "DOPPIO SEGNALE NEGATIVO: panchina all'esordio in Coppa (dentro al 54', turnover con la Serie C ma pur sempre panchina) e rigori andati a Deiola col campo. FVM intanto salito 14→22: NON pagare il premio-rigori, solo la titolarità attesa."
+    },
+    {
+      "name": "Kevin Carlos",
+      "team": "Cagliari",
+      "type": "ballottaggio",
+      "text": "ASSENTE in Coppa (non al 100%, arrivato il 10/8): il '1° rigorista per Fantacalcio.it' non ha trovato conferme. Ha giocato Mendy, poi Borrelli. Scommessa da ridimensionare finché non torna in campo."
+    },
+    {
+      "name": "Belotti",
+      "team": "Cagliari",
+      "type": "infortunio",
+      "text": "In infermeria (tabelle 15/8). Idrissi confermato out (crociato, ~5ª)."
+    },
+    {
+      "name": "Winks",
+      "team": "Cagliari",
+      "type": "ok",
+      "text": "CONFERMATO DAL CAMPO: regista titolare in Coppa. Con Fazzini e Romano titolari: la mediana è quella. I rigori però non sono suoi (Deiola)."
+    },
+    {
+      "name": "Fazzini",
+      "team": "Cagliari",
+      "type": "ok",
+      "text": "Titolare in Coppa, piazzati confermati; rigori dal campo a Deiola."
+    },
+    {
+      "name": "Falcone",
+      "team": "Lecce",
+      "type": "ok",
+      "text": "RIBALTONE: RESTA AL LECCE — ha rifiutato il ruolo di vice sia al Napoli sia alla Roma, capitano e titolare (contratto 2028). A partire è Fruchtl (Salisburgo). La porta salentina torna comprabile: MV 6,4 nel 25/26."
     },
     {
       "name": "Geubbels",
       "team": "Lecce",
+      "type": "ballottaggio",
+      "text": "Resta favorito per il POSTO (Stulic fuori dalla probabile di Coppa) ma sui RIGORI le fonti si sono spaccate 3 vs 4 (FantaMaster/SOS/TMW/F-online dicono Stulic): il '7/7 blindato' non è più un dato pacifico. Palermo-Lecce (17/8) da guardare."
+    },
+    {
+      "name": "N'Dri",
+      "team": "Lecce",
       "type": "ok",
-      "text": "Confermato su Stulic (70/30, titolare in 6/7 fonti) e 7/7 dal dischetto: resta oro, ormai semi-noto."
+      "text": "PROMOSSO: titolare nella probabile di Coppa (con Pierotti e Geubbels). Da 1-2 crediti a scommessa vera."
+    },
+    {
+      "name": "Okoye",
+      "team": "Udinese",
+      "type": "ok",
+      "text": "RECUPERATO E CONFERMATO DAL CAMPO: titolare in Coppa col Padova (15/8), spalla ok. Titolare alla 1ª col Como: resta il low cost n.1 tra i pali."
+    },
+    {
+      "name": "Solet",
+      "team": "Udinese",
+      "type": "ballottaggio",
+      "text": "Titolare 90' + assist in Coppa MA 'non al meglio, non si è allenato bene questa settimana' (TuttoUdinese 16/8): per la 1ª è APERTO. Resta il centrale fairplay ideale (1 giallo in 35)."
+    },
+    {
+      "name": "Zaniolo",
+      "team": "Udinese",
+      "type": "ok",
+      "text": "Titolare trequartista in Coppa, avvia l'azione del gol di Davis. Confermato tutto, incluso il malus cartellini (8 gialli 25/26)."
+    },
+    {
+      "name": "Kabasele",
+      "team": "Udinese",
+      "type": "squalifica",
+      "text": "2 giornate: salta Como e Monza. Alla 1ª spazio a Bertola/Ebosse (in Coppa terzetto giovane Abankwah-Palma-Solet)."
+    },
+    {
+      "name": "Zanoli",
+      "team": "Udinese",
+      "type": "infortunio",
+      "text": "Crociato: rientro inizio ottobre. Vojvoda titolare a destra CONFERMATO dal campo (90' in Coppa). Chakvetadze rientro ~2ª. Out anche Zemura e Bayo."
+    },
+    {
+      "name": "Bijlow",
+      "team": "Genoa",
+      "type": "ok",
+      "text": "CORREZIONE: Leali NON è più al Genoa — il titolare è BIJLOW (~85%), confermato dalle probabili di Coppa. Vice Stolz."
     },
     {
       "name": "Colombo",
       "team": "Genoa",
       "type": "ok",
-      "text": "BLINDATO: 'titolare designato e rigorista, credenziali da doppia cifra' (FantaMaster 13/8), 2 rigori segnati in precampionato e 2 soli gialli in 38 presenze: bonus, titolarità E fairplay. Vale uno slot sopra."
+      "text": "BLINDATO: rigorista unanime, a segno in quasi tutte le amichevoli, titolare nella probabile di Coppa. Bonus + titolarità + fairplay (2 gialli in 38): vale uno slot sopra."
+    },
+    {
+      "name": "Sow",
+      "team": "Genoa",
+      "type": "ballottaggio",
+      "text": "ROVESCIATO: sia fantacalcio.it sia le probabili di Coppa danno AMORIM titolare in mezzo — era il nostro dato a essere vecchio, non l'aggregatore. Sow in salita: da ~55% a ~40%."
+    },
+    {
+      "name": "Mitaj",
+      "team": "Genoa",
+      "type": "ballottaggio",
+      "text": "INCERTO: una probabile di Coppa lo mette nel terzetto, un'altra dà Marcandalli-Otoa-Vasquez. Verificare l'XI vero di Genoa-Ascoli (16/8 sera) prima di pagarlo."
+    },
+    {
+      "name": "Meichtry",
+      "team": "Genoa",
+      "type": "infortunio",
+      "text": "Out 2-3 settimane (nessuna lesione grave): salta Coppa e quasi certamente l'esordio col Napoli. Out anche Messias e Traorè Hj.; Havel in recupero graduale. CORREZIONE: Venturino non è più del Genoa (prestito alla Roma da gennaio)."
+    },
+    {
+      "name": "Dovbyk",
+      "team": "Bologna",
+      "type": "ballottaggio",
+      "text": "DOPPIO DOWNGRADE: il ballottaggio con Piccoli è 55/45 (non 70/30, FantaMaster 14/8) e col Brighton ha fatto 45' senza un tiro, sostituito all'intervallo per l'esordio di Piccoli. Resta il fairplay pulito, ma il prezzo da 'titolare fisso' non è più giustificato."
+    },
+    {
+      "name": "Piccoli",
+      "team": "Bologna",
+      "type": "ok",
+      "text": "RIVALUTATO: il ballottaggio col Dovbyk opaco è 45/55 vero, esordio già fatto col Brighton. Ora listato Bologna (Qt 8): da vice puro a co-titolare possibile."
+    },
+    {
+      "name": "Holm",
+      "team": "Bologna",
+      "type": "ok",
+      "text": "RECUPERATO: 37' col Pisa e ingresso anche col Brighton, punta la 1ª anche da titolare. Zortea NON è più automaticamente favorito: ballottaggio riaperto ~50/50."
+    },
+    {
+      "name": "Casale",
+      "team": "Bologna",
+      "type": "infortunio",
+      "text": "NUOVO: adduttori (7/8), ha saltato Pisa e Brighton, dato 'in dubbio per la 2ª' → out o a forte rischio per la 1ª. Con Lucumì alla Juve la coppia d'avvio è Vitik/Heggem: entrambi low cost interessanti."
+    },
+    {
+      "name": "Orsolini",
+      "team": "Bologna",
+      "type": "ok",
+      "text": "Rigorista confermato ma prova opaca col Brighton (fuori al 62'): nessun allarme, solo condizione da ritrovare. Heggem rientrato tardi dal Mondiale."
+    },
+    {
+      "name": "De Ketelaere",
+      "team": "Atalanta",
+      "type": "infortunio",
+      "text": "CONFERMATO OUT per la 1ª col Sassuolo (distrazione adduttori), in dubbio anche per la 2ª. Fantacalcio-online e CalcioDangolo lo schierano ancora: errore da sfruttare. Comprarlo con lo sconto-infortunio."
+    },
+    {
+      "name": "Ahanor",
+      "team": "Atalanta",
+      "type": "infortunio",
+      "text": "CONFERMATO OUT 1ª (adduttori). Nel frattempo l'XI atteso dà BERNASCONI titolare a sinistra."
+    },
+    {
+      "name": "Raspadori",
+      "team": "Atalanta",
+      "type": "ok",
+      "text": "SCIOLTO IN MEGLIO: nell'amichevole col Bilbao (14/8) Raspadori e Zalewski hanno giocato ENTRAMBI titolari nel 4-3-3 di Sarri (gol di Zalewski). Non più alternativi: upgrade per tutti e due."
+    },
+    {
+      "name": "Samardzic",
+      "team": "Atalanta",
+      "type": "ok",
+      "text": "Confermato titolare e 1° sui piazzati, fairplay pulito. BRUCIATO: prezzo da fascia, alzare il budget. Kristensen (ufficiale, Qt 7 da listone) titolare nel terzetto."
+    },
+    {
+      "name": "Scamacca",
+      "team": "Atalanta",
+      "type": "ok",
+      "text": "Nessuna partita Atalanta nel 14-16/8: nessun segnale nuovo. Resta 70/30 su Krstovic con rigori in pole ma mai ufficializzati. Non strapagarlo oltre il tetto."
+    },
+    {
+      "name": "Sulemana K.",
+      "team": "Atalanta",
+      "type": "infortunio",
+      "text": "Confermato: rientro ottobre (~6ª-8ª), come Hien (che da rientrato resta un mangia-gialli: solo parcheggio a 1)."
+    },
+    {
+      "name": "Malen",
+      "team": "Roma",
+      "type": "ok",
+      "text": "CONFERMATO DAL CAMPO: titolare da 9 e rigorista designato anche col Dortmund (2-2, 15/8), con Dybala e Soulé alle spalle. 1 giallo nel 25/26: il pacchetto regge."
+    },
+    {
+      "name": "Dybala",
+      "team": "Roma",
+      "type": "ok",
+      "text": "Titolare col Dortmund (gol al 4'): nessun infortunio in corso, il tema resta la gestione. Piazzati suoi, rigori a Malen."
+    },
+    {
+      "name": "Soulè",
+      "team": "Roma",
+      "type": "mercato",
+      "text": "RIENTRATO L'ALLARME-SCAMBIO (Pedullà: 'da escludere') e titolare col Dortmund. Resta però il tema FFP: la Roma deve cedere e lui è tra gli indiziati con Koné. Sconto-mercato ridotto, non azzerato."
+    },
+    {
+      "name": "Castro S.",
+      "team": "Roma",
+      "type": "ballottaggio",
+      "text": "Subentrato col Dortmund: confermato alternativa (30%) di Malen, non titolare."
+    },
+    {
+      "name": "Wesley",
+      "team": "Roma",
+      "type": "fairplay",
+      "text": "Indisponibile nell'amichevole col Dortmund (Rensch titolare) e resta il peggior profilo fairplay tra i D top: 2 espulsioni + 6 gialli nel 25/26. Doppio motivo di sconto."
+    },
+    {
+      "name": "Bah",
+      "team": "Roma",
+      "type": "infortunio",
+      "text": "Out lungo confermato MA la diagnosi 'crociato, rientro aprile' non ha trovato conferme indipendenti: trattarla come non verificata. Nuovi nomi Roma in dubbio: Pisilli (soleo, in teoria recuperato), Robinio Vaz (collaterale)."
+    },
+    {
+      "name": "Pessina",
+      "team": "Monza",
+      "type": "infortunio",
+      "text": "OPERATO (lussazione rotula): rientro puntato a NOVEMBRE. Ancora schierato titolare da fantacalcio-online (agg. 15/8!), CalcioDangolo e DAZN: resta l'errore più costoso in circolazione. Rigori a Cutrone, Colpani outsider."
+    },
+    {
+      "name": "Cutrone",
+      "team": "Monza",
+      "type": "ok",
+      "text": "CONFERMATO DAL CAMPO: unica punta 90' in Coppa (3-0 Avellino) nel 3-4-2-1 di Juric — NON coppia con Petagna (Varela e Forson dietro, doppietta di Varela). A secco ma rigorista designato. Il '2° slot' del Monza vale meno del previsto: è l'unico riferimento."
+    },
+    {
+      "name": "Colpani",
+      "team": "Monza",
+      "type": "ok",
+      "text": "NUOVO: Sky lo dava 2° rigorista dietro Pessina → con Pessina out è l'outsider vero sui rigori del Monza, entrato al 70' in Coppa. A Qt 8 nessuno lo sta prezzando per questo."
+    },
+    {
+      "name": "Akinsanmiro",
+      "team": "Monza",
+      "type": "ballottaggio",
+      "text": "Fuori in Coppa per FEBBRE (hanno giocato Foe-Ondoa e Mout, esordiente 2007): titolarità da riverificare alla 1ª."
+    },
+    {
+      "name": "Thiam",
+      "team": "Monza",
+      "type": "ok",
+      "text": "Confermato dal campo: titolare in Coppa. Low cost solido (~85%)."
+    },
+    {
+      "name": "Comuzzo",
+      "team": "Torino",
+      "type": "infortunio",
+      "text": "NUOVO: colpo alla tibia destra in Coppa (15/8), cambio chiesto da lui, 'non sembra serio ma da valutare' per Torino-Milan. Monitorare gli esami."
+    },
+    {
+      "name": "Simeone",
+      "team": "Torino",
+      "type": "ok",
+      "text": "PROMOSSO DAL CAMPO: titolare e gol all'8' in Coppa, uscito solo per crampi. Prima scelta di Abate con Zapata fermo. Il segnale più forte del turno: voti, gol e fairplay (1 giallo in 32)."
+    },
+    {
+      "name": "Zapata D.",
+      "team": "Torino",
+      "type": "infortunio",
+      "text": "Escluso dalla Coppa per precauzione (ginocchio operato sollecitato dai carichi), lavoro personalizzato con obiettivo-Milan. Zero minuti stagionali: non affidabile."
+    },
+    {
+      "name": "Njie",
+      "team": "Torino",
+      "type": "mercato",
+      "text": "DOPPIO SEGNALE NEGATIVO: fermato per sovraccarico muscolare (out in Coppa) E il Salisburgo offre 12M. Il 50/50 con Oristanio è congelato: in Coppa ha giocato CASADEI dietro Vlasic con Oristanio panchinato. Non pagarlo."
+    },
+    {
+      "name": "Oristanio",
+      "team": "Torino",
+      "type": "ballottaggio",
+      "text": "BOCCIATO DAL CAMPO: panchina in Coppa, MAI entrato nemmeno a gara in ghiaccio. Il posto sulla trequarti oggi è di Casadei/Cacciamani. Solo a saldo."
+    },
+    {
+      "name": "Casadei",
+      "team": "Torino",
+      "type": "ok",
+      "text": "PROMOSSO: titolare 90' in Coppa da sotto-punta con Vlasic, mai sostituito. Perno di Abate: il low cost C del Toro è lui, non Oristanio/Njie."
+    },
+    {
+      "name": "Perri",
+      "team": "Torino",
+      "type": "mercato",
+      "text": "FIRMATO (prestito con diritto ~11M, sbloccato da Trafford al Leeds) ma comunicato ufficiale non reperito e NON è nel listone. In Coppa ha giocato MASCARDI titolare (Paleari in panchina, verso la Samp). Porta Toro: comprabile solo se Perri viene listato; altrimenti evitarla in blocco."
+    },
+    {
+      "name": "Israel",
+      "team": "Torino",
+      "type": "infortunio",
+      "text": "Operato: out fino a gennaio."
+    },
+    {
+      "name": "Douvikas",
+      "team": "Como",
+      "type": "ok",
+      "text": "Titolare (~85%) confermato. PRECISAZIONE: Morata non è tecnicamente fuori rosa ma resta ai margini/in uscita — e la pista MLS si è CHIUSA (Atlanta ha preso Embolo): rischio che resti e rosicchi minuti. Douvikas ha anche battuto (e segnato) un rigore in amichevole il 31/7."
+    },
+    {
+      "name": "Morata",
+      "team": "Como",
+      "type": "mercato",
+      "text": "La pista Atlanta United è MORTA (preso Embolo): resta al Como ai margini, con rischio esclusione dalla lista. Il Como valuta ancora DELAP (solo prestito, non chiuso). Lasciarlo comunque."
+    },
+    {
+      "name": "Kempf",
+      "team": "Como",
+      "type": "ballottaggio",
+      "text": "DECLASSATO: l'XI atteso del Como dà CHALOBAH (nuovo acquisto) e Jacobo Ramon centrali — Kempf fuori dai titolari attesi. Il low cost 'titolarità+fairplay' non regge più: da 5 a 2 crediti massimo."
+    },
+    {
+      "name": "Addai",
+      "team": "Como",
+      "type": "infortunio",
+      "text": "Infortunato (per fantacalcio.it 16/8; la voce 'rottura achille, rientro ottobre' circola ma non è uniforme): comunque fuori dai giochi d'avvio. Il ballottaggio sulla trequarti è Diao (rientrato titolare) con Jesus Rodriguez. Liberali: nessuna notizia fresca."
+    },
+    {
+      "name": "Kaiki",
+      "team": "Como",
+      "type": "ok",
+      "text": "Confermato titolare (fantacalcio.it + DAZN). Bruciato: aspettati rilanci."
+    },
+    {
+      "name": "Stankovic F.",
+      "team": "Venezia",
+      "type": "ok",
+      "text": "Confermato dal campo: titolare in Coppa (3-2 al Modena). Bruciato: lo consigliano tutti."
+    },
+    {
+      "name": "Adams A.",
+      "team": "Venezia",
+      "type": "ok",
+      "text": "DOPPIETTA in Coppa (26' e 84', più l'assist-tiro dell'autogol): il prezzo salirà ancora. I rigori restano in alternanza con Rrahmani (la doppietta era su azione)."
+    },
+    {
+      "name": "Yeboah J.",
+      "team": "Venezia",
+      "type": "ok",
+      "text": "PROMOSSO: gol di testa in Coppa e investitura pubblica di Stroppa ('ho un solo imprescindibile: Yeboah'). Da scommessa a semi-certezza: alzare il tetto."
+    },
+    {
+      "name": "Bella-Kotchap",
+      "team": "Venezia",
+      "type": "ok",
+      "text": "Titolare in Coppa nel terzetto. CONFERMATO dal campo — ma la difesa ha ballato (2 gol in 39'): voti a rischio nelle prime."
+    },
+    {
+      "name": "Schingtienne",
+      "team": "Venezia",
+      "type": "ok",
+      "text": "Titolare in Coppa: confermato dal campo, ancora ignorato dalle guide. Sleeper puro che regge."
+    },
+    {
+      "name": "Halhal",
+      "team": "Venezia",
+      "type": "ok",
+      "text": "NUOVO: la terza maglia del terzetto è andata a LUI (non a Moreno) in Coppa. Listato D a Qt 4: sleeper che nessun aggregatore ha ancora recepito."
+    },
+    {
+      "name": "Hainaut",
+      "team": "Venezia",
+      "type": "ok",
+      "text": "NUOVO: quinto destro titolare in Coppa — ballottaggio con Correia RISOLTO a suo favore (Correia subentrato al 74'). Qt 3: il low cost destro del Venezia è lui."
+    },
+    {
+      "name": "Basic",
+      "team": "Venezia",
+      "type": "ballottaggio",
+      "text": "SEGNALE NEGATIVO FORTE: dato titolare alla vigilia, poi NÉ in campo NÉ tra i subentrati in Coppa (motivo non chiarito: possibile mercato). Hanno giocato Perez-Busio-Sohm. Congelare finché non si capisce."
+    },
+    {
+      "name": "Sverko",
+      "team": "Venezia",
+      "type": "infortunio",
+      "text": "Confermato out (~fine ottobre), come Adorante (schiena, operato, scavalcato anche sui rigori): fuori dai 27 convocati di Coppa."
+    },
+    {
+      "name": "Frosinone (modulo)",
+      "team": "Frosinone",
+      "type": "ballottaggio",
+      "text": "4-3-3 CONFERMATO DAL CAMPO (XI di Coppa col Juve Stabia): Palmisani; Amey, Calvani, Monterisi, Bracaglia; Koutsoupias, Calò, Cichella; KVERNADZE, Raimondo, FINI. RIBALTONE sul 3° slot: ha giocato FINI (Qt 3, mai considerato) e SCHMID è rimasto fuori — lo Schmid 'favorito 40%' è da declassare, Kvernadze promosso titolare."
+    },
+    {
+      "name": "Palmisani",
+      "team": "Frosinone",
+      "type": "ok",
+      "text": "Titolare in Coppa (16/8) ma la vigilia diceva 'leggermente avanti, decisione a ridosso': il ballottaggio con Desplanches è 55/45, non 65/35. Scommessa da 1-2 che regge, con margine ridotto."
     },
     {
       "name": "Ostigard",
@@ -581,13 +893,7 @@
       "name": "Obert",
       "team": "Cagliari",
       "type": "fairplay",
-      "text": "Promosso 'top di squadra' da FantaMaster (costerà), MA è il D più sanzionato della wishlist: 9 ammonizioni totali nel 25/26 (8+1 doppia). Piazzati veri, fairplay pessimo: valuta tu il saldo."
-    },
-    {
-      "name": "Wesley",
-      "team": "Roma",
-      "type": "fairplay",
-      "text": "'Dopo Dimarco c'è lui' MA è il peggior profilo fairplay tra i D top: 2 ESPULSIONI + 6 gialli nel 25/26. Scontare il malus."
+      "text": "Titolare in Coppa e il Cagliari ha RIFIUTATO 10M del Lens (blindato). Resta il D più sanzionato della wishlist: 9 ammonizioni nel 25/26. Piazzati veri, fairplay pessimo."
     },
     {
       "name": "Calhanoglu",
@@ -596,22 +902,16 @@
       "text": "Rigorista più solido della A ma 7 gialli in sole 22 presenze nel 25/26 (0,32/gara, il peggior rateo tra i big): il fairplay lo paga."
     },
     {
-      "name": "Zaccagni",
-      "team": "Lazio",
-      "type": "fairplay",
-      "text": "Rigori NON garantiti (Sky dà Cataldi) e disciplina pessima: 6 gialli + 1 rosso nel 25/26, 10 gialli nel 24/25. La Lazio è la squadra con più espulsioni della A (7)."
-    },
-    {
       "name": "Vlasic",
       "team": "Torino",
       "type": "fairplay",
-      "text": "Pacchetto bonus completo (rigori+punizioni+corner) ma 7 ammonizioni nel 25/26: resta il miglior C low per bonus, scontare il malus."
+      "text": "Pacchetto bonus completo confermato dal campo (90' in Coppa) ma 7 ammonizioni nel 25/26: resta il miglior C low per bonus, scontare il malus."
     },
     {
       "name": "Mandragora",
       "team": "Fiorentina",
       "type": "fairplay",
-      "text": "Recidivo: 7 gialli nel 25/26 E nel 24/25. In più è in dubbio per la 1ª (schiena)."
+      "text": "MIGLIORATO: la 'schiena' è sciatalgia in risoluzione, esordio con la Roma non a rischio. Resta recidivo cartellini (7 gialli nel 25/26 E nel 24/25)."
     },
     {
       "name": "Rovella",
@@ -626,226 +926,58 @@
       "text": "Recidivo strutturale: 9 gialli nel 25/26 e 9 nel 24/25. Titolare sì, ma il fairplay piange."
     },
     {
-      "name": "Douvikas",
-      "team": "Como",
-      "type": "ok",
-      "text": "Titolare in 7/7 fonti (85%, Morata fuori rosa di fatto) e ZERO cartellini nel 25/26 con 14 gol: il 9 fairplay per eccellenza, miglior rapporto certezza/prezzo della A."
-    },
-    {
-      "name": "Dovbyk",
-      "team": "Bologna",
-      "type": "ok",
-      "text": "Titolare designato (70/30 su Piccoli, che è vice e non trequartista) e ZERO cartellini nel 25/26: gol + fairplay. L'insidia rigori a Orsolini è ridimensionata (le fonti lo danno 3°)."
-    },
-    {
-      "name": "Simeone",
-      "team": "Torino",
-      "type": "ok",
-      "text": "Certezza (70/30, Zapata non convocato) e 1 solo giallo in 32 presenze: voti, gol e fairplay."
-    },
-    {
-      "name": "Cutrone",
-      "team": "Monza",
-      "type": "ok",
-      "text": "PROMOSSO: con Pessina operato eredita i RIGORI del Monza — e ha ZERO cartellini nel 25/26. Da low cost a semi-gem: alzare il tetto prima che lo faccia il banditore."
-    },
-    {
-      "name": "Hojlund",
-      "team": "Napoli",
-      "type": "ok",
-      "text": "Titolare inamovibile, 1 solo giallo nel 25/26 e le guide fresche lo indicano come l'attaccante Napoli da avere: pagalo per i gol su azione (rigori a KDB). FantaMaster lo dà addirittura 1° rigorista."
-    },
-    {
-      "name": "De Bruyne",
-      "team": "Napoli",
+      "name": "Dodò",
+      "team": "Fiorentina",
       "type": "ballottaggio",
-      "text": "Rigori+punizioni+corner e solo 1 giallo (ottimo fairplay) MA fantacalcio.it il 14/8 schiera Anguissa dal 1': il tema minutaggio con Allegri è reale. Semi-top, non 1° slot."
+      "text": "CAPOVOLTO DAL CAMPO: in Coppa titolare JOAO MARIO (assist per Kean), Dodò in panchina (entrato al 46'). Sul mercato: nessuna offerta, la Viola vira sul rinnovo-ponte, il Milan monitora senza contatti. Il 'nettamente favorito' non regge: ballottaggio vero, sconto obbligatorio."
     },
     {
-      "name": "Scamacca",
+      "name": "Mastantuono",
+      "team": "Fiorentina",
+      "type": "ballottaggio",
+      "text": "CONFERMATO RIDIMENSIONATO: subentro al 58' anche in Coppa (nel giorno del 19° compleanno). Atta titolare davanti a lui. Prospetto, non titolare: metà prezzo."
+    },
+    {
+      "name": "Gudmundsson A.",
+      "team": "Fiorentina",
+      "type": "ok",
+      "text": "In gol al 2' in Coppa da trequartista dietro Kean e rigorista confermato. Sul mercato è 'di fatto in vendita' (15-20M, sondaggio Atalanta) ma nessuna offerta depositata: comprare con un occhio all'1/9."
+    },
+    {
+      "name": "Ndour",
+      "team": "Fiorentina",
+      "type": "ok",
+      "text": "PROMOSSO: titolare E in gol in Coppa nella mediana di Grosso. Il triplo hit dei consigli ora ha anche la prova del campo: costerà più dei 6 previsti."
+    },
+    {
+      "name": "Parisi",
+      "team": "Fiorentina",
+      "type": "infortunio",
+      "text": "NUOVO (mancava in lista): crociato, rientro novembre."
+    },
+    {
+      "name": "Kristensen T.",
       "team": "Atalanta",
       "type": "ok",
-      "text": "70/30 su Krstovic, in pole sui rigori (Sarri non ufficializza), 2 soli gialli: col ko di De Ketelaere alla 1ª è il riferimento. Non strapagarlo oltre il tetto."
+      "text": "Ora listato ATALANTA (Qt 7, FVM 20) e titolare nel terzetto atteso di Sarri (con Scalvini e Bernasconi/Zappacosta). Occasione di listone confermata."
     },
     {
-      "name": "Raspadori",
-      "team": "Atalanta",
-      "type": "ballottaggio",
-      "text": "Titolare a sinistra per 5 fonti su 6, ma fantacalcio.it 14/8 inverte con Zalewski (55/45): upgrade confermato, con un filo di cautela in più."
-    },
-    {
-      "name": "Samardzic",
-      "team": "Atalanta",
-      "type": "ok",
-      "text": "Ha VINTO il ballottaggio (Sarri lo esalta), 1° su punizioni e corner, 2/2 sui rigori, e 1 solo giallo nel 25/26: pacchetto perfetto anche per il fairplay. Ormai bruciato (Sky/FantaMaster/Goal): alzare il budget."
-    },
-    {
-      "name": "Kolo Muani",
-      "team": "Juventus",
-      "type": "ok",
-      "text": "Titolare certo (75/25 su David) e rigorista in pole ormai per quasi tutte le fonti (solo Fantacalciopedia dice Yildiz). Nessuna ufficialità di Spalletti: ultimo rischio residuo."
-    },
-    {
-      "name": "Alajbegovic",
-      "team": "Juventus",
-      "type": "ballottaggio",
-      "text": "RIDIMENSIONATO: 55/45 su McKennie e prestazione opaca l'11/8 ('poco appariscente'). Resta il nome Juve che pochi conoscono, ma da scommessa, non da certezza."
-    },
-    {
-      "name": "Koopmeiners",
-      "team": "Juventus",
-      "type": "ballottaggio",
-      "text": "Confermato CENTRALE di difesa ma come ALTERNATIVA (nessuna fonte lo mette nell'XI). E il Bologna lo chiede in prestito. Trappola a prezzo pieno."
-    },
-    {
-      "name": "Kalulu",
-      "team": "Juventus",
-      "type": "ok",
-      "text": "SMENTITO l'impiego a centrocampo: è il TERZINO destro titolare (55/45 su Celik). Comunque buono, ma da difensore normale."
-    },
-    {
-      "name": "Zhegrova",
-      "team": "Juventus",
+      "name": "Pellegrino M.",
+      "team": "Fiorentina",
       "type": "mercato",
-      "text": "Invariato: esubero (Trabzonspor/Besiktas, lui vuole restare). Non è un investimento."
-    },
-    {
-      "name": "Nkunku",
-      "team": "Milan",
-      "type": "ballottaggio",
-      "text": "'L'unico sicuro del posto' sulla trequarti (PianetaMilan 13/8) e 0 cartellini, MA doppio warning: le fonti fresche danno i rigori a Ramos e il 14/8 è spuntata l'ipotesi scambio con Soulè. Semi-top con riserva."
-    },
-    {
-      "name": "Ramos G.",
-      "team": "Milan",
-      "type": "ok",
-      "text": "Il 9 fisso (unanime, acquisto record 65M+5) e per le fonti più fresche è LUI il rigorista, non Nkunku. Camarda dietro, Gimenez ko/in uscita."
-    },
-    {
-      "name": "Jashari",
-      "team": "Milan",
-      "type": "ballottaggio",
-      "text": "Perno con Modric per la fonte più vicina alla squadra (13/8) ma 5 aggregatori danno Rabiot, con Ricci e Musah in corsa: titolarità probabile, non blindata. Zero cartellini: fairplay perfetto."
-    },
-    {
-      "name": "Stones",
-      "team": "Inter",
-      "type": "ballottaggio",
-      "text": "Titolare nelle probabili (Akanji-Stones-Bastoni) ma 60/40 su Bisseck: non pagarlo da inamovibile."
-    },
-    {
-      "name": "Winks",
-      "team": "Cagliari",
-      "type": "ok",
-      "text": "PROMOSSO: regista designato ('sarà il nuovo regista', 80/20 su Deiola) e tiratore di piazzati. La titolarità non è più in dubbio."
-    },
-    {
-      "name": "Kevin Carlos",
-      "team": "Cagliari",
-      "type": "ballottaggio",
-      "text": "Fantacalcio.it lo dà 1° RIGORISTA e titolare (65% su Borrelli/Mendy); FantaMaster dà Maldini. A Qt 13 è la scommessa-rigori più discussa del listone: gerarchia da verificare all'ultimo."
-    },
-    {
-      "name": "Maldini",
-      "team": "Cagliari",
-      "type": "ok",
-      "text": "Titolare in 7/7 fonti — la certezza più solida del Cagliari — MA i rigori sono CONTESI con Kevin Carlos (fonti spaccate): pagarlo per titolarità + punizioni, il premio rigori solo a metà."
-    },
-    {
-      "name": "Fazzini",
-      "team": "Cagliari",
-      "type": "ok",
-      "text": "Titolare confermato ovunque ('libertà di svariare tra le linee'): piazzati sì, rigori verso Kevin Carlos/Maldini."
-    },
-    {
-      "name": "Frosinone (modulo)",
-      "team": "Frosinone",
-      "type": "ballottaggio",
-      "text": "Il modulo è il 4-3-3 (7/7 fonti), non il 4-2-3-1: Calò in mediana, Ghedjemis e Raimondo davanti. Il 3° slot offensivo è conteso A TRE: SCHMID favorito (~40%) su Kvernadze (35%) e Zerbin (25%)."
-    },
-    {
-      "name": "Njie",
-      "team": "Torino",
-      "type": "ballottaggio",
-      "text": "50/50 vero con Oristanio: il campo dell'8/8 premiava Njie (formazione ufficiale con Vlasic), le redazioni danno Oristanio. Dualismo da monitorare."
-    },
-    {
-      "name": "Aboukhlal",
-      "team": "Torino",
-      "type": "ballottaggio",
-      "text": "SMENTITO dalle probabili: nessuna fonte lo dà titolare, DAZN lo mette in fondo alle gerarchie dietro Vlasic/Oristanio/Njie. Solo ultimo slot a 1."
-    },
-    {
-      "name": "Liberali",
-      "team": "Como",
-      "type": "ballottaggio",
-      "text": "DECLASSATO: Diao nettamente favorito (70/30, 7/7 fonti), Liberali solo alternativa con Addai. E ormai è bruciato dalle guide: non pagare l'hype."
-    },
-    {
-      "name": "Baldanzi",
-      "team": "Genoa",
-      "type": "ok",
-      "text": "LA scommessa del Genoa per FantaMaster e n.1 dei low cost per PazziDiFanta: 1° sulle punizioni, titolare (~65%). BRUCIATO: alzare il budget."
-    },
-    {
-      "name": "Sow",
-      "team": "Genoa",
-      "type": "ballottaggio",
-      "text": "Titolare per 5 fonti ma fantacalcio.it 14/8 schiera Amorim e DAZN apre a Ellertsson: ~55%, non certezza."
-    },
-    {
-      "name": "Martin",
-      "team": "Genoa",
-      "type": "ballottaggio",
-      "text": "BOCCIATO da FantaMaster (tra i 2 FLOP del Genoa): 'posto non più sicuro, appeal ridotto'. Tolto dagli sleeper."
-    },
-    {
-      "name": "Thiam",
-      "team": "Monza",
-      "type": "ok",
-      "text": "Titolare confermato (~85%): 16 clean sheet in B, il portiere della promozione. Low cost solido."
-    },
-    {
-      "name": "Bella-Kotchap",
-      "team": "Venezia",
-      "type": "ok",
-      "text": "'Super sorpresa stagionale, preso a prezzo stracciato nonostante la qualità' (Sky 11/8): titolare nella difesa a 3. Il nome nuovo più forte del reparto D."
-    },
-    {
-      "name": "Yeboah J.",
-      "team": "Venezia",
-      "type": "ok",
-      "text": "COPPIA Adams-Yeboah confermata da tutte le probabili: il posto c'è, il prezzo è rimasto da scommessa. Rrahmani terza opzione (~30%)."
-    },
-    {
-      "name": "Schingtienne",
-      "team": "Venezia",
-      "type": "ok",
-      "text": "Titolare nel terzetto (con Bella-Kotchap e Moreno/Sverko) e ancora IGNORATO da tutte le guide: sleeper puro."
-    },
-    {
-      "name": "Perri",
-      "team": "Torino",
-      "type": "mercato",
-      "text": "Arrivato dal Leeds (visite 13/8, prestito con diritto ~11M): sarà il titolare designato appena a regime, ma NON è ancora nel listone e alla 1ª le fonti si dividono tra Mascardi e Paleari. Porta comprabile solo se viene listato."
+      "text": "Ora listato FIORENTINA (Qt 15, FVM 60): parte DIETRO Kean (90/10) ma Fantacalcio-online lo mette già 2° rigorista viola. Non pagarlo da titolare; da vice-con-rigori-potenziali vale 3-5."
     },
     {
       "name": "Pavard",
       "team": "Inter",
       "type": "mercato",
-      "text": "Rientrato dal prestito, in uscita: lasciarlo."
+      "text": "CAMBIATO: verso la PERMANENZA (nessuna offerta concreta, ingaggio 5M). Resta fuori dalle gerarchie: lasciarlo comunque."
     },
     {
-      "name": "Tomori",
-      "team": "Milan",
-      "type": "ballottaggio",
-      "text": "Risalito: con Gila incerto è pronto a partire titolare. Ma resta dietro nelle gerarchie (e in uscita per alcune fonti): scommessa, non certezza."
-    },
-    {
-      "name": "Gabbia",
+      "name": "Rabiot",
       "team": "Milan",
       "type": "infortunio",
-      "text": "Botta alla caviglia, salta l'amichevole con lo United: da monitorare, ma resta il perno del terzetto."
+      "text": "NUOVO: rientrato a Milanello solo il 16/8 (post-Mondiale, come Maignan), non in gruppo il 15/8. Jashari gli è passato davanti nelle gerarchie d'avvio: scontare le prime giornate."
     }
   ],
   "sleepers": {
@@ -853,329 +985,371 @@
       {
         "name": "Muric",
         "team": "Sassuolo",
-        "why": "Gerarchia RISOLTA (riscattato, titolare ~80%, Turati vice): il prezzo è ancora schiacciato dal caos percepito",
+        "why": "Titolare ~75% (riscattato; Turati in USCITA verso la Samp): prezzo ancora schiacciato dal caos percepito. Test finale: Sassuolo-Cesena 17/8",
         "price": 4
       },
       {
         "name": "Corvi",
         "team": "Parma",
-        "why": "Titolare col via libera Suzuki-PSG, Daffara ko — ma ormai noto (SOS/Goal): non arriverà a 1",
+        "why": "CONFERMATO DAL CAMPO (titolare in Coppa, 2-0 al Catania) — ma Daffara è recuperato (panchina): rischio alternanza più avanti",
         "price": 4
       },
       {
         "name": "Provedel",
         "team": "Inter",
-        "why": "A 2 crediti: Chivu non dà gerarchie, rigore parato in amichevole — se ribalta Martinez hai il portiere di una big quasi gratis",
-        "price": 2
+        "why": "REGGE: Chivu ha dichiarato il turnover ('non esistono titolari o riserve'), Gazzetta dà Martinez solo 60/40. A 2-3 crediti resta il miglior sleeper del reparto",
+        "price": 3
       },
       {
         "name": "Stankovic F.",
         "team": "Venezia",
-        "why": "Titolare indiscusso ('c'è Stankovic' — Stroppa) ma BRUCIATO: lo consigliano tutti",
+        "why": "Titolare confermato dal campo ma BRUCIATO: lo consigliano tutti",
         "price": 8
       },
       {
         "name": "Motta",
         "team": "Lazio",
-        "why": "A 1 credito: vice di Mandas 'vicino in gerarchia' (SOS consiglia la coppia), Provedel ceduto",
+        "why": "A 1 credito: vice di Mandas 'vicino in gerarchia' (CalcioDangolo lo chiama 'il ballottaggio più aperto della A'), spazio in coppa e forse in campionato",
         "price": 1
       },
       {
         "name": "Palmisani",
         "team": "Frosinone",
-        "why": "Più favorito di quanto si creda (~65% su Desplanches, titolare nelle ultime 2 amichevoli): scommessa da 1-2",
+        "why": "Titolare in Coppa il 16/8 ma ballottaggio ridotto a 55/45 con Desplanches ('decisione a ridosso'): scommessa da 1-2, non di più",
         "price": 2
+      },
+      {
+        "name": "Falcone",
+        "team": "Lecce",
+        "why": "RIENTRATO tra i comprabili: resta al Lecce da capitano (ha rifiutato Napoli e Roma), MV 6,4 nel 25/26 — il prezzo potrebbe essere ancora schiacciato dalla voce-Napoli",
+        "price": 8
       }
     ],
     "D": [
       {
         "name": "Bella-Kotchap",
         "team": "Venezia",
-        "why": "TOP PICK NUOVO: 'super sorpresa a prezzo stracciato' (Sky 11/8), titolare nel terzetto di Stroppa",
+        "why": "Titolare in Coppa: confermato dal campo (ma la difesa ha ballato: 2 gol in 39')",
         "price": 6
+      },
+      {
+        "name": "Halhal",
+        "team": "Venezia",
+        "why": "NUOVO DAL CAMPO: terza maglia del terzetto in Coppa (non Moreno), Qt 4, zero copertura mediatica: sleeper puro",
+        "price": 3
+      },
+      {
+        "name": "Hainaut",
+        "team": "Venezia",
+        "why": "NUOVO DAL CAMPO: quinto destro titolare in Coppa, ballottaggio con Correia risolto a suo favore. Qt 3",
+        "price": 3
       },
       {
         "name": "Vojvoda",
         "team": "Udinese",
-        "why": "Triplo hit (FantaMaster, Sky, SOS): quinto destro titolare (~70%, Zanoli ko), assist e piazzati in rotazione",
+        "why": "Titolare 90' in Coppa: confermato dal campo (Zanoli ko fino a ottobre)",
         "price": 6
-      },
-      {
-        "name": "Kempf",
-        "team": "Como",
-        "why": "Sky low cost: media voto ~6,5 con zero hype e SOLO 3 gialli in 34 gare — titolarità + fairplay",
-        "price": 5
       },
       {
         "name": "Schingtienne",
         "team": "Venezia",
-        "why": "Titolare nella difesa a 3 e ancora ignorato da tutte le guide: sleeper puro",
+        "why": "Titolare in Coppa e ancora ignorato dalle guide: sleeper puro che regge",
         "price": 3
       },
       {
         "name": "Haps",
         "team": "Venezia",
-        "why": "Quinto sinistro fisso nel 3-5-2, 5 gol nel 25/26, zero copertura nei consigli: sleeper puro",
+        "why": "Quinto sinistro titolare in Coppa: confermato, copertura ancora bassa",
         "price": 6
       },
       {
         "name": "Kristensen T.",
-        "team": "Udinese",
-        "why": "UFFICIALE all'Atalanta (22M+3) e TITOLARE nel terzetto delle probabili: occasione di listone, nessuna guida lo cita",
+        "team": "Atalanta",
+        "why": "Ora listato Atalanta (Qt 7, FVM 20) e titolare nel terzetto atteso di Sarri: resta l'occasione di listone n.1 del reparto",
         "price": 10
       },
       {
         "name": "Marin R.",
         "team": "Napoli",
-        "why": "Titolare confermato dalle probabili almeno fino a ottobre (3 centrali out), a Qt 2 — occhio solo all'arrivo di Badiashile",
+        "why": "Titolare confermato in coppia con Rrahmani almeno fino al rientro degli infortunati — unico rischio Badiashile (visite 18/8)",
         "price": 3
       },
       {
         "name": "Obert",
         "team": "Cagliari",
-        "why": "Promosso 'top di squadra' (FantaMaster) con piazzati veri, MA 9 ammonizioni nel 25/26: fairplay pessimo, e ormai costerà",
+        "why": "Titolare in Coppa e blindato (rifiutati 10M del Lens) MA 9 ammonizioni nel 25/26: piazzati veri, fairplay pessimo",
         "price": 12
       },
       {
         "name": "Mangas",
         "team": "Monza",
-        "why": "Titolarità confermata ma BRUCIATO (n.1 dei low cost FantaMaster, in tutte le liste): alzare il budget",
+        "why": "Titolare in Coppa: confermato ma BRUCIATO, alzare il budget",
         "price": 10
       },
       {
         "name": "Monterisi",
         "team": "Frosinone",
-        "why": "Capitano e perno, sale sui piazzati; copertura mediatica ancora bassa",
+        "why": "Titolare in Coppa (16/8): capitano e perno, sale sui piazzati",
         "price": 4
       },
       {
         "name": "Bracaglia",
         "team": "Frosinone",
-        "why": "Titolare a sinistra ma BRUCIATO ('su tutti Bracaglia' — Goal): prezzo in salita",
+        "why": "Titolare in Coppa (16/8) ma BRUCIATO: prezzo in salita",
         "price": 6
       },
       {
         "name": "Doig",
         "team": "Sassuolo",
-        "why": "Titolare mancino confermato dalle probabili; storico bonus scarso: prendilo per il posto",
+        "why": "Titolare mancino confermato (Obrador appena arrivato non è ancora integrato): prendilo per il posto, occhio al ballottaggio da settembre",
         "price": 4
       },
       {
         "name": "Birindelli",
         "team": "Monza",
-        "why": "Titolare di Juric, 'gioca sempre, spinge, ogni tanto un bonus'",
+        "why": "Titolare in Coppa con Juric: confermato dal campo",
         "price": 5
       },
       {
         "name": "Kaiki",
         "team": "Como",
-        "why": "Confermato favorito su Valle (65/35) ma BRUCIATO (Calcio d'Angolo, SOS, Sisal, Goal): aspettati rilanci",
+        "why": "Confermato titolare (fantacalcio.it + DAZN) ma BRUCIATO: aspettati rilanci",
         "price": 10
       },
       {
         "name": "Mitaj",
         "team": "Genoa",
-        "why": "Favorito ~55% su Ellertsson ma BRUCIATO (FantaMaster, Goal, Sisal): non più a 1-2",
-        "price": 4
+        "why": "INCERTO: probabili di Coppa discordanti (una lo esclude dal terzetto): verificare l'XI di Genoa-Ascoli prima di pagarlo",
+        "price": 3
       },
       {
         "name": "Gallo",
         "team": "Lecce",
-        "why": "Punizioni E corner del Lecce, 37 presenze e solo 3 gialli (fairplay ok) — noto, costerà",
+        "why": "Nella probabile di Coppa, punizioni e corner del Lecce, fairplay ok — noto, costerà",
         "price": 8
-      },
-      {
-        "name": "Correia T.",
-        "team": "Venezia",
-        "why": "Quinto destro, miglior rapporto qualità/prezzo tra le neopromosse — ma ballottaggio vero con Hainaut",
-        "price": 5
-      },
-      {
-        "name": "Jimenez A.",
-        "team": "Fiorentina",
-        "why": "Listato D pur giocando da esterno (cambio ruolo favorevole), in corsa sulla fascia con Dodò: sorpresa FantaMaster/Sisal",
-        "price": 6
       },
       {
         "name": "Zortea",
         "team": "Bologna",
-        "why": "Titolare all'avvio (70/30 su Holm ko), 2 gialli in 32: posto + fairplay a prezzo basso",
+        "why": "RIDIMENSIONATO: Holm è recuperato (37' col Pisa + Brighton) e punta la 1ª da titolare: il 70/30 è tornato ~50/50",
+        "price": 4
+      },
+      {
+        "name": "Vitik",
+        "team": "Bologna",
+        "why": "NUOVO: con Lucumì alla Juve e Casale ko, la coppia d'avvio è Vitik/Heggem a Qt 5-6: il buco del Bologna è la loro occasione",
+        "price": 3
+      },
+      {
+        "name": "Pedraza",
+        "team": "Lazio",
+        "why": "NUOVO: titolare a sinistra in Coppa (Tavares ko al ginocchio): low cost d'avvio a Qt 5",
+        "price": 3
+      },
+      {
+        "name": "Jimenez A.",
+        "team": "Fiorentina",
+        "why": "Nessuna notizia fresca; intanto in Coppa la fascia destra l'ha giocata Joao Mario (con Dodò panchinato): il quadro Fiorentina è più aperto che mai",
         "price": 5
+      },
+      {
+        "name": "Correia T.",
+        "team": "Venezia",
+        "why": "DECLASSATO DAL CAMPO: Hainaut gli è passato davanti (Correia dentro solo al 74'): solo da ultimo slot",
+        "price": 2
       }
     ],
     "C": [
       {
-        "name": "Perez K.",
-        "team": "Venezia",
-        "why": "NUOVO: specialista di angoli e punizioni (3 gol + 7 assist in B, Sky): a 1-2 è un furto se vince il ballottaggio con Sohm",
+        "name": "Deiola",
+        "team": "Cagliari",
+        "why": "NUOVO — IL COLPO DEL TURNO: rigorista DAL CAMPO (segnato in Coppa, unico rigore dei 32esimi), capitano, listato C a Qt 3, schierato pure da centrale. Nessuna guida lo cita: a 2-4 crediti è il furto-rigori dell'asta",
         "price": 3
       },
       {
-        "name": "Schmid",
+        "name": "Perez K.",
+        "team": "Venezia",
+        "why": "Titolare in Coppa (con Busio e Sohm — Basic sparito): specialista di piazzati confermato dal campo",
+        "price": 3
+      },
+      {
+        "name": "Casadei",
+        "team": "Torino",
+        "why": "PROMOSSO DAL CAMPO: 90' da sotto-punta con Vlasic in Coppa, mai sostituito. Il low cost C del Toro è lui (Oristanio panchinato, Njie fermo)",
+        "price": 6
+      },
+      {
+        "name": "Colpani",
+        "team": "Monza",
+        "why": "NUOVO: Sky lo dava 2° rigorista dietro Pessina → con Pessina out fino a novembre è l'outsider-rigori del Monza a Qt 8, e nessuno lo sta prezzando per questo",
+        "price": 6
+      },
+      {
+        "name": "Fini",
         "team": "Frosinone",
-        "why": "NUOVO: FAVORITO (~40%) nel tridente su Kvernadze e Zerbin, 4 gol + 8 assist in Germania: quasi nessuno lo conosce",
-        "price": 5
+        "why": "NUOVO DAL CAMPO: titolare nel tridente di Coppa (16/8) al posto di Schmid/Zerbin — Qt 3, nome che nessuno ha in lista",
+        "price": 2
       },
       {
         "name": "Vergara",
         "team": "Napoli",
-        "why": "Listato C a 1-2 con gol in Champions ('una delle scommesse più interessanti') — ma contusione alla tibia da monitorare",
+        "why": "RECUPERATO (in gruppo): la scommessa da 1-2 con gol in Champions torna valida",
         "price": 2
       },
       {
         "name": "Ekkelenkamp",
         "team": "Udinese",
-        "why": "Più minutaggio con l'addio di Atta, accanto a Zaniolo; 1 solo giallo in 31 (fairplay ok)",
+        "why": "Titolare in Coppa accanto a Zaniolo: confermato dal campo, fairplay ok",
         "price": 4
-      },
-      {
-        "name": "Casadei",
-        "team": "Torino",
-        "why": "6 gol di inserimento, titolare del Toro a prezzo minimo (PazziDiFanta)",
-        "price": 5
       },
       {
         "name": "Romano",
         "team": "Cagliari",
-        "why": "NUOVO: 'ottima pre-season, pronto a convincere Pisacane' (FantaMaster), nelle probabili è in mezzo",
+        "why": "Titolare in Coppa in mezzo: confermato dal campo",
         "price": 3
       },
       {
         "name": "Ndour",
         "team": "Fiorentina",
-        "why": "Triplo hit (FantaMaster, PazziDiFanta, Goal): titolare nella mediana di Grosso",
-        "price": 6
+        "why": "PROMOSSO: titolare E GOL in Coppa nella mediana di Grosso: il prezzo salirà oltre i 6",
+        "price": 8
       },
       {
         "name": "Gaetano",
         "team": "Atalanta",
-        "why": "Regista titolare (60/40 su De Roon) nel 4-3-3 di Sarri, in rotazione sui piazzati: meno inflazionato di Samardzic",
+        "why": "Nell'XI atteso di Sarri (con Samardzic ed Ederson): meno inflazionato di Samardzic",
         "price": 12
       },
       {
         "name": "Frattesi",
-        "team": "Inter",
-        "why": "Alla Lazio (firma 15/8): mezzala di Gattuso ma ballottaggio iniziale con Dele-Bashiru — non più low cost, è un investimento (semi-top per Sisal)",
+        "team": "Lazio",
+        "why": "UFFICIALE (15/8) e ora listato Lazio a Qt 7 FVM 55: Gattuso lo indica titolare col Bologna. Non più low cost: investimento",
         "price": 15
       },
       {
         "name": "Basic",
         "team": "Venezia",
-        "why": "Posto fisso + piazzati mancini a 1-2 — ballottaggio con Sohm segnalato da DAZN, e un rosso nel 25/26",
-        "price": 3
+        "why": "CONGELATO: né in campo né in panchina in Coppa senza spiegazione (possibile mercato). Non comprarlo finché non si chiarisce",
+        "price": 1
       },
       {
         "name": "Busio",
         "team": "Venezia",
-        "why": "'Leader tecnico, intoccabile': 1° su punizioni e corner, 4° rigorista",
+        "why": "Titolare in Coppa: 'leader tecnico' confermato, 1° su punizioni e corner",
         "price": 6
       },
       {
         "name": "Hasa",
         "team": "Frosinone",
-        "why": "'Possibile sorpresa di stagione' (FantaMaster): jolly offensivo a Qt 2",
-        "price": 3
+        "why": "Nessuna notizia fresca; non nell'XI di Coppa: jolly da ultimo slot",
+        "price": 2
       },
       {
         "name": "Zerbin",
         "team": "Frosinone",
-        "why": "LA scommessa del Frosinone per FantaMaster — ma nel tridente è terzo (~25%) dietro Schmid e Kvernadze",
-        "price": 4
+        "why": "DECLASSATO: nel tridente di Coppa hanno giocato Kvernadze e FINI — Zerbin fuori: solo a saldo estremo",
+        "price": 2
+      },
+      {
+        "name": "Schmid",
+        "team": "Frosinone",
+        "why": "BOCCIATO DAL CAMPO: fuori dall'XI di Coppa (Fini al suo posto) nonostante DAZN/Lottomatica lo diano favorito: sopravvalutato dagli aggregatori, da 5 a 2",
+        "price": 2
       },
       {
         "name": "Bakola",
         "team": "Sassuolo",
-        "why": "Talento vero (Calcio d'Angolo lo mette nei 10 a 1 credito) MA sparito dalle probabili e in dubbio fisico: scommessa pura",
+        "why": "RIENTRATO: nella probabile di Coppa in mediana: la scommessa a 1-2 torna in piedi",
         "price": 2
       },
       {
         "name": "Adzic",
         "team": "Sassuolo",
-        "why": "Titolare (55/45 su Lipani), 2° tiratore dietro Berardi — BRUCIATO (4 fonti): alzare il budget",
-        "price": 6
+        "why": "APERTO: in Coppa atteso Lipani, ma fantacalcio.it lo dà titolare alla 1ª: 50/50 vero, prezzo da bruciato",
+        "price": 5
       },
       {
         "name": "Akinsanmiro",
         "team": "Monza",
-        "why": "Titolare confermato nel centrocampo di Juric; con Pessina out sale di importanza",
-        "price": 5
+        "why": "Out in Coppa per febbre (giocati Foe-Ondoa e Mout): titolarità da riverificare",
+        "price": 4
       },
       {
         "name": "Njie",
         "team": "Torino",
-        "why": "50/50 con Oristanio ma il campo lo premia (titolare con Vlasic l'8/8): listato C, quasi nessuno lo rilancia",
-        "price": 5
+        "why": "CONGELATO: sovraccarico muscolare + offerta Salisburgo da 12M: rischio che parta. Non pagarlo",
+        "price": 2
       },
       {
         "name": "Oristanio",
         "team": "Torino",
-        "why": "50/50 con Njie per il posto sulla trequarti, 2° tiratore dietro Vlasic",
-        "price": 7
+        "why": "BOCCIATO DAL CAMPO: panchina in Coppa, mai entrato. Solo a saldo",
+        "price": 3
       },
       {
         "name": "Alajbegovic",
         "team": "Juventus",
-        "why": "55/45 su McKennie, prestazione opaca l'11/8: da certezza a scommessa informata",
+        "why": "RIVALUTATO: favorito da trequartista nell'XI atteso (a rischio è Conceicao, non McKennie): scommessa informata",
         "price": 10
       },
       {
         "name": "Miller L.",
         "team": "Udinese",
-        "why": "Specialista dei piazzati, zero copertura mediatica: sleeper puro da ultimo slot",
+        "why": "Subentro al 73' in Coppa: specialista piazzati, resta da ultimo slot",
         "price": 3
       },
       {
         "name": "Unai Gomez",
         "team": "Udinese",
-        "why": "BRUCIATO (FantaMaster + Calcio d'Angolo a 1 credito) e ballottaggio con Piotrowski: solo a saldo",
-        "price": 5
+        "why": "Subentro all'83' in Coppa: solo a saldo",
+        "price": 3
       },
       {
         "name": "Sow",
         "team": "Genoa",
-        "why": "Titolare per 5 fonti ma fantacalcio.it schiera Amorim: ~55%",
-        "price": 4
+        "why": "ROVESCIATO: Amorim titolare per fantacalcio.it E per le probabili di Coppa — il nostro 55% era il dato sbagliato: ~40%",
+        "price": 2
       },
       {
         "name": "Baldanzi",
         "team": "Genoa",
-        "why": "1° sulle punizioni e titolare (~65%) ma BRUCIATO (scommessa n.1 di FantaMaster e PazziDiFanta): budget su",
+        "why": "Confermato titolare nella probabile di Coppa, 1° sulle punizioni — BRUCIATO: budget su",
         "price": 14
       },
       {
         "name": "Jashari",
         "team": "Milan",
-        "why": "Perno con Modric per le fonti fresche (ma 5 aggregatori dicono Rabiot); 0 cartellini: upside alto, titolarità non blindata",
-        "price": 8
+        "why": "RAFFORZATO: titolare col Man United (7 Sky), Rabiot in ritardo, Fofana verso la Juve: perno con Modric. Fairplay perfetto",
+        "price": 10
       },
       {
         "name": "Oulai",
         "team": "Fiorentina",
-        "why": "Titolare in mediana in tutte le probabili — ormai BRUCIATO (FantaMaster, Goal)",
-        "price": 8
+        "why": "RIDIMENSIONATO: in Coppa è partito Fagioli (Oulai dentro al 58'): ballottaggio, non titolare fisso",
+        "price": 5
       },
       {
         "name": "Liberali",
         "team": "Como",
-        "why": "DECLASSATO: Diao favorito 70/30 e nome ormai noto: solo a saldo",
-        "price": 4
+        "why": "Nessuna notizia fresca; con Addai ko il ballottaggio dietro Diao è con Jesus Rodriguez: solo a saldo",
+        "price": 3
       },
       {
         "name": "Winks",
         "team": "Cagliari",
-        "why": "PROMOSSO: regista designato (80/20 su Deiola) + piazzati",
+        "why": "CONFERMATO DAL CAMPO: regista titolare in Coppa + piazzati (i rigori però sono di Deiola)",
         "price": 6
       },
       {
         "name": "Cambiaghi",
         "team": "Bologna",
-        "why": "Il cambio ruolo A→C più vantaggioso del listone MA Rowe è nettamente favorito (80/20): bonus da subentri",
-        "price": 4
+        "why": "RIVALUTATO: titolare col Brighton (Rowe subentrato al 62'): l'80/20 per Rowe non è più così netto",
+        "price": 5
       },
       {
         "name": "Samardzic",
         "team": "Atalanta",
-        "why": "Ballottaggio vinto, tutti i piazzati, 1 giallo nel 25/26 — BRUCIATO: era sleeper, ora è un acquisto da fascia",
+        "why": "Titolare atteso, tutti i piazzati, fairplay pulito — BRUCIATO: acquisto da fascia, non sleeper",
         "price": 25
       }
     ],
@@ -1183,140 +1357,144 @@
       {
         "name": "Tourè E.",
         "team": "Parma",
-        "why": "PROMOSSO: Pellegrino ufficiale alla Fiorentina → è il 9 (6/7 probabili) e RIGORISTA (3/3) del Parma: comprare prima che il prezzo salga",
-        "price": 15
-      },
-      {
-        "name": "Kevin Carlos",
-        "team": "Cagliari",
-        "why": "NUOVO: 1° rigorista per Fantacalcio.it e titolare (65%): la scommessa-rigori più economica insieme a Maldini",
-        "price": 12
+        "why": "RIDIMENSIONATO SUI RIGORI: titolare + assist in Coppa ma NON è il rigorista designato (nessuno specialista nel Parma) e Lontani (2008, doppietta, non listato) insidia i minuti: pagarlo da titolare semplice",
+        "price": 10
       },
       {
         "name": "Cutrone",
         "team": "Monza",
-        "why": "PROMOSSO: eredita i rigori di Pessina (operato), 0 cartellini, titolare 70%: da low cost a semi-gem",
+        "why": "Unica punta 90' in Coppa (non coppia) e rigorista designato — a secco col'Avellino ma il posto è blindato",
         "price": 12
       },
       {
         "name": "Yeboah J.",
         "team": "Venezia",
-        "why": "Coppia Adams-Yeboah confermata da tutte le probabili: posto vero a prezzo di scommessa (Rrahmani 3ª opzione)",
-        "price": 8
-      },
-      {
-        "name": "Ghedjemis",
-        "team": "Frosinone",
-        "why": "Titolare nel 4-3-3 ma BRUCIATO (2 TOP del Frosinone per FantaMaster, in tutte le liste): budget su",
-        "price": 15
-      },
-      {
-        "name": "Maldini",
-        "team": "Cagliari",
-        "why": "Titolare 7/7 + punizioni, ma rigori CONTESI con Kevin Carlos: pagare titolarità, non tutto il premio rigori",
-        "price": 10
-      },
-      {
-        "name": "Raimondo",
-        "team": "Frosinone",
-        "why": "Punta centrale confermata dalle probabili, 11 gol in B: copertura ancora media",
+        "why": "PROMOSSO: gol in Coppa + 'unico imprescindibile' per Stroppa: alzare il tetto",
         "price": 10
       },
       {
         "name": "Kvernadze",
         "team": "Frosinone",
-        "why": "Ancora sleeper MA nel tridente è secondo (~35%) dietro Schmid: scommessa condizionata",
-        "price": 3
+        "why": "PROMOSSO DAL CAMPO: titolare nel tridente di Coppa (16/8) — ha vinto lui il ballottaggio, con Fini sull'altra fascia e Schmid fuori. Qt 4",
+        "price": 6
       },
       {
-        "name": "Romero",
+        "name": "Ghedjemis",
+        "team": "Frosinone",
+        "why": "ALLARME: NON era nell'XI di Coppa (tridente Kvernadze-Raimondo-Fini). Da 'titolare bruciato' a ballottaggio: dimezzare il tetto finché non si capisce",
+        "price": 8
+      },
+      {
+        "name": "Maldini",
+        "team": "Cagliari",
+        "why": "DOWNGRADE: panchina all'esordio in Coppa (dentro al 54') e rigori dal campo a Deiola; intanto l'FVM è salito a 22. Pagare solo la titolarità attesa, non i premi",
+        "price": 8
+      },
+      {
+        "name": "Raimondo",
+        "team": "Frosinone",
+        "why": "CONFERMATO DAL CAMPO: punta centrale titolare in Coppa (16/8)",
+        "price": 10
+      },
+      {
+        "name": "Romero D.",
         "team": "Parma",
-        "why": "NUOVO: 'chiamato a non far rimpiangere Pellegrino, si ritaglierà tantissimo spazio' (FantaMaster); contratto fino al 2031 firmato il 14/8",
-        "price": 4
+        "why": "ORA LISTATO a Qt 10 FVM 38 (non più fuori listone): appena arrivato, non disponibile in Coppa: scommessa a 4-6, non di più",
+        "price": 5
       },
       {
         "name": "Rrahmani Al.",
         "team": "Venezia",
-        "why": "NUOVO: 15 gol con lo Sparta Praga, in alternanza-rigori con Adams, 3ª opzione per il posto: ultimo slot con upside",
+        "why": "Subentro in Coppa (74'): resta l'alternanza-rigori con Adams, ultimo slot con upside",
         "price": 5
       },
       {
         "name": "Adams A.",
         "team": "Venezia",
-        "why": "Coppia confermata + rigori in alternanza, ma BRUCIATO (in tutte le liste): alzare il budget",
-        "price": 18
+        "why": "DOPPIETTA in Coppa: bruciatissimo, il prezzo salirà ancora — alzare il budget o lasciare",
+        "price": 22
       },
       {
         "name": "Stulic",
         "team": "Lecce",
-        "why": "Alterna con Geubbels (30%): porta voti a poco",
-        "price": 5
+        "why": "DOWNGRADE sul posto (fuori dalla probabile di Coppa) ma UPGRADE sui rigori (4 fonti su 7 lo danno 1°): scommessa contro-intuitiva da 3-5",
+        "price": 4
       },
       {
         "name": "Elphege",
         "team": "Parma",
-        "why": "In corsa col nuovo Romero e Ondrejka per l'altro slot offensivo: prezzo da scommessa",
-        "price": 4
+        "why": "DECLASSATO: muscolare, né in campo né in panchina in Coppa; e Romero D. è arrivato: solo a 1",
+        "price": 1
       },
       {
         "name": "Lucca",
         "team": "Napoli",
-        "why": "DECLASSATO: zero copertura nelle guide fresche, resta vice-Hojlund (nessuna offerta da 20M): solo ultimo slot",
+        "why": "Recuperato ma resta vice-Hojlund: solo ultimo slot",
         "price": 3
       },
       {
         "name": "Havel",
         "team": "Genoa",
-        "why": "Nessuna notizia fresca e in dubbio fisico per la 1ª: scommessa da 1",
-        "price": 3
+        "why": "In recupero graduale: scommessa da 1",
+        "price": 2
       },
       {
         "name": "Mutandwa",
         "team": "Cagliari",
-        "why": "Zero copertura: ultimo slot a 1-2, dietro Kevin Carlos e Borrelli",
-        "price": 2
+        "why": "Nessuna notizia; in Coppa davanti hanno giocato Mendy e poi Borrelli: ultimo slot a 1",
+        "price": 1
       },
       {
         "name": "Mendy P.",
         "team": "Cagliari",
-        "why": "BRUCIATO (Calcio d'Angolo a 1 credito, FantaMaster value bet): la doppietta all'Atalanta l'hanno vista tutti",
+        "why": "PROMOSSO: titolare in Coppa (con Kevin Carlos assente): la scommessa a 2-3 si è rafforzata",
         "price": 3
+      },
+      {
+        "name": "Varela G.",
+        "team": "Monza",
+        "why": "NUOVO DAL CAMPO: doppietta in Coppa da seconda punta dietro Cutrone, Qt 3: ultimo slot con upside vero",
+        "price": 2
       },
       {
         "name": "Bonny",
         "team": "Inter",
-        "why": "Titolare alla 1ª e 'già in palla', più avanti di Esposito: avvio garantito a Qt 7",
-        "price": 9
+        "why": "Titolare col Betis MA Lautaro è recuperato ('scalpita'): l'avvio garantito non c'è più, da co-titolare",
+        "price": 8
       },
       {
         "name": "Bowie",
         "team": "Sassuolo",
-        "why": "Scommessa CONDIZIONATA: diventa il 9 solo se Pinamonti parte davvero (trattativa Lazio rallentata): verificare al 1/9",
-        "price": 4
+        "why": "TRIGGER QUASI SCATTATO: 9 nella probabile di Coppa con Pinamonti out per mercato (Lazio a 12M): se si chiude entro il 23/8 è titolare alla 1ª",
+        "price": 6
       },
       {
         "name": "N'Dri",
         "team": "Lecce",
-        "why": "NUOVO: 'veloce e versatile, possibile stagione di svolta' (Calcio d'Angolo/Goal a 1 credito): ultimo slot",
-        "price": 2
+        "why": "PROMOSSO: titolare nella probabile di Coppa: da 1-2 a scommessa vera",
+        "price": 3
+      },
+      {
+        "name": "Kevin Carlos",
+        "team": "Cagliari",
+        "why": "RIDIMENSIONATO: assente in Coppa (non al 100%) e rigori andati a Deiola sul campo: da 12 a 6-8 massimo",
+        "price": 7
       }
     ]
   },
   "wishlist_ops": [],
   "sources": [
-    "Ricerca del 14/8/2026 (pomeriggio-sera), 7 filoni paralleli: porte, mercato, rigoristi, infortuni, probabili formazioni, cartellini/fairplay, sleepers — 100+ tra ricerche e fetch",
-    "fantacalcio.it — probabili formazioni live (14/8 h9-17), infortunati/indisponibili, rigoristi live, news Leao (13/8 h22:51)",
-    "sport.sky.it — Inter-Betis e Spence non pronto (14/8), consigli asta C (13/8) e D (11/8), rigoristi (10/8), Leao-Galatasaray (14/8)",
-    "Eurosport/SportMediaset live mercato 14/8 — Frattesi-Lazio sbloccato h14:40 (prestito 5M + diritto 10M), Milan-Leao richiesta 40-45M (h13:07), scambio Soulè-Nkunku (h12:08), Suzuki-PSG che frena sulla Juve, Vicario in risalita",
-    "UFFICIALI 13/8: Pellegrino-Fiorentina (25M), Piccoli-Bologna (18M+2), Kristensen-Atalanta (22M+3), Lukaku-Fenerbahçe, Vlahovic-Besiktas, Molina-Roma, Spence-Inter",
-    "tuttofantacalcio.it — indisponibili (14/8, la tabella più fresca); SosFanta tabella indisponibili DATATA 6/8: scartata",
-    "FantaMaster — sorprese/scommesse e 10 low cost (13-14/8), rigoristi 20 squadre (12/8), tiratori (11/8), guide squadra Genoa/Cagliari/Frosinone (9-13/8), gerarchie difesa Napoli (12/8)",
-    "Calcio d'Angolo — 10 giocatori a 1 credito (14/8), squalificati 1ª (Mkhitaryan, Britschgi, Kabasele 2g — solo loro 3)",
-    "Goal.com — guida completa a fasce (14/8), low cost a 1 (7/8), cambi ruolo listone; PazziDiFanta — cambi ruolo (14/8), formazioni tipo, 7 low cost C (11/8)",
-    "Transfermarkt/BeSoccer/ClassificaDi — cartellini 25/26 completi (per il bonus fairplay): peggiori = Pongracic 12 gialli, Ramón 11+1R, Obert 9, Locatelli 9 (recidivo), Wesley 2 espulsioni, Calhanoglu 7 in 22; puliti = Douvikas/Dovbyk/Nkunku/Cutrone 0, Solet/Simeone/Hojlund/KDB/Malen/Samardzic 1. Lazio peggior squadra (7 espulsioni), Inter e Torino zero",
-    "Testate club (13-14/8): CalcioAtalanta (DK+Ahanor adduttori), ForzaMonza (Pessina operato), CalcioNapoli24 (Neres out, Lang), PianetaMilan/MilanNews (Torriani favorito, Gila recuperato), Firenze Post (Mastantuono panchina), TuttoUdinese (Okoye in gruppo, Selvik saltato), RomaGialloRossa (Bah crociato), 1000Cuori (Holm)",
-    "Porte riepilogo 14/8: Juve NEL CAOS (Vicario in arrivo, possibile Perin alla 1ª) · Milan → Torriani favorito · Sassuolo RISOLTA (Muric ~80%) · Toro irrisolta a 3 · Parma in transizione Suzuki→Corvi · Okoye recuperabile · Falcone corteggiato dal Napoli",
-    "NOTA: probabili formazioni VERE attese il 19-21/8 — il giorno dell'asta rilancia /aggiorna-ricerca (runbook nel README). Dossier aperti: Vicario-Juve, Leao, Pinamonti/Bowie, Badiashile-Napoli, Lucumì-Juve, rigori Cagliari (Kevin Carlos vs Maldini), attacco Lazio a 3",
-    "NOTA TECNICA: le 160 wishlist_ops del 13-14/8 sono state applicate ('baked') direttamente in asta.xlsx il 14/8 sera — wishlist_ops ripartono vuote per le correzioni future"
+    "Ricerca del 16/8/2026 (mattina), 7 filoni paralleli: porte, mercato, rigoristi, infortuni, probabili, COPPA ITALIA (tabellini/XI ufficiali), sleepers — 120+ tra ricerche e fetch. Il listone.xlsx è stato aggiornato dall'utente il 16/8: nuovi listati Spence (Inter, D, Qt12), Romero D. (Parma, A, Qt10), Obrador (Sassuolo, D, Qt6), Terzic (Frosinone), Penev, Pisseri, Radunovic; rimossi Athekame, Perez M., Ondrejka; cambi squadra recepiti (Frattesi→Lazio FVM55, Kristensen→Atalanta, Pellegrino→Fiorentina, Piccoli→Bologna). NON ancora listati: Badiashile, Vicario, Perri, Delap, Lontani",
+    "CALENDARIO 1ª GIORNATA (corretto): sab 22/8 Inter-Monza e Udinese-Como 18:30, Genoa-Napoli e Parma-Cagliari 20:45 · dom 23/8 Frosinone-Juventus e Venezia-Lecce 18:30, Atalanta-Sassuolo e Torino-Milan 20:45 · lun 24/8 Bologna-Lazio 18:30, Roma-Fiorentina 20:45",
+    "COPPA ITALIA 32esimi (14-17/8) — la fonte più preziosa del turno: Parma-Catania 2-0 (Corvi/Bernabè/Tourè titolari, doppietta del 2008 Lontani) · Cagliari-Arezzo 1-0 (RIGORE DEIOLA — unico rigore del turno; Maldini panchina, Kevin Carlos assente) · Monza-Avellino 3-0 (Cutrone unica punta, doppietta Varela) · Fiorentina-Benevento 4-1 (Joao Mario titolare, Dodò e Mastantuono panchina; gol Gudmundsson/Kean/Ranieri/Ndour) · Udinese-Padova 1-0 (Okoye titolare, gol Davis) · Venezia-Modena 3-2 (doppietta Adams, gol Yeboah; Halhal e Hainaut titolari, Basic sparito) · Torino-Carrarese 1-0 (Mascardi in porta, gol Simeone, Oristanio mai entrato, ko Comuzzo) · Frosinone-Juve Stabia 16/8 (XI: tridente Kvernadze-Raimondo-Fini, Schmid fuori) · Genoa-Ascoli e Lazio-Mantova 16/8 sera, Sassuolo-Cesena e Palermo-Lecce 17/8: DA RIVEDERE domani",
+    "Amichevoli: Man United-Milan 2-4 (15/8: Torriani 7,5, Jashari 7, gol Ramos; assenti Leao/Gabbia/Maignan/Nkunku-mercato) · Brighton-Bologna 1-0 (Dovbyk 45' zero tiri, esordio Piccoli; Cambiaghi titolare) · Inter-Betis 1-0 (Diouf e Bonny-Esposito titolari, Bisseck titolare, gol Stones da subentrato, Lautaro dentro al 70') · Dortmund-Roma 2-2 (Malen 9 titolare, gol Dybala, Soulé titolare)",
+    "MERCATO 15-16/8 (Sky live, CorSport, Tuttosport, Pedullà, Di Marzio): UFFICIALI Frattesi-Lazio, Spence-Inter (~30M+5), Obrador-Sassuolo; Lucumì-Juve visite 16/8; Perri-Torino firmato (comunicato non reperito). RIBALTONI: Suzuki-PSG SALTATO (ora Aston Villa) · Falcone RESTA al Lecce (rifiutato il ruolo di vice al Napoli) · Vicario raffreddato (Juve ora su Dibu Martinez; alla 1ª Perin) · Pavard e Noa Lang restano · Dodò verso rinnovo-ponte · Morata resta (Atlanta ha preso Embolo) · scambio Soulè-Nkunku MORTO (ma Nkunku fuori rosa, Roma su di lui in prestito). APERTI: Badiashile (visite 18/8), Pinamonti-Lazio (12M, avanzata, Icardi alternativa), Tomori-Tavares (ipotesi scambio), Fofana-Juve, Esposito Se.-Como (nuova favorita), Gimenez-Porto, David (PSG/Villa), Njie-Salisburgo (12M), Gudmundsson (sondaggio Atalanta)",
+    "PORTE riepilogo 16/8: Juve NEL CAOS (Perin ~70% alla 1ª; obiettivo Dibu Martinez) · Milan: Maignan rientrato in anticipo, favorito 55-60% su Torriani · Torino: Mascardi in Coppa, Perri firmato ma non listato — evitare salvo listing · Genoa: BIJLOW (Leali partito — correzione al nostro stato) · Lecce: Falcone resta · Frosinone: Palmisani 55/45 · Inter: Martinez 60/40 con turnover dichiarato (sleeper Provedel regge) · Sassuolo: Muric ~75% (Turati in uscita) · Parma: Corvi titolare (Daffara recuperato) · Udinese: Okoye recuperato e titolare in Coppa",
+    "RIGORISTI verifiche 16/8 (FantaMaster 12/8, Sky 10/8, SOS 15/8, F-online 15/8, TMW, CalcioDangolo, Goal, Fantacalciopedia): CAMBI: Cagliari→DEIOLA (dal campo) · Parma→nessun designato (Bernabè candidato, NON Tourè) · Lazio→Zaccagni 1° UNANIME (correzione del nostro 'Sky dà Cataldi') · Milan→di fatto Ramos (Nkunku fuori rosa) · Monza→Cutrone con Colpani outsider (Sky lo dava 2°). CONFERME: Calhanoglu, De Bruyne, Malen, Orsolini, Da Cunha, Gudmundsson, Vlasic, Davis, Colombo, Calò, Kolo Muani (in pole, fonti spaccate), Scamacca (in pole, mai ufficializzato). APERTI: Venezia (Adams/Rrahmani), Lecce (Geubbels/Stulic spaccatura 3-4), Sassuolo (Berardi→Pinamonti in uscita→Laurienté)",
+    "INFORTUNI/SQUALIFICHE (tuttofantacalcio agg. 15/8 h20, fantacalcio.it live, pianetafanta): squalificati SOLO Mkhitaryan 1g, Britschgi 1g, Kabasele 2g (lista chiusa, Ramadani fuori dalla A). NUOVI: Comuzzo (tibia, in Coppa), Gabbia (caviglia), Leao (quadricipite), Casale (adduttori, out 1ª), Yildiz (tendinopatia gestita), Gilmour, Parisi (crociato, novembre), Belotti, Cremaschi/Diallo/Elphege (Parma), Artistico (Lazio). RECUPERATI: Lautaro, Gila, Holm, Mandragora (sciatalgia), Vergara, Havel, Daffara, Okoye, Maignan (rientro anticipato). CORREZIONI: Venturino non è più del Genoa; Bah 'crociato/aprile' non confermato da fonti indipendenti",
+    "AGGREGATORI IN RITARDO (da sfruttare all'asta): calciodangolo (16/8!) schiera ancora Pessina/Suzuki/Buongiorno/De Ketelaere/Mastantuono · fantacalcio-online (15/8) idem + Lucumì al Bologna · DAZN schiera Beukema e dà Pessina '5 stelle' · calciomagazine (16/8) schiera Suzuki E Pellegrino nel Parma · fantacalcio.it il più aggiornato MA dà Thuram 80% titolare (smentito) e la pagina Torino è un XI 2025/26 fossile. Il più accurato sugli infortuni: SOS Fanta",
+    "NOTA CONFLITTI (dichiarati, da risolvere domani): 1) XI Sassuolo di Coppa — un report lo dà come 'ufficiale 14/8', il censimento-partite dice che Sassuolo-Cesena si gioca il 17/8: trattato come PROBABILE (Muric; Doig; Lipani; Volpato-Bowie-Laurienté) · 2) Berardi: 'a disposizione' (Aquilani) vs 'non in gruppo pieno' — guardare i convocati del 17/8 · 3) Mitaj dentro/fuori dal terzetto: aspettare l'XI di Genoa-Ascoli · 4) probabili-report indicava 'Mkhitaryan 2 giornate': la lista verificata su 3 fonti dice 1 giornata (fa fede questa)",
+    "DA RIVEDERE DOMANI (17-18/8): esiti e XI di Genoa-Ascoli, Lazio-Mantova (gerarchia rigori dal campo!), Frosinone-Juve Stabia (tabellino completo), Sassuolo-Cesena (Berardi convocato? Bowie 9?), Palermo-Lecce (Geubbels/Stulic) · Badiashile visite 18/8 · Pinamonti-Lazio · portiere Juve (Dibu Martinez) · listing di Perri/Badiashile/Vicario nel prossimo aggiornamento quotazioni. Dossier APERTI: rigori Milan (decisione Amorim), rigori Venezia, rigori Lecce, porta Juve, porta Toro, Esposito Se.-Como, Leao (condizione), Basic (sparizione), Ghedjemis (panchina), attacco Lazio (Dia avanti). NON VERIFICABILI oggi: Zhegrova, Maldini-mercato, incontro Cardinale-Leao, comunicato Perri, Scamacca (nessuna gara Atalanta)",
+    "NOTA TECNICA: le 87 wishlist_ops del 16/8 sono state applicate ('baked') in asta.xlsx il 16/8 mattina con verifica di equivalenza — wishlist_ops riparte vuota per le correzioni future (le 160 del 13-14/8 erano già baked il 14/8 sera)"
   ]
 }
