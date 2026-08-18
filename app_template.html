@@ -191,6 +191,7 @@ main{max-width:1560px;margin:18px auto;padding:0 22px;display:grid;grid-template
 .chip.scarce{border-color:rgba(245,165,36,.55)}
 .chip.last{border-color:rgba(255,93,93,.6)}
 .chip.last .sc{color:var(--bad)}
+.chip.fon{background:rgba(198,241,77,.15);border-color:var(--volt);color:var(--volt);font-weight:600}
 .scbadge{font-family:var(--num);font-size:10.5px;color:var(--warn);border:1px solid rgba(245,165,36,.4);border-radius:4px;padding:0 5px;margin-left:6px;white-space:nowrap}
 .scbadge.last{color:var(--bad);border-color:rgba(255,93,93,.45)}
 .adjup{color:var(--ok);font-weight:600}
@@ -331,6 +332,8 @@ dialog h2{margin-bottom:14px;color:var(--ink)}
   <section class="panel">
     <nav class="tabs" id="tabs">
       <button data-tab="rosa" class="on">Rosa <span class="cnt" id="cntRosa"></span></button>
+      <button data-tab="formazione">Formazione</button>
+      <button data-tab="mercato">Mercato</button>
       <button data-tab="liste">Liste</button>
       <button data-tab="listone">Listone</button>
       <button data-tab="log">Log <span class="cnt" id="cntLog"></span></button>
@@ -352,6 +355,7 @@ dialog h2{margin-bottom:14px;color:var(--ink)}
   <div class="setrow"><label>Budget Difensori</label><input type="number" id="setD" min="0"></div>
   <div class="setrow"><label>Budget Centrocampisti</label><input type="number" id="setC" min="0"></div>
   <div class="setrow"><label>Budget Attaccanti</label><input type="number" id="setA" min="0"></div>
+  <div class="setrow" title="Mercato di riparazione: percentuale del prezzo pagato restituita quando svincoli un giocatore"><label>Recupero svincoli %</label><input type="number" id="setRecoup" min="0" max="100"></div>
   <div class="setrow" style="align-items:flex-start"><label>Avversari (uno per riga)</label><textarea id="setOpps" rows="9" style="flex:1;min-width:190px;background:var(--panel2);border:1px solid var(--line2);color:var(--ink);border-radius:8px;padding:7px 10px;font:13px var(--num)"></textarea></div>
   <div class="dlgbtns"><button id="setCancel">Annulla</button><button id="setSave" class="primary">Salva</button></div>
 </dialog>
@@ -424,7 +428,8 @@ const lsKey = () => simMode ? LS_SIM : LS_KEY;
 let state = loadState();
 function defaultState() {
   return { budget: DATA.budget, roleBudget: {...DATA.roleBudget}, actions: [],
-           oppNames: Array.from({length: 9}, (_, i) => `Squadra ${i + 2}`) };
+           oppNames: Array.from({length: 9}, (_, i) => `Squadra ${i + 2}`),
+           recoupPct: 100, lineups: {}, curGiornata: 1 };
 }
 function loadState() {
   try {
@@ -458,15 +463,24 @@ function save() {
 
 /* derived view of state */
 function derive() {
-  const mine = state.actions.filter(a => a.t === 'buy');
-  const gone = state.actions.filter(a => a.t === 'gone');
-  const minePid = new Map(mine.map(a => [a.pid, a]));
-  const gonePid = new Map(gone.map(a => [a.pid, a]));
-  const spent = mine.reduce((s,a) => s + a.price, 0);
+  // sequenziale: un 'cut' (svincolo, mercato di riparazione) toglie il giocatore
+  // dalla rosa, libera lo slot e restituisce 'refund' crediti
+  const minePid = new Map();
+  const gone = [], cuts = [];
   const spentRole = {P:0,D:0,C:0,A:0};
+  let spent = 0;
+  for (const a of state.actions) {
+    if (a.t === 'buy') { minePid.set(a.pid, a); spent += a.price; spentRole[a.role] += a.price; }
+    else if (a.t === 'gone') gone.push(a);
+    else if (a.t === 'cut' && minePid.delete(a.pid)) {
+      cuts.push(a); spent -= (a.refund || 0); spentRole[a.role] -= (a.refund || 0);
+    }
+  }
+  const mine = [...minePid.values()];
+  const gonePid = new Map(gone.map(a => [a.pid, a]));
   const cntRole = {P:0,D:0,C:0,A:0};
   const slotFill = new Map();
-  for (const a of mine) { spentRole[a.role] += a.price; cntRole[a.role]++; if (a.slot) slotFill.set(a.slot, a); }
+  for (const a of mine) { cntRole[a.role]++; if (a.slot) slotFill.set(a.slot, a); }
   const totSlots = ROLES.reduce((s,r) => s + DATA.roleSlots[r], 0);
   const left = state.budget - spent;
   const slotsLeft = totSlots - mine.length;
@@ -485,7 +499,7 @@ function derive() {
     return {name, spent: oSpent, cnt, left: oLeft, slotsLeft: oSlotsLeft, canBuyRole,
             maxBid: Math.max(0, oLeft - Math.max(0, oSlotsLeft - 1))};
   });
-  return {mine, gone, minePid, gonePid, spent, spentRole, cntRole, slotFill, left, slotsLeft, opps,
+  return {mine, gone, cuts, minePid, gonePid, spent, spentRole, cntRole, slotFill, left, slotsLeft, opps,
           emptyPlanSum, factor, planDelta: left - emptyPlanSum,
           adjBudget: id => { const s = slotById.get(id); return s ? Math.round(s.budget * factor) : 0; },
           maxBid: Math.max(0, left - Math.max(0, slotsLeft - 1)),
@@ -510,6 +524,16 @@ function doBuy(p, price, slotId) {
   const d = derive();
   toast(`✅ <b>${esc(p.name)}</b> → ${slotId} a <b>${price}</b> · restano ${d.left} crediti`);
   $('#stCred').classList.add('flash'); setTimeout(()=>$('#stCred').classList.remove('flash'), 600);
+}
+function doCut(pid) {
+  const d = derive();
+  const a = d.minePid.get(pid);
+  if (!a) { toast('Non è nella tua rosa', 'warn'); return; }
+  const pct = state.recoupPct ?? 100;
+  const refund = Math.round((a.price || 0) * pct / 100);
+  state.actions.push({t:'cut', pid, name:a.name, role:a.role, team:a.team, slot:a.slot, refund, ts:Date.now()});
+  save(); renderAll();
+  toast(`♻ <b>${esc(a.name)}</b> svincolato: recuperi <b>${refund}</b> crediti (${pct}% di ${a.price})`);
 }
 function doGone(p, price=null, buyer='') {
   state.actions.push({t:'gone', pid:p.id, name:p.name, role:p.r, team:p.team, price, buyer, ts:Date.now()});
@@ -569,7 +593,7 @@ function undo() {
   const a = state.actions.pop();
   if (!a) { toast('Niente da annullare', 'warn'); return; }
   save(); renderAll();
-  toast(`↩ Annullato: ${a.t === 'buy' ? 'acquisto di' : 'segnalazione su'} <b>${esc(a.name)}</b>`);
+  toast(`↩ Annullato: ${a.t === 'buy' ? 'acquisto di' : a.t === 'cut' ? 'svincolo di' : 'segnalazione su'} <b>${esc(a.name)}</b>`);
 }
 function removeAction(idx) {
   const a = state.actions.splice(idx, 1)[0];
@@ -909,6 +933,8 @@ $('#tabs').addEventListener('click', e => {
 function renderTab() {
   const body = $('#tabbody');
   if (curTab === 'rosa') body.innerHTML = viewRosa();
+  else if (curTab === 'formazione') body.innerHTML = viewFormazione();
+  else if (curTab === 'mercato') body.innerHTML = viewMercato();
   else if (curTab === 'liste') body.innerHTML = viewListe();
   else if (curTab === 'listone') body.innerHTML = viewListone();
   else if (curTab === 'log') body.innerHTML = viewLog();
@@ -938,6 +964,76 @@ function bindTab(body) {
     const a = state.actions[+el.dataset.editbuyer];
     if (a) { a.buyer = el.value; save(); }
   }));
+  // mercato: svincoli + import CSV
+  body.querySelectorAll('[data-cut]').forEach(el => el.addEventListener('click', () => {
+    const pid = +el.dataset.cut;
+    const d = derive();
+    const a = d.minePid.get(pid);
+    const refund = a ? Math.round((a.price || 0) * (state.recoupPct ?? 100) / 100) : 0;
+    if (a && confirm(`Svincolare ${a.name}? Recuperi ${refund} crediti.`)) doCut(pid);
+  }));
+  const csvBtn = body.querySelector('#btnCsvImp');
+  if (csvBtn) {
+    const fileEl = body.querySelector('#csvImpFile');
+    csvBtn.addEventListener('click', () => fileEl.click());
+    fileEl.addEventListener('change', e => {
+      const f = e.target.files[0]; if (!f) return;
+      f.text().then(txt => {
+        const rep = importRosterCsv(txt);
+        const parts = [`aggiunti <b>${rep.added.length}</b>`];
+        if (rep.owned.length) parts.push(`già tuoi ${rep.owned.length}`);
+        if (rep.full.length) parts.push(`reparto pieno: ${rep.full.map(esc).join(', ')}`);
+        if (rep.missing.length) parts.push(`non trovati: ${rep.missing.map(esc).join(', ')}`);
+        toast(`⬆ Import CSV: ${parts.join(' · ')}`, rep.missing.length || rep.full.length ? 'warn' : '');
+      }).catch(err => toast('CSV non valido: ' + esc(err.message || err), 'err'));
+      e.target.value = '';
+    });
+  }
+  // formazione
+  const fmG = body.querySelector('#fmG');
+  if (fmG) {
+    const g = () => state.curGiornata || 1;
+    fmG.addEventListener('change', () => {
+      state.curGiornata = Math.max(1, Math.min(38, parseInt(fmG.value, 10) || 1));
+      save(); renderTab();
+    });
+    body.querySelector('#fmMod').addEventListener('change', e => {
+      getLineup(g()).module = e.target.value; save(); renderTab();
+    });
+    body.querySelector('#fmAuto').addEventListener('click', () => { autoXI(g()); renderTab(); });
+    body.querySelector('#fmCopy').addEventListener('click', () => {
+      const txt = buildLineupText(g());
+      const ta = body.querySelector('#fmText');
+      ta.select();
+      (navigator.clipboard?.writeText(txt) || Promise.reject()).then(
+        () => toast('📋 Formazione copiata'),
+        () => { try { document.execCommand('copy'); toast('📋 Formazione copiata'); } catch (e) { toast('Copia manualmente dal riquadro', 'warn'); } });
+    });
+    body.querySelectorAll('[data-fmxi]').forEach(el => el.addEventListener('click', () => {
+      const pid = +el.dataset.fmxi;
+      const lu = getLineup(g());
+      const d = derive();
+      const a = d.minePid.get(pid); if (!a) return;
+      const r = a.role, m = MODULES[lu.module];
+      const i = lu.xi[r].indexOf(pid);
+      if (i >= 0) { lu.xi[r].splice(i, 1); lu.bench[r].unshift(pid); }
+      else if (lu.xi[r].length >= m[r]) { toast(`Hai già ${m[r]} titolari in ${ROLENAME[r]} (${lu.module}): togline uno prima`, 'warn'); return; }
+      else { lu.xi[r].push(pid); lu.bench[r] = lu.bench[r].filter(x => x !== pid); }
+      save(); renderTab();
+    }));
+    const swap = (r, i, j) => {
+      const b = getLineup(g()).bench[r];
+      if (j < 0 || j >= b.length) return;
+      [b[i], b[j]] = [b[j], b[i]];
+      save(); renderTab();
+    };
+    body.querySelectorAll('[data-fmup]').forEach(el => el.addEventListener('click', () => {
+      const [r, i] = el.dataset.fmup.split(':'); swap(r, +i, +i - 1);
+    }));
+    body.querySelectorAll('[data-fmdown]').forEach(el => el.addEventListener('click', () => {
+      const [r, i] = el.dataset.fmdown.split(':'); swap(r, +i, +i + 1);
+    }));
+  }
   // listone controls
   const lq = body.querySelector('#lq');
   if (lq) {
@@ -977,6 +1073,152 @@ function viewRosa() {
       }).join('')}
       </tbody></table></div>`;
   }).join('');
+}
+
+/* ============================== stagione: mercato di riparazione ============================== */
+function importRosterCsv(txt) {
+  const lines = txt.replace(/^\uFEFF/, '').split(/\r?\n/).filter(l => l.trim());
+  if (!lines.length) throw new Error('CSV vuoto');
+  const head = lines[0].toLowerCase().split(';').map(s => s.trim().replace(/^"|"$/g, ''));
+  const idx = {slot: head.indexOf('slot'), r: head.indexOf('ruolo'), name: head.indexOf('nome'),
+               team: head.indexOf('squadra'), price: head.indexOf('prezzo')};
+  if (idx.r < 0 || idx.name < 0) throw new Error('Intestazione CSV non riconosciuta (servono almeno "ruolo" e "nome")');
+  const rep = {added: [], owned: [], full: [], missing: []};
+  for (const line of lines.slice(1)) {
+    const c = line.split(';').map(s => s.trim().replace(/^"|"$/g, ''));
+    const name = c[idx.name];
+    if (!name) continue;
+    const p = findPlayer(name, idx.team >= 0 ? c[idx.team] : '');
+    if (!p || (idx.r >= 0 && c[idx.r] && p.r !== c[idx.r].toUpperCase())) { rep.missing.push(name); continue; }
+    const d = derive();
+    if (d.minePid.has(p.id)) { rep.owned.push(p.name); continue; }
+    const free = freeSlots(p.r);
+    if (!free.length) { rep.full.push(p.name); continue; }
+    const csvSlot = idx.slot >= 0 ? c[idx.slot] : '';
+    const pref = (wishByPid.get(p.id) || []).map(x => x.slot).find(sid => free.some(f => f.id === sid));
+    const slotId = free.some(f => f.id === csvSlot) ? csvSlot : (pref || free[0].id);
+    const price = idx.price >= 0 ? (parseInt(c[idx.price], 10) || 1) : 1;
+    state.actions.push({t:'buy', pid:p.id, name:p.name, role:p.r, team:p.team, slot:slotId, price, ts:Date.now()});
+    rep.added.push(p.name);
+  }
+  save(); renderAll();
+  return rep;
+}
+
+function viewMercato() {
+  const d = derive();
+  const pct = state.recoupPct ?? 100;
+  const recouped = d.cuts.reduce((s,a) => s + (a.refund || 0), 0);
+  const rows = r => d.mine.filter(a => a.role === r).sort((a,b) => (a.slot || '').localeCompare(b.slot || '', 'it', {numeric:true}));
+  return `
+    <div class="repgrid">
+      <div class="cap main"><label>Crediti disponibili</label><b>${d.left}</b></div>
+      <div class="cap"><label>Svincoli fatti</label><b>${d.cuts.length}</b></div>
+      <div class="cap"><label>Crediti recuperati</label><b>${recouped}</b></div>
+      <div class="cap" title="Percentuale del prezzo pagato restituita allo svincolo — modificala in ⚙"><label>Regola svincolo</label><b>${pct}%</b></div>
+    </div>
+    <p style="color:var(--mut);font-size:13px;margin-bottom:12px">Per <b>acquistare</b> in riparazione usa la ricerca in alto (stesso flusso dell'asta: Invio → crediti → Invio).
+      Qui <b>svincoli</b>: recuperi il ${pct}% del prezzo pagato (regola in ⚙). Se un avversario libera un giocatore segnato "andato", togli la riga dal Log per renderlo di nuovo disponibile.</p>
+    ${ROLES.map(r => rows(r).length ? `<div class="rgroup">
+      <div class="rghead"><span class="rb ${r}">${r}</span><h3>${ROLENAME[r]}</h3></div>
+      <table><thead><tr><th>Slot</th><th>Giocatore</th><th class="num">Pagato</th><th class="num">Rimborso</th><th></th></tr></thead><tbody>
+      ${rows(r).map(a => `<tr><td class="slotid">${a.slot || ''}</td>
+        <td><b>${esc(a.name)}</b> <span style="color:var(--mut)">${esc(a.team)}</span></td>
+        <td class="num">${a.price}</td><td class="num" style="color:var(--ok)">+${Math.round((a.price || 0) * pct / 100)}</td>
+        <td><button class="danger" style="padding:3px 10px;font-size:12.5px" data-cut="${a.pid}">Svincola</button></td></tr>`).join('')}
+      </tbody></table></div>` : '').join('')}
+    ${d.cuts.length ? `<div class="newsblock"><h2>♻ Svincolati</h2><div class="bcalts">
+      ${d.cuts.map(a => `<div class="altrow"><span class="rb ${a.role}">${a.role}</span><b>${esc(a.name)}</b><span class="tm">${esc(a.team)}</span><span class="mx">+${a.refund ?? 0}</span></div>`).join('')}
+    </div></div>` : ''}
+    <div class="newsblock"><h2>Import rosa da CSV</h2>
+      <p style="color:var(--faint);font-size:12.5px;margin:6px 0 8px">Formato <span style="font-family:var(--num)">slot;ruolo;nome;squadra;prezzo</span> (l'export CSV di questa app) oppure <span style="font-family:var(--num)">ruolo;nome;squadra;prezzo</span>. Aggiunge solo i giocatori che non hai già; slot dalla wishlist se libero.</p>
+      <button id="btnCsvImp">⬆ Importa rosa CSV</button>
+      <input type="file" id="csvImpFile" accept=".csv,text/csv" hidden>
+    </div>`;
+}
+
+/* ============================== stagione: formazione settimanale ============================== */
+const MODULES = {'3-4-3':{P:1,D:3,C:4,A:3}, '3-5-2':{P:1,D:3,C:5,A:2}, '4-3-3':{P:1,D:4,C:3,A:3},
+                 '4-4-2':{P:1,D:4,C:4,A:2}, '4-5-1':{P:1,D:4,C:5,A:1}, '5-3-2':{P:1,D:5,C:3,A:2}, '5-4-1':{P:1,D:5,C:4,A:1}};
+function getLineup(g) {
+  state.lineups = state.lineups || {};
+  if (!state.lineups[g]) {
+    const prev = Object.keys(state.lineups).map(Number).filter(x => x < g).sort((a,b) => b - a)[0];
+    state.lineups[g] = prev ? JSON.parse(JSON.stringify(state.lineups[prev]))
+                            : {module: '4-3-3', xi: {P:[],D:[],C:[],A:[]}, bench: {P:[],D:[],C:[],A:[]}};
+  }
+  const lu = state.lineups[g];
+  const d = derive();
+  const m = MODULES[lu.module] || MODULES['4-3-3'];
+  for (const r of ROLES) {
+    lu.xi[r] = (lu.xi[r] || []).filter(pid => d.minePid.has(pid)).slice(0, m[r]);
+    lu.bench[r] = (lu.bench[r] || []).filter(pid => d.minePid.has(pid) && !lu.xi[r].includes(pid));
+    for (const a of d.mine.filter(x => x.role === r)) {
+      if (!lu.xi[r].includes(a.pid) && !lu.bench[r].includes(a.pid)) lu.bench[r].push(a.pid);
+    }
+  }
+  return lu;
+}
+function autoXI(g) {
+  const lu = getLineup(g);
+  const d = derive();
+  const m = MODULES[lu.module];
+  for (const r of ROLES) {
+    lu.xi[r] = d.mine.filter(a => a.role === r)
+      .sort((a,b) => (byId.get(b.pid)?.score || 0) - (byId.get(a.pid)?.score || 0))
+      .slice(0, m[r]).map(a => a.pid);
+    lu.bench[r] = lu.bench[r].filter(pid => !lu.xi[r].includes(pid));
+  }
+  save();
+}
+function buildLineupText(g) {
+  const lu = getLineup(g);
+  const nm = pid => byId.get(pid)?.name || '?';
+  const xi = ROLES.map(r => `${r}: ${lu.xi[r].map(nm).join(', ') || '—'}`).join('\n');
+  const bench = ROLES.map(r => lu.bench[r].length ? `${r} ${lu.bench[r].map(nm).join(', ')}` : '').filter(Boolean).join(' · ');
+  return `Giornata ${g} · ${lu.module}\n${xi}\nPanchina: ${bench || '—'}`;
+}
+function viewFormazione() {
+  const d = derive();
+  if (!d.mine.length) return '<p style="color:var(--faint)">Nessun giocatore in rosa: la formazione si prepara a rosa fatta.</p>';
+  const g = state.curGiornata || 1;
+  const lu = getLineup(g);
+  const m = MODULES[lu.module];
+  const nXI = ROLES.reduce((s,r) => s + lu.xi[r].length, 0);
+  const chip = (a, on) => {
+    const p = byId.get(a.pid);
+    const al = alertByPid.get(a.pid);
+    return `<span class="chip ${on ? 'fon' : ''}" data-fmxi="${a.pid}" title="${on ? 'Togli dai titolari' : 'Metti titolare'}${p?.score ? ' · Score ' + p.score : ''}">
+      ${esc(a.name)} <span class="sl">${esc(a.team)}</span>${al ? `<span class="adot" title="${esc(al.map(x=>x.text).join(' | '))}"></span>` : ''}</span>`;
+  };
+  return `
+    <div class="filters" style="align-items:center">
+      <label style="color:var(--mut);font-size:13px">Giornata</label>
+      <input type="number" id="fmG" min="1" max="38" value="${g}" style="width:70px;font-family:var(--num)">
+      <select id="fmMod">${Object.keys(MODULES).map(k => `<option ${k === lu.module ? 'selected' : ''}>${k}</option>`).join('')}</select>
+      <button id="fmAuto" title="Riempi i titolari col miglior FantaScore per ruolo">✨ Auto</button>
+      <span style="font-family:var(--num);font-size:13px;color:${nXI === 11 ? 'var(--ok)' : 'var(--warn)'}">${nXI}/11 titolari</span>
+      <span style="color:var(--faint);font-size:12px">salvataggio automatico · giornata nuova = copia dell'ultima</span>
+    </div>
+    ${ROLES.map(r => {
+      const mineR = d.mine.filter(a => a.role === r);
+      const xiSet = new Set(lu.xi[r]);
+      return `<div class="rgroup">
+        <div class="rghead"><span class="rb ${r}">${r}</span><h3>${ROLENAME[r]}</h3>
+          <span class="rgfig" style="color:${lu.xi[r].length === m[r] ? 'var(--ok)' : 'var(--warn)'}">${lu.xi[r].length}/${m[r]} titolari</span></div>
+        <div class="adv-role">${lu.xi[r].map(pid => chip(d.minePid.get(pid), true)).join('')}
+          ${mineR.filter(a => !xiSet.has(a.pid)).map(a => chip(a, false)).join('')}</div>
+        ${lu.bench[r].length ? `<div class="bcalts" style="margin:4px 0 0"><div class="altshead">Panchina ${r} (in ordine)</div>
+          ${lu.bench[r].map((pid, i) => { const a = d.minePid.get(pid); return `<div class="altrow"><span class="pr">${i + 1}</span><b>${esc(a.name)}</b><span class="tm">${esc(a.team)}</span>
+            <button class="xbtn" data-fmup="${r}:${i}" title="Su" ${i === 0 ? 'disabled' : ''}>↑</button>
+            <button class="xbtn" data-fmdown="${r}:${i}" title="Giù" ${i === lu.bench[r].length - 1 ? 'disabled' : ''}>↓</button></div>`; }).join('')}
+        </div>` : ''}
+      </div>`;
+    }).join('')}
+    <div class="newsblock"><h2>Testo da inviare</h2>
+      <textarea id="fmText" readonly rows="8" style="width:100%;max-width:520px;background:var(--panel2);border:1px solid var(--line2);color:var(--ink);border-radius:8px;padding:8px 10px;font:13px var(--num)">${esc(buildLineupText(g))}</textarea>
+      <div style="margin-top:6px"><button id="fmCopy">📋 Copia formazione</button></div>
+    </div>`;
 }
 
 function viewListe() {
@@ -1051,10 +1293,12 @@ function viewLog() {
   return state.actions.map((a, i) => ({a, i})).reverse().map(({a, i}) => `
     <div class="logrow">
       <span class="lt">${new Date(a.ts).toLocaleTimeString('it-IT', {hour:'2-digit',minute:'2-digit'})}</span>
-      ${a.t === 'buy' ? '✅' : '⛔'}
+      ${a.t === 'buy' ? '✅' : a.t === 'cut' ? '♻' : '⛔'}
       <span class="rb ${a.role}">${a.role}</span>
       <b>${esc(a.name)}</b> <span style="color:var(--mut)">${esc(a.team)}${a.slot ? ' · ' + a.slot : ''}</span>
-      <input class="pz" type="number" min="0" value="${a.price ?? ''}" placeholder="crediti" data-editprice="${i}" title="Crediti pagati">
+      ${a.t === 'cut'
+        ? `<span style="color:var(--ok);font-family:var(--num);font-size:13px" title="Crediti recuperati con lo svincolo">+${a.refund ?? 0}</span>`
+        : `<input class="pz" type="number" min="0" value="${a.price ?? ''}" placeholder="crediti" data-editprice="${i}" title="Crediti pagati">`}
       ${a.t === 'gone' ? `<input class="by" list="oppdl" value="${esc(a.buyer || '')}" placeholder="chi l'ha preso?" data-editbuyer="${i}">` : ''}
       <button class="xbtn" data-del="${i}" title="Elimina">✕</button>
     </div>`).join('') + `<datalist id="oppdl">${(state.oppNames || []).map(n => `<option value="${esc(n)}">`).join('')}</datalist>`;
@@ -1217,6 +1461,7 @@ $('#impFile').addEventListener('change', e => {
 });
 $('#btnSet').addEventListener('click', () => {
   $('#setBudget').value = state.budget;
+  $('#setRecoup').value = state.recoupPct ?? 100;
   ROLES.forEach(r => $('#set' + r).value = state.roleBudget[r]);
   $('#setOpps').value = (state.oppNames || []).join('\n');
   $('#dlgSet').showModal();
@@ -1225,6 +1470,8 @@ $('#setCancel').addEventListener('click', () => $('#dlgSet').close());
 $('#setSave').addEventListener('click', () => {
   const b = parseInt($('#setBudget').value, 10);
   if (b > 0) state.budget = b;
+  const rc = parseInt($('#setRecoup').value, 10);
+  if (rc >= 0 && rc <= 100) state.recoupPct = rc;
   ROLES.forEach(r => { const v = parseInt($('#set' + r).value, 10); if (v >= 0) state.roleBudget[r] = v; });
   state.oppNames = $('#setOpps').value.split('\n').map(s => s.trim()).filter(Boolean).slice(0, 15);
   save(); renderAll(); $('#dlgSet').close(); toast('Impostazioni salvate');
@@ -1243,7 +1490,7 @@ Object.defineProperty(window, 'state', {get: () => state, configurable: true});
 const VIEW = new URLSearchParams(location.search).get('view');
 if (VIEW) {
   document.body.classList.add('mini');
-  curTab = ['rosa','liste','listone','log','report','news'].includes(VIEW) ? VIEW : 'liste';
+  curTab = ['rosa','formazione','mercato','liste','listone','log','report','news'].includes(VIEW) ? VIEW : 'liste';
   document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === curTab));
   document.querySelector('.brand').insertAdjacentHTML('beforeend', '<span class="minitag">specchio · sola lettura</span>');
   const resync = () => { state = loadState(); renderAll(); };

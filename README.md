@@ -82,6 +82,13 @@ Il cap assoluto impedisce offerte che non ti lascerebbero 1 credito per ogni slo
 ## Pannelli
 
 - **Rosa** — i 25 slot; per i vuoti, il miglior nome ancora disponibile e il tetto.
+- **Formazione** — la gestione settimanale post-asta: giornata (1-38), modulo
+  (3-4-3 … 5-4-1), titolari a click con vincoli del modulo, panchina ordinabile
+  ↑↓ per ruolo, ✨ auto-XI dal FantaScore, testo pronto da copiare per la lega.
+  Salvataggio automatico; una giornata nuova parte come copia dell'ultima.
+- **Mercato** — il mercato di riparazione: svincoli con rimborso (% del prezzo
+  pagato, regola in ⚙, default 100%), acquisti col normale flusso di ricerca,
+  storico svincoli, import della rosa da CSV.
 - **Liste** — la wishlist per slot (priorità, prezzi max, note), depennamento live.
 - **Listone** — tutti i giocatori quotati, filtri per ruolo/squadra, ordinamento per
   FVM / Score / Qt.A; click per aprire l'acquisto.
@@ -124,7 +131,7 @@ tab: `?view=report` per proiettare il report, `?view=rosa` per la rosa.
 | `build.py` | `listone + asta + research → index.html`; calcola anche il FantaScore |
 | `update.py` | Pipeline: `snapshot` / build+**diff novità**+gate su `!!` / `--test` |
 | `index.html` | L'app finita, autosufficiente |
-| `test.html` | Smoke test (64 assert) — risultati in pagina e via `fetch /__RESULTS__` |
+| `test.html` | Smoke test (85 assert) — risultati in pagina e via `fetch /__RESULTS__` |
 
 ```bash
 python3 build.py          # build "nudo"
@@ -138,6 +145,18 @@ come `wishlist_ops` (`update`/`add`/`remove` per slot); una volta consolidate si
 possono "bakare" in `asta.xlsx` (procedura già rodata: le op del 13-14/8 sono lì).
 Lo stato dell'asta vive solo nel browser (localStorage + cookie); la simulazione in un
 localStorage separato (`…_sim`): il rebuild non tocca né l'uno né l'altra.
+
+## Dopo l'asta: riparazione e formazione
+
+A rosa fatta l'app non va in pensione: il tab **Formazione** prepara la
+giornata (modulo, titolari, panchina ordinata, testo da incollare nella lega) e
+il tab **Mercato** gestisce la riparazione — svincoli col rimborso configurato
+in ⚙ e riacquisti col solito flusso Invio→crediti→Invio. Tutto vive nello
+stesso stato dell'asta (stesso localStorage, stesso undo, stesso export ⬇).
+
+⚠ `update.py --test` apre il test nel browser di default e **azzera lo stato
+salvato lì dentro**: a stagione in corso lancialo solo in incognito o in un
+Chrome headless con profilo separato.
 
 ## La mattina dell'asta (runbook, 20-30 min)
 

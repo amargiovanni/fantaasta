@@ -225,6 +225,61 @@ window.addEventListener('load', async () => {
     W7.undo();
     await sleep(200);
     f2.remove();
+
+    // ===== stagione: mercato di riparazione (cut/refund) =====
+    const W8 = document.getElementById('f').contentWindow, D8 = W8.document;
+    const $8 = s => D8.querySelector(s);
+    D8.querySelector('#tabs button[data-tab="mercato"]').click();
+    await sleep(120);
+    ok('mercato: tab renderizzata con Svilar', /Svilar/.test($8('#tabbody').textContent) && !!D8.querySelector('[data-cut]'));
+    ok('mercato: crediti disponibili mostrati', /938/.test($8('#tabbody').textContent));
+    const svPid = W8.findPlayer('Svilar').id;
+    W8.doCut(svPid);
+    await sleep(120);
+    ok('cut: crediti tornati a 1000 (100%)', $8('#stCred').textContent === '1000', $8('#stCred').textContent);
+    ok('cut: rosa 0/25', $8('#cntRosa').textContent === '0/25', $8('#cntRosa').textContent);
+    ok('cut: slot P1 di nuovo libero', !W8.derive().slotFill.has('P1'));
+    ok('cut: azione nel log con refund', W8.state.actions[W8.state.actions.length - 1].t === 'cut' && W8.state.actions[W8.state.actions.length - 1].refund === 62);
+    W8.undo();
+    await sleep(100);
+    ok('cut: undo ripristina rosa e crediti', $8('#stCred').textContent === '938' && W8.derive().minePid.has(svPid), $8('#stCred').textContent);
+    W8.state.recoupPct = 50;
+    W8.doCut(svPid);
+    await sleep(100);
+    ok('cut: recoupPct 50 → rimborso 31', W8.state.actions[W8.state.actions.length - 1].refund === 31 && $8('#stCred').textContent === '969', $8('#stCred').textContent);
+    W8.undo();
+    W8.state.recoupPct = 100;
+    await sleep(100);
+
+    // ===== stagione: import rosa CSV =====
+    const rep = W8.importRosterCsv('ruolo;nome;squadra;prezzo\r\nP;Meret;Napoli;10\r\nP;GiocatoreInventatoXYZ;Boh;5');
+    await sleep(100);
+    ok('csvimp: Meret aggiunto', rep.added.includes('Meret') && W8.derive().minePid.has(W8.findPlayer('Meret', 'Napoli').id), JSON.stringify(rep));
+    ok('csvimp: nome non in listone segnalato', rep.missing.length === 1, JSON.stringify(rep.missing));
+    ok('csvimp: crediti scalati', $8('#stCred').textContent === '928', $8('#stCred').textContent);
+    W8.undo();
+    await sleep(100);
+
+    // ===== stagione: formazione settimanale =====
+    D8.querySelector('#tabs button[data-tab="formazione"]').click();
+    await sleep(120);
+    ok('formazione: tab con controlli', !!$8('#fmG') && !!$8('#fmMod') && !!$8('#fmText'));
+    ok('formazione: chip rosa presente', !!D8.querySelector('[data-fmxi]'));
+    D8.querySelector('[data-fmxi]').click();
+    await sleep(120);
+    ok('formazione: titolare selezionato', (W8.state.lineups['1'].xi.P || []).includes(svPid), JSON.stringify(W8.state.lineups['1']?.xi));
+    ok('formazione: conteggio 1/11', /1\/11/.test($8('#tabbody').textContent));
+    const fmod = $8('#fmMod');
+    fmod.value = '3-5-2'; fmod.dispatchEvent(new Event('change', {bubbles:true}));
+    await sleep(120);
+    ok('formazione: modulo salvato', W8.state.lineups['1'].module === '3-5-2', W8.state.lineups['1'].module);
+    const ltxt = W8.buildLineupText(1);
+    ok('formazione: testo con modulo e titolare', /3-5-2/.test(ltxt) && /Svilar/.test(ltxt), ltxt.split('\n')[0]);
+    const stLu = JSON.parse(W8.localStorage.getItem('fantaasta_2627_v1') || '{}');
+    ok('formazione: lineup persistita', !!stLu.lineups && !!stLu.lineups['1'], Object.keys(stLu.lineups || {}).join(','));
+    // giornata 2 pre-compilata dalla 1
+    const g2 = W8.getLineup(2);
+    ok('formazione: giornata 2 eredita la 1', g2.module === '3-5-2' && (g2.xi.P || []).includes(svPid));
   } catch (e) {
     results.push('EXCEPTION ' + (e.stack || e));
   }
