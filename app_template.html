@@ -271,10 +271,12 @@ td.num,th.num{text-align:right;font-family:var(--num);font-size:13px}
 dialog{background:var(--panel);color:var(--ink);border:1px solid var(--line2);border-radius:12px;padding:20px 22px;min-width:320px}
 dialog::backdrop{background:rgba(5,8,7,.7)}
 dialog h2{margin-bottom:14px;color:var(--ink)}
+.setsection{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;font-size:11px;color:var(--faint);margin:14px 0 8px}
 .setrow{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.setrow label{width:150px;color:var(--mut);font-size:14px}
+.setrow label{width:170px;color:var(--mut);font-size:14px}
 .setrow input{width:90px;font-family:var(--num)}
-.dlgbtns{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
+.seterr{color:var(--bad);font-size:13px;min-height:18px;margin-top:8px}
+.dlgbtns{display:flex;gap:10px;justify-content:flex-end;margin-top:10px}
 .footer-note{max-width:1560px;margin:8px auto 30px;padding:0 22px;color:var(--faint);font-size:12px}
 </style>
 </head>
@@ -349,7 +351,13 @@ dialog h2{margin-bottom:14px;color:var(--ink)}
 <div id="toasts"></div>
 
 <dialog id="dlgSet">
-  <h2>Impostazioni budget</h2>
+  <h2>Impostazioni rosa e budget</h2>
+  <div class="setsection">Composizione rosa</div>
+  <div class="setrow"><label>Slot Portieri (P)</label><input type="number" id="setSlotP" min="0" max="99" step="1"></div>
+  <div class="setrow"><label>Slot Difensori (D)</label><input type="number" id="setSlotD" min="0" max="99" step="1"></div>
+  <div class="setrow"><label>Slot Centrocampisti (C)</label><input type="number" id="setSlotC" min="0" max="99" step="1"></div>
+  <div class="setrow"><label>Slot Attaccanti (A)</label><input type="number" id="setSlotA" min="0" max="99" step="1"></div>
+  <div class="setsection">Budget</div>
   <div class="setrow"><label>Budget totale</label><input type="number" id="setBudget" min="1"></div>
   <div class="setrow"><label>Budget Portieri</label><input type="number" id="setP" min="0"></div>
   <div class="setrow"><label>Budget Difensori</label><input type="number" id="setD" min="0"></div>
@@ -357,6 +365,7 @@ dialog h2{margin-bottom:14px;color:var(--ink)}
   <div class="setrow"><label>Budget Attaccanti</label><input type="number" id="setA" min="0"></div>
   <div class="setrow" title="Mercato di riparazione: percentuale del prezzo pagato restituita quando svincoli un giocatore"><label>Recupero svincoli %</label><input type="number" id="setRecoup" min="0" max="100"></div>
   <div class="setrow" style="align-items:flex-start"><label>Avversari (uno per riga)</label><textarea id="setOpps" rows="9" style="flex:1;min-width:190px;background:var(--panel2);border:1px solid var(--line2);color:var(--ink);border-radius:8px;padding:7px 10px;font:13px var(--num)"></textarea></div>
+  <div class="seterr" id="setErr"></div>
   <div class="dlgbtns"><button id="setCancel">Annulla</button><button id="setSave" class="primary">Salva</button></div>
 </dialog>
 
@@ -385,7 +394,26 @@ function findPlayer(name, team) {
   if (team) { const hit = cands.find(p => p._t === norm(team)); if (hit) return hit; }
   return cands[0] || null;
 }
-const slotById = new Map(DATA.slots.map(s => [s.id, s]));
+const baseSlotsByRole = Object.fromEntries(ROLES.map(r => [r, DATA.slots.filter(s => s.role === r)]));
+const baseSlotIds = new Set(DATA.slots.map(s => s.id));
+function defaultRoleSlots() {
+  return Object.fromEntries(ROLES.map(r => {
+    const n = Number(DATA.roleSlots?.[r]);
+    return [r, Number.isInteger(n) && n >= 0 ? n : baseSlotsByRole[r].length];
+  }));
+}
+function makeRoleSlots(role, count) {
+  const slots = baseSlotsByRole[role].slice(0, count);
+  const used = new Set(baseSlotIds);
+  let n = 1;
+  while (slots.length < count) {
+    let id;
+    do { id = `${role}${n++}`; } while (used.has(id));
+    used.add(id);
+    slots.push({id, role, profile: 'Slot aggiuntivo', budget: 1});
+  }
+  return slots;
+}
 // wishlist index: pid -> [{role, slot, prio, maxprice, ...}]  ·  slot id -> group
 const wishByPid = new Map();
 const wishBySlot = new Map();
@@ -427,20 +455,30 @@ try { simMode = localStorage.getItem('fantaasta_sim_on') === '1'; } catch (e) {}
 const lsKey = () => simMode ? LS_SIM : LS_KEY;
 let state = loadState();
 function defaultState() {
-  return { budget: DATA.budget, roleBudget: {...DATA.roleBudget}, actions: [],
+  return { budget: DATA.budget, roleBudget: {...DATA.roleBudget}, roleSlots: defaultRoleSlots(), actions: [],
            oppNames: Array.from({length: 9}, (_, i) => `Squadra ${i + 2}`),
            recoupPct: 100, lineups: {}, curGiornata: 1 };
+}
+function normalizeState(value) {
+  const defaults = defaultState();
+  const input = value && typeof value === 'object' ? value : {};
+  const roleSlots = Object.fromEntries(ROLES.map(r => {
+    const n = Number(input.roleSlots?.[r]);
+    return [r, Number.isInteger(n) && n >= 0 && n <= 99 ? n : defaults.roleSlots[r]];
+  }));
+  return {...defaults, ...input,
+          roleBudget: {...defaults.roleBudget, ...(input.roleBudget || {})}, roleSlots};
 }
 function loadState() {
   try {
     const raw = localStorage.getItem(lsKey());
-    if (raw) return {...defaultState(), ...JSON.parse(raw)};
+    if (raw) return normalizeState(JSON.parse(raw));
   } catch (e) {}
   if (simMode) return defaultState();   // la sim parte pulita, niente cookie
   try {
     const m = document.cookie.match(/(?:^|;\s*)fantaasta_bk=([^;]+)/);
     if (m) {
-      const st = {...defaultState(), ...JSON.parse(decodeURIComponent(m[1]))};
+      const st = normalizeState(JSON.parse(decodeURIComponent(m[1])));
       toast('Stato ripristinato dal cookie di backup', 'warn');
       return st;
     }
@@ -459,6 +497,12 @@ function save() {
   if (encodeURIComponent(ck).length <= 3900) {
     document.cookie = 'fantaasta_bk=' + encodeURIComponent(ck) + ';max-age=7776000;path=/;SameSite=Lax';
   }
+}
+
+function roleSlotCount(role) { return state.roleSlots[role]; }
+function configuredSlots(role=null) {
+  const roles = role ? [role] : ROLES;
+  return roles.flatMap(r => makeRoleSlots(r, roleSlotCount(r)));
 }
 
 /* derived view of state */
@@ -481,11 +525,13 @@ function derive() {
   const cntRole = {P:0,D:0,C:0,A:0};
   const slotFill = new Map();
   for (const a of mine) { cntRole[a.role]++; if (a.slot) slotFill.set(a.slot, a); }
-  const totSlots = ROLES.reduce((s,r) => s + DATA.roleSlots[r], 0);
+  const slots = configuredSlots();
+  const slotById = new Map(slots.map(s => [s.id, s]));
+  const totSlots = slots.length;
   const left = state.budget - spent;
-  const slotsLeft = totSlots - mine.length;
+  const slotsLeft = Math.max(0, totSlots - mine.length);
   // dynamic budget: spread surplus/deficit over empty slots, proportional to their planned budget
-  const emptyPlanSum = DATA.slots.reduce((s,x) => s + (slotFill.has(x.id) ? 0 : x.budget), 0);
+  const emptyPlanSum = slots.reduce((s,x) => s + (slotFill.has(x.id) ? 0 : x.budget), 0);
   const factor = emptyPlanSum > 0 ? left / emptyPlanSum : 0;
   const opps = (state.oppNames || []).map(name => {
     const buys = gone.filter(a => a.buyer === name);
@@ -493,21 +539,50 @@ function derive() {
     const cnt = {P:0,D:0,C:0,A:0};
     buys.forEach(a => cnt[a.role]++);
     const oLeft = state.budget - oSpent;
-    const oSlotsLeft = totSlots - buys.length;
+    const oSlotsLeft = Math.max(0, totSlots - buys.length);
     const canBuyRole = {};
-    ROLES.forEach(r => canBuyRole[r] = cnt[r] < DATA.roleSlots[r]);
+    ROLES.forEach(r => canBuyRole[r] = cnt[r] < roleSlotCount(r));
     return {name, spent: oSpent, cnt, left: oLeft, slotsLeft: oSlotsLeft, canBuyRole,
             maxBid: Math.max(0, oLeft - Math.max(0, oSlotsLeft - 1))};
   });
-  return {mine, gone, cuts, minePid, gonePid, spent, spentRole, cntRole, slotFill, left, slotsLeft, opps,
-          emptyPlanSum, factor, planDelta: left - emptyPlanSum,
+  return {mine, gone, cuts, minePid, gonePid, spent, spentRole, cntRole, slotFill, slots, slotById,
+          totSlots, left, slotsLeft, opps, emptyPlanSum, factor, planDelta: left - emptyPlanSum,
           adjBudget: id => { const s = slotById.get(id); return s ? Math.round(s.budget * factor) : 0; },
           maxBid: Math.max(0, left - Math.max(0, slotsLeft - 1)),
           avg: slotsLeft ? Math.floor(left / slotsLeft) : 0};
 }
 function freeSlots(role) {
   const d = derive();
-  return DATA.slots.filter(s => s.role === role && !d.slotFill.has(s.id));
+  if (d.cntRole[role] >= roleSlotCount(role)) return [];
+  return d.slots.filter(s => s.role === role && !d.slotFill.has(s.id));
+}
+function applyRoleSlots(next) {
+  const d = derive();
+  const tooSmall = ROLES.filter(r => next[r] < d.cntRole[r]);
+  if (tooSmall.length) {
+    return 'Non puoi ridurre sotto i giocatori già acquistati: ' +
+      tooSmall.map(r => `${r} ${d.cntRole[r]}/${next[r]}`).join(' · ');
+  }
+  for (const r of ROLES) {
+    const target = makeRoleSlots(r, next[r]);
+    const targetIds = new Set(target.map(s => s.id));
+    const used = new Set();
+    const toMove = [];
+    for (const a of d.mine.filter(x => x.role === r)) {
+      if (targetIds.has(a.slot) && !used.has(a.slot)) used.add(a.slot);
+      else toMove.push(a);
+    }
+    const free = target.map(s => s.id).filter(id => !used.has(id));
+    toMove.forEach((a, i) => { a.slot = free[i]; });
+  }
+  state.roleSlots = {...next};
+  return '';
+}
+function repairRoleSlots() {
+  const d = derive();
+  const next = {...state.roleSlots};
+  ROLES.forEach(r => { next[r] = Math.max(next[r], d.cntRole[r]); });
+  applyRoleSlots(next);
 }
 // wishlist entries of a slot still on the board (not mine, not gone) as {w, p}
 function slotAvailable(slotId, d) {
@@ -515,6 +590,10 @@ function slotAvailable(slotId, d) {
   if (!grp) return [];
   return grp.players.map(w => ({w, p: findPlayer(w.name, w.team)}))
     .filter(x => x.p && !d.minePid.has(x.p.id) && !d.gonePid.has(x.p.id));
+}
+
+function activeWishes(pid, d) {
+  return (wishByPid.get(pid) || []).filter(w => d.slotById.has(w.slot));
 }
 
 /* ============================== actions ============================== */
@@ -592,13 +671,26 @@ function openGone(p) {
 function undo() {
   const a = state.actions.pop();
   if (!a) { toast('Niente da annullare', 'warn'); return; }
+  const slotError = applyRoleSlots(state.roleSlots);
+  if (slotError) {
+    state.actions.push(a);
+    toast('Impossibile annullare: aumenterebbe i giocatori oltre gli slot configurati.', 'warn');
+    return;
+  }
   save(); renderAll();
   toast(`↩ Annullato: ${a.t === 'buy' ? 'acquisto di' : a.t === 'cut' ? 'svincolo di' : 'segnalazione su'} <b>${esc(a.name)}</b>`);
 }
 function removeAction(idx) {
   const a = state.actions.splice(idx, 1)[0];
+  if (!a) return;
+  const slotError = applyRoleSlots(state.roleSlots);
+  if (slotError) {
+    state.actions.splice(idx, 0, a);
+    toast('Impossibile rimuovere questa operazione: la rosa supererebbe gli slot configurati.', 'warn');
+    return;
+  }
   save(); renderAll();
-  if (a) toast(`🗑 Rimosso ${esc(a.name)} dal log`);
+  toast(`🗑 Rimosso ${esc(a.name)} dal log`);
 }
 
 /* ============================== toast ============================== */
@@ -619,15 +711,15 @@ function doSearch(q) {
   const d = derive();
   const scored = [];
   for (const p of DATA.players) {
-    if (d.cntRole[p.r] >= DATA.roleSlots[p.r] && !d.minePid.has(p.id)) continue;
+    if (d.cntRole[p.r] >= roleSlotCount(p.r) && !d.minePid.has(p.id)) continue;
     let s = 0;
     if (p._n.startsWith(nq)) s = 100;
     else if (p._n.split(' ').some(w => w.startsWith(nq))) s = 85;
     else if (p._n.includes(nq)) s = 62;
     else if (p._t.startsWith(nq)) s = 32;
     else continue;
-    const w = wishByPid.get(p.id);
-    if (w) s += 26 - Math.min(w[0].prio, 10);
+    const w = activeWishes(p.id, d);
+    if (w.length) s += 26 - Math.min(w[0].prio, 10);
     if (sleepByPid.has(p.id)) s += 8;
     if (d.minePid.has(p.id) || d.gonePid.has(p.id)) s -= 45;
     scored.push([s + (p.fvm || 0) / 2000, p]);
@@ -642,13 +734,13 @@ function renderResults() {
   const box = $('#results');
   if (!curResults.length) { box.classList.remove('open'); return; }
   box.innerHTML = curResults.map((p, i) => {
-    const w = wishByPid.get(p.id);
+    const w = activeWishes(p.id, d);
     const sl = sleepByPid.get(p.id);
     const al = alertByPid.get(p.id);
     const mine = d.minePid.get(p.id), gone = d.gonePid.get(p.id);
     let badges = '';
-    if (w) badges += `<span class="wish">★ ${w.map(x => `${x.slot} #${x.prio}`).join(' · ')} · max ${w[0].maxprice}</span>`;
-    if (!w && sl) badges += `<span class="sleep">◆ occasione · ~${esc(sl[0].price ?? '?')}</span>`;
+    if (w.length) badges += `<span class="wish">★ ${w.map(x => `${x.slot} #${x.prio}`).join(' · ')} · max ${w[0].maxprice}</span>`;
+    if (!w.length && sl) badges += `<span class="sleep">◆ occasione · ~${esc(sl[0].price ?? '?')}</span>`;
     if (al) badges += `<span class="adot" title="${esc(al.map(a=>a.text).join(' | '))}"></span>`;
     if (mine) badges += `<span class="tag mine">mio · ${mine.price}</span>`;
     if (gone) badges += `<span class="tag gone">andato</span>`;
@@ -669,7 +761,8 @@ function renderResults() {
 /* prezzo oltre cui mollare: max del piano corretto per alternative rimaste
    (FantaScore ≥75% del target), tetto slot riproporzionato e pressione avversari */
 function walkAway(p, slotId, d) {
-  const w = (wishByPid.get(p.id) || []).find(x => x.slot === slotId) || (wishByPid.get(p.id) || [])[0];
+  const wishes = activeWishes(p.id, d);
+  const w = wishes.find(x => x.slot === slotId) || wishes[0];
   const sl = (sleepByPid.get(p.id) || [])[0];
   const adj = d.adjBudget(slotId);
   const base = w?.maxprice ?? sl?.price ?? adj ?? 1;
@@ -688,11 +781,12 @@ function walkAway(p, slotId, d) {
 
 /* ============================== simulation ============================== */
 /* prezzo atteso: FVM riscalato sui crediti totali del tavolo (10 squadre), ±25% */
-const SIMSCALE = (() => {
-  const top = DATA.players.map(p => p.fvm || 0).sort((a,b) => b - a).slice(0, 250);
+function simScale() {
+  const leagueSlots = configuredSlots().length * 10;
+  const top = DATA.players.map(p => p.fvm || 0).sort((a,b) => b - a).slice(0, leagueSlots);
   const sum = top.reduce((s,v) => s + v, 0);
-  return sum > 0 ? (DATA.budget * 10) / sum : 1;
-})();
+  return sum > 0 ? (state.budget * 10) / sum : 1;
+}
 let simPending = null;   // {p, price, bot} — chiamata sul banco
 function simPickBot(p, price, d) {
   const elig = d.opps.filter(o => o.canBuyRole[p.r] && o.slotsLeft > 0);
@@ -710,7 +804,7 @@ function simStep(interactive) {
     .sort((a,b) => (b.fvm || 0) - (a.fvm || 0));
   if (!pool.length) { toast('Listone esaurito: simulazione finita', 'warn'); return false; }
   const p = pool[Math.floor(Math.random() * Math.min(12, pool.length))];
-  const price = Math.max(1, Math.round((p.fvm || 1) * SIMSCALE * (0.75 + Math.random() * 0.5)));
+  const price = Math.max(1, Math.round((p.fvm || 1) * simScale() * (0.75 + Math.random() * 0.5)));
   const pick = simPickBot(p, price, d);
   if (!interactive) {
     if (pick) doGone(p, pick.price, pick.bot.name);
@@ -735,6 +829,7 @@ function toggleSim(on) {
   simPending = null;
   try { localStorage.setItem('fantaasta_sim_on', simMode ? '1' : '0'); } catch (e) {}
   state = loadState();
+  repairRoleSlots();
   closeBuy(); renderAll();
   toast(simMode ? '🤖 Simulazione attiva: prova generale, l\'asta vera non viene toccata'
                 : 'Simulazione chiusa: sei tornato all\'asta vera');
@@ -745,7 +840,7 @@ let buyTarget = null;
 function openBuy(p) {
   buyTarget = p;
   const d = derive();
-  const w = wishByPid.get(p.id) || [];
+  const w = activeWishes(p.id, d);
   const sl = sleepByPid.get(p.id) || [];
   const al = alertByPid.get(p.id) || [];
   const mine = d.minePid.get(p.id), gone = d.gonePid.get(p.id);
@@ -790,7 +885,7 @@ function openBuy(p) {
       <button id="btnGone">⛔ Preso da altri</button>
       <button class="ghost" id="btnCancel">Annulla (Esc)</button>
     </div>
-    ${free.length ? '' : `<div class="buyerr">Reparto ${ROLENAME[p.r]} già completo (${DATA.roleSlots[p.r]}/${DATA.roleSlots[p.r]}).</div>`}
+    ${free.length ? '' : `<div class="buyerr">Reparto ${ROLENAME[p.r]} già completo (${d.cntRole[p.r]}/${roleSlotCount(p.r)}).</div>`}
     <div class="buyerr" id="buyerr"></div>`;
 
   // preselect preferred wishlist slot if free
@@ -803,7 +898,7 @@ function openBuy(p) {
     const sid = $('#slotSel')?.value;
     if (!sid) return;
     const dd = derive();
-    const s = slotById.get(sid), adj = dd.adjBudget(sid);
+    const s = dd.slotById.get(sid), adj = dd.adjBudget(sid);
     const capEl = $('#capSlot');
     if (capEl && s) capEl.innerHTML = adj === s.budget ? `${adj}` : `<s style="color:var(--faint);font-weight:400">${s.budget}</s> <span class="${adj > s.budget ? 'adjup' : 'adjdown'}">${adj}</span>`;
     const wkEl = $('#capWalk');
@@ -850,7 +945,11 @@ function confirmBuy() {
   if (!price || price < 1) { err.textContent = 'Inserisci i crediti pagati.'; $('#price').focus(); return; }
   if (d.minePid.has(buyTarget.id)) { err.textContent = 'Già comprato.'; return; }
   if (price > d.maxBid) { err.textContent = `Impossibile: puoi offrire al massimo ${d.maxBid} (devi tenere 1 credito per ogni altro slot vuoto).`; return; }
-  if (!slotId) { err.textContent = 'Nessuno slot libero per questo ruolo.'; return; }
+  const slot = d.slotById.get(slotId);
+  if (!slot || slot.role !== buyTarget.r || d.slotFill.has(slotId) || d.cntRole[buyTarget.r] >= roleSlotCount(buyTarget.r)) {
+    err.textContent = 'Nessuno slot libero per questo ruolo.';
+    return;
+  }
   const p = buyTarget;
   if (simPending && simPending.p.id === p.id) simPending = null;   // battuto il bot
   closeBuy();
@@ -879,10 +978,10 @@ function renderHeader() {
     const sp = d.spentRole[r], b = state.roleBudget[r];
     const pct = Math.min(100, b ? sp / b * 100 : 0);
     return `<div class="meter ${sp > b ? 'over' : ''}">
-      <div class="mrow"><b>${r} ${d.cntRole[r]}/${DATA.roleSlots[r]}</b><b>${sp}/${b}</b></div>
+      <div class="mrow"><b>${r} ${d.cntRole[r]}/${roleSlotCount(r)}</b><b>${sp}/${b}</b></div>
       <div class="bar"><i style="width:${pct}%;background:var(--r${r})"></i></div></div>`;
   }).join('');
-  $('#cntRosa').textContent = `${d.mine.length}/25`;
+  $('#cntRosa').textContent = `${d.mine.length}/${d.totSlots}`;
   $('#cntLog').textContent = state.actions.length || '';
 }
 
@@ -894,7 +993,7 @@ function renderOpps() {
     <span class="opp ${o.slotsLeft <= 0 ? 'done' : ''} ${o.left === maxLeft && o.spent > 0 ? 'rich' : ''}"
           title="${esc(o.name)}: speso ${o.spent}, ${o.slotsLeft} slot da riempire, offerta massima teorica ${o.maxBid}">
       <span class="on">${esc(o.name)}</span><span class="ol">${o.left}</span>
-      <span class="os">${ROLES.map(r => `${DATA.roleSlots[r] - o.cnt[r]}${r}`).join(' ')}</span>
+      <span class="os">${ROLES.map(r => `${Math.max(0, roleSlotCount(r) - o.cnt[r])}${r}`).join(' ')}</span>
       <span class="om">max ${o.maxBid}</span>
     </span>`).join('');
 }
@@ -904,17 +1003,20 @@ function renderAdvice() {
   const d = derive();
   const html = ROLES.map(r => {
     const chips = [];
-    for (const grp of (DATA.wishlist[r] || [])) {
-      if (d.slotFill.has(grp.slot)) continue;
-      const avail = slotAvailable(grp.slot, d);
-      if (avail.length) chips.push({slot: grp.slot, n: avail.length, ...avail[0].w});
+    for (const s of d.slots.filter(x => x.role === r)) {
+      const grp = wishBySlot.get(s.id);
+      if (!grp || d.slotFill.has(s.id)) continue;
+      const avail = slotAvailable(s.id, d);
+      if (avail.length) chips.push({slot: s.id, n: avail.length, ...avail[0].w});
     }
     if (!chips.length) return '';
     return `<div class="adv-role"><span class="rb ${r}">${r}</span>` +
       chips.map(c => `<span class="chip ${c.n === 1 ? 'last' : c.n === 2 ? 'scarce' : ''}" data-n="${esc(c.name)}" data-t="${esc(c.team)}" ${c.n <= 2 ? `title="Restano ${c.n === 1 ? 'solo questo nome' : '2 nomi'} in lista per ${c.slot}"` : ''}>
         <span class="sl">${c.slot}</span> ${esc(c.name)} <span class="px">≤${c.maxprice}</span>${c.n <= 2 ? `<span class="sc">${c.n === 1 ? 'ultimo!' : 'solo 2'}</span>` : ''}</span>`).join('') + `</div>`;
   }).join('');
-  $('#advice').innerHTML = html || '<span style="color:var(--faint)">Rosa completa 🎉</span>';
+  $('#advice').innerHTML = html || (d.slotsLeft
+    ? `<span style="color:var(--faint)">${d.slotsLeft} slot liberi senza obiettivi configurati.</span>`
+    : '<span style="color:var(--faint)">Rosa completa 🎉</span>');
   $('#advice').querySelectorAll('.chip').forEach(el => el.addEventListener('click', () => {
     const p = findPlayer(el.dataset.n, el.dataset.t);
     if (p) openBuy(p);
@@ -948,8 +1050,9 @@ function bindTab(body) {
     const p = byId.get(+el.dataset.open); if (p) openBuy(p);
   }));
   body.querySelectorAll('[data-unslot]').forEach(el => el.addEventListener('click', () => {
-    const i = state.actions.findIndex(a => a.t === 'buy' && a.slot === el.dataset.unslot);
-    if (i >= 0 && confirm(`Rimuovere ${state.actions[i].name} dalla rosa?`)) removeAction(i);
+    const a = derive().slotFill.get(el.dataset.unslot);
+    const i = state.actions.indexOf(a);
+    if (i >= 0 && confirm(`Rimuovere ${a.name} dalla rosa?`)) removeAction(i);
   }));
   body.querySelectorAll('[data-del]').forEach(el => el.addEventListener('click', () => {
     const i = +el.dataset.del;
@@ -1051,10 +1154,10 @@ function bindTab(body) {
 function viewRosa() {
   const d = derive();
   return ROLES.map(r => {
-    const slots = DATA.slots.filter(s => s.role === r);
+    const slots = d.slots.filter(s => s.role === r);
     return `<div class="rgroup">
       <div class="rghead"><span class="rb ${r}">${r}</span><h3>${ROLENAME[r]}</h3>
-        <span class="rgfig">${d.cntRole[r]}/${DATA.roleSlots[r]} · speso ${d.spentRole[r]}/${state.roleBudget[r]}</span></div>
+        <span class="rgfig">${d.cntRole[r]}/${roleSlotCount(r)} · speso ${d.spentRole[r]}/${state.roleBudget[r]}</span></div>
       <table><thead><tr><th>Slot</th><th>Profilo</th><th>Giocatore</th><th class="num">Pagato</th><th></th></tr></thead><tbody>
       ${slots.map(s => {
         const a = d.slotFill.get(s.id);
@@ -1079,13 +1182,21 @@ function viewRosa() {
 function importRosterCsv(txt) {
   const lines = txt.replace(/^\uFEFF/, '').split(/\r?\n/).filter(l => l.trim());
   if (!lines.length) throw new Error('CSV vuoto');
-  const head = lines[0].toLowerCase().split(';').map(s => s.trim().replace(/^"|"$/g, ''));
+  const parseRow = line => line.split(';').map(s => s.trim().replace(/^"|"$/g, ''));
+  const head = parseRow(lines[0]).map(s => s.toLowerCase());
   const idx = {slot: head.indexOf('slot'), r: head.indexOf('ruolo'), name: head.indexOf('nome'),
                team: head.indexOf('squadra'), price: head.indexOf('prezzo')};
   if (idx.r < 0 || idx.name < 0) throw new Error('Intestazione CSV non riconosciuta (servono almeno "ruolo" e "nome")');
+  const rows = lines.slice(1).map(parseRow);
+  const config = /^fantaasta_slots=p:(\d+),d:(\d+),c:(\d+),a:(\d+)$/.exec(
+    rows.flat().find(x => x.startsWith('fantaasta_slots=')) || '');
+  if (config) {
+    const current = derive();
+    const next = Object.fromEntries(ROLES.map((r, i) => [r, Math.max(+config[i + 1], current.cntRole[r])]));
+    if (ROLES.every(r => next[r] <= 99)) applyRoleSlots(next);
+  }
   const rep = {added: [], owned: [], full: [], missing: []};
-  for (const line of lines.slice(1)) {
-    const c = line.split(';').map(s => s.trim().replace(/^"|"$/g, ''));
+  for (const c of rows) {
     const name = c[idx.name];
     if (!name) continue;
     const p = findPlayer(name, idx.team >= 0 ? c[idx.team] : '');
@@ -1223,8 +1334,13 @@ function viewFormazione() {
 
 function viewListe() {
   const d = derive();
-  return ROLES.map(r => (DATA.wishlist[r] || []).map(grp => `
-    <div class="wl-slot">
+  return ROLES.map(r => d.slots.filter(s => s.role === r).map(s => {
+    const grp = wishBySlot.get(s.id);
+    if (!grp) return `<div class="wl-slot">
+      <header><span class="rb ${r}">${r}</span><h3>${s.id} — ${esc(s.profile)}</h3><span class="wsb">budget ${s.budget}</span></header>
+      <p style="color:var(--faint);font-size:12.5px;padding:2px 6px">Nessun nome configurato per questo slot.</p>
+    </div>`;
+    return `<div class="wl-slot">
       <header><span class="rb ${r}">${r}</span><h3>${grp.slot} — ${esc(grp.profile)}</h3><span class="wsb">budget ${grp.budget}</span></header>
       <ul class="wl-list">
       ${grp.players.map(w => {
@@ -1243,7 +1359,8 @@ function viewListe() {
         </li>`;
       }).join('')}
       </ul>
-    </div>`).join('')).join('');
+    </div>`;
+  }).join('')).join('');
 }
 
 function listoneRows() {
@@ -1257,14 +1374,14 @@ function listoneRows() {
   rows.sort((a,b) => key === 'name' ? a.name.localeCompare(b.name) : (b[key] || 0) - (a[key] || 0));
   return rows.slice(0, 250).map(p => {
     const mine = d.minePid.get(p.id), gone = d.gonePid.get(p.id);
-    const w = wishByPid.get(p.id), sl = sleepByPid.get(p.id);
+    const w = activeWishes(p.id, d), sl = sleepByPid.get(p.id);
     return `<tr data-open="${p.id}" style="cursor:pointer" class="${mine||gone ? 'dead' : ''}">
       <td><span class="rb ${p.r}">${p.r}</span></td>
       <td ${mine||gone ? 'style="text-decoration:line-through;color:var(--faint)"' : ''}><b>${esc(p.name)}</b></td>
       <td style="color:var(--mut)">${esc(p.team)}</td>
       <td class="num">${p.qta}</td><td class="num">${p.fvm}</td>
       <td class="num"><span class="scpill ${p.score >= 75 ? 'hi' : p.score >= 55 ? 'mid' : ''}">${p.score ?? ''}</span></td>
-      <td>${w ? `<span class="wish">★ ${w[0].slot} #${w[0].prio} max ${w[0].maxprice}</span>` : sl ? `<span class="sleep">◆ ~${esc(sl[0].price ?? '?')}</span>` : ''}
+      <td>${w.length ? `<span class="wish">★ ${w[0].slot} #${w[0].prio} max ${w[0].maxprice}</span>` : sl ? `<span class="sleep">◆ ~${esc(sl[0].price ?? '?')}</span>` : ''}
           ${mine ? `<span class="tag mine">mio ${mine.price}</span>` : ''}${gone ? '<span class="tag gone">andato</span>' : ''}</td>
     </tr>`;
   }).join('');
@@ -1310,7 +1427,8 @@ function viewReport() {
   const scMine = d.mine.length ? Math.round(d.mine.reduce((s,a) => s + (byId.get(a.pid)?.score || 0), 0) / d.mine.length) : 0;
   const buysRows = d.mine.map(a => {
     const p = byId.get(a.pid);
-    const w = (wishByPid.get(a.pid) || []).find(x => x.slot === a.slot) || (wishByPid.get(a.pid) || [])[0];
+    const wishes = activeWishes(a.pid, d);
+    const w = wishes.find(x => x.slot === a.slot) || wishes[0];
     const max = w?.maxprice ?? (sleepByPid.get(a.pid) || [])[0]?.price ?? null;
     const delta = max != null ? max - a.price : null;
     return `<tr><td class="slotid">${a.slot}</td><td><span class="rb ${a.role}">${a.role}</span> <b>${esc(a.name)}</b> <span style="color:var(--mut)">${esc(a.team)}</span></td>
@@ -1319,7 +1437,8 @@ function viewReport() {
       <td class="num">${p?.score ?? ''}</td></tr>`;
   }).join('');
   const missed = [];
-  for (const role of ROLES) for (const grp of (DATA.wishlist[role] || [])) {
+  const activeSlotIds = new Set(d.slots.map(s => s.id));
+  for (const role of ROLES) for (const grp of (DATA.wishlist[role] || []).filter(x => activeSlotIds.has(x.slot))) {
     for (const w of grp.players.filter(x => x.prio <= 3)) {
       const p = findPlayer(w.name, w.team);
       const g = p && d.gonePid.get(p.id);
@@ -1334,13 +1453,13 @@ function viewReport() {
       <div class="cap"><label>Vs piano</label><b>${(d.planDelta > 0 ? '+' : '') + d.planDelta}</b></div>
       <div class="cap"><label>FVM rosa</label><b>${fvmMine}</b></div>
       <div class="cap"><label>Score medio</label><b>${scMine || '—'}</b></div>
-      <div class="cap"><label>Slot pieni</label><b>${d.mine.length}/25</b></div>
+      <div class="cap"><label>Slot pieni</label><b>${d.mine.length}/${d.totSlots}</b></div>
     </div>
     <div class="newsblock"><h2>Speso per reparto</h2>
       <table><thead><tr><th>Reparto</th><th class="num">Speso</th><th class="num">Budget</th><th class="num">Delta</th><th class="num">Slot</th></tr></thead><tbody>
       ${ROLES.map(r => { const dl = state.roleBudget[r] - d.spentRole[r];
         return `<tr><td><span class="rb ${r}">${r}</span> ${ROLENAME[r]}</td><td class="num">${d.spentRole[r]}</td><td class="num">${state.roleBudget[r]}</td>
-        <td class="num" style="color:${dl >= 0 ? 'var(--ok)' : 'var(--warn)'}">${dl >= 0 ? '+' + dl : dl}</td><td class="num">${d.cntRole[r]}/${DATA.roleSlots[r]}</td></tr>`; }).join('')}
+        <td class="num" style="color:${dl >= 0 ? 'var(--ok)' : 'var(--warn)'}">${dl >= 0 ? '+' + dl : dl}</td><td class="num">${d.cntRole[r]}/${roleSlotCount(r)}</td></tr>`; }).join('')}
       </tbody></table></div>
     <div class="newsblock"><h2>Acquisti vs piano</h2>
       ${d.mine.length ? `<table><thead><tr><th>Slot</th><th>Giocatore</th><th class="num">Pagato</th><th class="num">Max piano</th><th>Esito</th><th class="num">Score</th></tr></thead><tbody>${buysRows}</tbody></table>`
@@ -1434,11 +1553,14 @@ $('#btnExp').addEventListener('click', () => {
 });
 function buildCsv() {
   const d = derive();
+  const config = `fantaasta_slots=${ROLES.map(r => `${r.toLowerCase()}:${roleSlotCount(r)}`).join(',')}`;
   const rows = [['slot','ruolo','nome','squadra','prezzo']];
-  for (const r of ROLES) for (const s of DATA.slots.filter(x => x.role === r)) {
+  for (const r of ROLES) for (const s of d.slots.filter(x => x.role === r)) {
     const a = d.slotFill.get(s.id);
     rows.push([s.id, r, a?.name || '', a?.team || '', a ? a.price : '']);
   }
+  if (rows.length === 1) rows.push(['','','','','',config]);
+  else rows[1].push(config);
   return rows.map(row => row.map(v => /[";\n]/.test(String(v)) ? `"${String(v).replace(/"/g,'""')}"` : String(v)).join(';')).join('\r\n');
 }
 $('#btnCsv').addEventListener('click', () => {
@@ -1454,7 +1576,9 @@ $('#impFile').addEventListener('change', e => {
   f.text().then(txt => {
     const st = JSON.parse(txt);
     if (!Array.isArray(st.actions)) throw new Error('bad');
-    state = {...defaultState(), ...st}; save(); renderAll();
+    state = normalizeState(st);
+    repairRoleSlots();
+    save(); renderAll();
     toast('Backup ripristinato ⬆');
   }).catch(() => toast('File non valido', 'err'));
   e.target.value = '';
@@ -1462,12 +1586,28 @@ $('#impFile').addEventListener('change', e => {
 $('#btnSet').addEventListener('click', () => {
   $('#setBudget').value = state.budget;
   $('#setRecoup').value = state.recoupPct ?? 100;
-  ROLES.forEach(r => $('#set' + r).value = state.roleBudget[r]);
+  ROLES.forEach(r => {
+    $('#set' + r).value = state.roleBudget[r];
+    $('#setSlot' + r).value = roleSlotCount(r);
+  });
   $('#setOpps').value = (state.oppNames || []).join('\n');
+  $('#setErr').textContent = '';
   $('#dlgSet').showModal();
 });
 $('#setCancel').addEventListener('click', () => $('#dlgSet').close());
 $('#setSave').addEventListener('click', () => {
+  const nextSlots = {};
+  for (const r of ROLES) {
+    const v = $('#setSlot' + r).valueAsNumber;
+    if (!Number.isInteger(v) || v < 0 || v > 99) {
+      $('#setErr').textContent = `Inserisci per ${r} un numero intero di slot tra 0 e 99.`;
+      $('#setSlot' + r).focus();
+      return;
+    }
+    nextSlots[r] = v;
+  }
+  const slotError = applyRoleSlots(nextSlots);
+  if (slotError) { $('#setErr').textContent = slotError; return; }
   const b = parseInt($('#setBudget').value, 10);
   if (b > 0) state.budget = b;
   const rc = parseInt($('#setRecoup').value, 10);
@@ -1482,6 +1622,8 @@ function renderAll() {
   document.body.classList.toggle('sim', simMode);
   $('#simbar').hidden = !simMode;
   renderHeader(); renderOpps(); renderAdvice(); renderTab();
+  const roster = ROLES.map(r => `${roleSlotCount(r)}${r}`).join('+');
+  $('#footNote').textContent = `Listone ufficiale ${DATA.season}: ${DATA.players.length} giocatori · Rosa ${roster} · I dati restano solo in questo browser (localStorage + cookie di backup). Fai un export ⬇ a fine asta.`;
 }
 window.DATA = DATA;
 Object.defineProperty(window, 'state', {get: () => state, configurable: true});
@@ -1502,7 +1644,7 @@ if (VIEW) {
     if (raw !== lastRaw) { lastRaw = raw; resync(); }
   }, 2500);
 }
-$('#footNote').textContent = `Listone ufficiale ${DATA.season}: ${DATA.players.length} giocatori · Rosa 3P+8D+8C+6A · I dati restano solo in questo browser (localStorage + cookie di backup). Fai un export ⬇ a fine asta.`;
+repairRoleSlots();
 renderAll();
 qEl.focus();
 </script>
