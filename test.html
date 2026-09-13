@@ -280,6 +280,139 @@ window.addEventListener('load', async () => {
     // giornata 2 pre-compilata dalla 1
     const g2 = W8.getLineup(2);
     ok('formazione: giornata 2 eredita la 1', g2.module === '3-5-2' && (g2.xi.P || []).includes(svPid));
+
+    // ===== configurazione slot per ruolo =====
+    const mainFrame = document.getElementById('f');
+    const reloadWithState = async value => {
+      const win = mainFrame.contentWindow;
+      win.localStorage.setItem('fantaasta_sim_on', '0');
+      win.localStorage.setItem('fantaasta_2627_v1', JSON.stringify(value));
+      const loaded = new Promise(resolve => mainFrame.addEventListener('load', resolve, {once:true}));
+      win.location.reload();
+      await loaded;
+      await sleep(120);
+      return {W: mainFrame.contentWindow, D: mainFrame.contentWindow.document};
+    };
+
+    // stati precedenti alla feature: i conteggi mancanti migrano ai default
+    const legacyState = W8.defaultState();
+    delete legacyState.roleSlots;
+    let slotEnv = await reloadWithState(legacyState);
+    let WS = slotEnv.W, DS = slotEnv.D;
+    ok('slot config: migrazione stato legacy',
+      JSON.stringify(WS.state.roleSlots) === JSON.stringify({P:3,D:8,C:8,A:6}), JSON.stringify(WS.state.roleSlots));
+
+    // configurazione dalla dialog impostazioni
+    DS.querySelector('#btnSet').click();
+    ok('slot config: campi P/D/C/A presenti',
+      ['P','D','C','A'].every(r => !!DS.querySelector('#setSlot' + r)));
+    ok('slot config: campi inizializzati ai default',
+      ['3','8','8','6'].every((n, i) => DS.querySelector('#setSlot' + ['P','D','C','A'][i]).value === n));
+    for (const [r, n] of Object.entries({P:4,D:7,C:6,A:5})) DS.querySelector('#setSlot' + r).value = n;
+    DS.querySelector('#setSave').click();
+    await sleep(80);
+    let slotView = WS.derive();
+    ok('slot config: valori salvati nello stato',
+      JSON.stringify(WS.state.roleSlots) === JSON.stringify({P:4,D:7,C:6,A:5}), JSON.stringify(WS.state.roleSlots));
+    ok('slot config: totale, contatore e righe dinamici',
+      slotView.totSlots === 22 && DS.querySelector('#stSlots').textContent === '22' &&
+      DS.querySelector('#cntRosa').textContent === '0/22' && DS.querySelectorAll('#tabbody tbody tr').length === 22,
+      `${slotView.totSlots}/${DS.querySelectorAll('#tabbody tbody tr').length}`);
+    ok('slot config: crea slot extra e rimuove quelli eccedenti',
+      slotView.slotById.has('P4') && !slotView.slotById.has('D8') && !slotView.slotById.has('C7') && !slotView.slotById.has('A6'));
+    ok('slot config: footer dinamico', /Rosa 4P\+7D\+6C\+5A/.test(DS.querySelector('#footNote').textContent), DS.querySelector('#footNote').textContent);
+    const persistedSlots = JSON.parse(WS.localStorage.getItem('fantaasta_2627_v1') || '{}').roleSlots;
+    ok('slot config: persistenza localStorage', JSON.stringify(persistedSlots) === JSON.stringify({P:4,D:7,C:6,A:5}), JSON.stringify(persistedSlots));
+
+    // slot sintetico, export e riduzione con riassegnazione
+    ok('slot config: P4 acquistabile', WS.freeSlots('P').some(s => s.id === 'P4'));
+    const extraKeeper = WS.DATA.players.find(p => p.r === 'P');
+    WS.doBuy(extraKeeper, 1, 'P4');
+    await sleep(80);
+    const customCsv = WS.buildCsv();
+    ok('slot config: CSV mantiene header e numero righe dinamico',
+      customCsv.split('\r\n')[0] === 'slot;ruolo;nome;squadra;prezzo' && customCsv.split('\r\n').length === 23,
+      `${customCsv.split('\r\n')[0]} · ${customCsv.split('\r\n').length}`);
+    ok('slot config: CSV contiene metadato configurazione', /fantaasta_slots=p:4,d:7,c:6,a:5/.test(customCsv));
+    DS.querySelector('#btnSet').click();
+    DS.querySelector('#setSlotP').value = '3';
+    DS.querySelector('#setSave').click();
+    await sleep(80);
+    slotView = WS.derive();
+    ok('slot config: riduzione riassegna acquisto da slot rimosso',
+      WS.state.roleSlots.P === 3 && slotView.minePid.get(extraKeeper.id)?.slot === 'P1',
+      `${WS.state.roleSlots.P}/${slotView.minePid.get(extraKeeper.id)?.slot}`);
+    DS.querySelector('#btnSet').click();
+    DS.querySelector('#setSlotP').value = '0';
+    DS.querySelector('#setSave').click();
+    await sleep(50);
+    ok('slot config: riduzione sotto gli acquisti bloccata',
+      WS.state.roleSlots.P === 3 && /Non puoi ridurre/.test(DS.querySelector('#setErr').textContent), DS.querySelector('#setErr').textContent);
+    DS.querySelector('#setCancel').click();
+
+    // il CSV dell'app ripristina i conteggi, quelli parziali generici no
+    slotEnv = await reloadWithState(WS.defaultState()); WS = slotEnv.W; DS = slotEnv.D;
+    const csvReport = WS.importRosterCsv(customCsv);
+    await sleep(80);
+    ok('slot config: import CSV app ripristina P/D/C/A',
+      JSON.stringify(WS.state.roleSlots) === JSON.stringify({P:4,D:7,C:6,A:5}), JSON.stringify(WS.state.roleSlots));
+    ok('slot config: import CSV app ripristina acquisto su P4',
+      csvReport.added.includes(extraKeeper.name) && WS.derive().minePid.get(extraKeeper.id)?.slot === 'P4', JSON.stringify(csvReport));
+    slotEnv = await reloadWithState(WS.defaultState()); WS = slotEnv.W; DS = slotEnv.D;
+    WS.importRosterCsv('slot;ruolo;nome;squadra;prezzo\r\nP1;P;Svilar;Roma;1');
+    ok('slot config: CSV parziale non cambia i conteggi',
+      JSON.stringify(WS.state.roleSlots) === JSON.stringify({P:3,D:8,C:8,A:6}), JSON.stringify(WS.state.roleSlots));
+    WS.importRosterCsv('slot;ruolo;nome;squadra;prezzo');
+    ok('slot config: CSV con sola intestazione non azzera gli slot', WS.derive().totSlots === 25, String(WS.derive().totSlots));
+    slotEnv = await reloadWithState(WS.defaultState()); WS = slotEnv.W; DS = slotEnv.D;
+    WS.applyRoleSlots({P:0,D:0,C:0,A:0});
+    const zeroCsv = WS.buildCsv();
+    slotEnv = await reloadWithState(WS.defaultState()); WS = slotEnv.W; DS = slotEnv.D;
+    WS.importRosterCsv(zeroCsv);
+    ok('slot config: CSV app ripristina anche una rosa a zero slot', WS.derive().totSlots === 0, String(WS.derive().totSlots));
+
+    // gli slot extra senza wishlist non fanno risultare la rosa completa
+    const adviceState = WS.defaultState();
+    adviceState.roleSlots = {P:4,D:0,C:0,A:0};
+    const threeKeepers = WS.DATA.players.filter(p => p.r === 'P').slice(0, 3);
+    adviceState.actions = threeKeepers.map((p, i) =>
+      ({t:'buy', pid:p.id, name:p.name, role:'P', team:p.team, slot:`P${i + 1}`, price:1, ts:i + 1}));
+    slotEnv = await reloadWithState(adviceState); WS = slotEnv.W; DS = slotEnv.D;
+    ok('slot config: advice segnala slot extra senza obiettivi',
+      /1 slot liber/.test(DS.querySelector('#advice').textContent) && !/Rosa completa/.test(DS.querySelector('#advice').textContent),
+      DS.querySelector('#advice').textContent.trim());
+
+    // la rimozione dalla rosa usa l'acquisto attivo dopo una migrazione slot
+    const removeState = WS.defaultState();
+    removeState.roleSlots.D = 1;
+    const defenders = WS.DATA.players.filter(p => p.r === 'D').slice(0, 2);
+    removeState.actions = [
+      {t:'buy', pid:defenders[0].id, name:defenders[0].name, role:'D', team:defenders[0].team, slot:'D1', price:1, ts:1},
+      {t:'cut', pid:defenders[0].id, name:defenders[0].name, role:'D', team:defenders[0].team, slot:'D1', refund:1, ts:2},
+      {t:'buy', pid:defenders[1].id, name:defenders[1].name, role:'D', team:defenders[1].team, slot:'D8', price:1, ts:3}
+    ];
+    slotEnv = await reloadWithState(removeState); WS = slotEnv.W; DS = slotEnv.D;
+    WS.confirm = () => true;
+    DS.querySelector('[data-unslot="D1"]').click();
+    await sleep(80);
+    ok('slot config: rimozione colpisce acquisto attivo migrato',
+      !WS.derive().minePid.has(defenders[1].id) && WS.state.actions.some(a => a.pid === defenders[0].id),
+      JSON.stringify(WS.state.actions.map(a => ({t:a.t, name:a.name, slot:a.slot}))));
+
+    // undo non deve aumentare implicitamente il numero configurato
+    const undoState = WS.defaultState();
+    undoState.roleSlots.P = 2;
+    const undoKeepers = WS.DATA.players.filter(p => p.r === 'P').slice(0, 3);
+    undoState.actions = undoKeepers.map((p, i) =>
+      ({t:'buy', pid:p.id, name:p.name, role:'P', team:p.team, slot:`P${i + 1}`, price:1, ts:i + 1}));
+    undoState.actions.push({t:'cut', pid:undoKeepers[2].id, name:undoKeepers[2].name, role:'P', team:undoKeepers[2].team, slot:'P3', refund:1, ts:4});
+    slotEnv = await reloadWithState(undoState); WS = slotEnv.W; DS = slotEnv.D;
+    const actionsBeforeBlockedUndo = WS.state.actions.length;
+    WS.undo();
+    await sleep(80);
+    ok('slot config: undo oltre capienza bloccato senza cambiare configurazione',
+      WS.state.roleSlots.P === 2 && WS.state.actions.length === actionsBeforeBlockedUndo && WS.derive().cntRole.P === 2,
+      `${WS.state.roleSlots.P}/${WS.state.actions.length}/${WS.derive().cntRole.P}`);
   } catch (e) {
     results.push('EXCEPTION ' + (e.stack || e));
   }
